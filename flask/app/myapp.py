@@ -3,22 +3,22 @@ import pickle
 
 app = Flask(__name__)
 
-# 피클 파일에서 훈련된 모델을 로드합니다.
+# 피클 파일에서 훈련된 모델을 로드
 with open('simplelinear.pickle', 'rb') as f:
     model = pickle.load(f)
 
 
-@app.route('/') #루트URL
+@app.route('/') #루트
 def index():
     hi = 'hello world'
     return hi
 
-@app.route("/sign", methods=['POST']) #포스트 방식 테스트 / 0428 한승완
+@app.route("/sign", methods=['POST']) #포스트 방식 테스트
 def sign():
     temp = request.form.get("user")
     return temp
 
-#예상 성적 리턴 API / 0428 한승완
+# 간단한 선형 회귀 모델을 통한 api
 @app.route('/predict', methods=['POST'])
 def predict():
     # 요청 데이터
