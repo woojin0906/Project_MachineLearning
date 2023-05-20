@@ -3,47 +3,10 @@ from torch import nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
-import gluonnlp as nlp
 import numpy as np
 from tqdm import tqdm, tqdm_notebook
-
-model_path = 'SeungwanKOBERT/models/7emotions_model.pt'
-state_dict_path = 'SeungwanKOBERT/models/7emotions_model_state_dict.pt'
-checkpoint_path = 'SeungwanKOBERT/models/7emotions_all.tar'
-
-# Hugging Face를 통한 모델 및 토크나이저 Import
-from kobert_tokenizer import KoBERTTokenizer
-from transformers import BertModel
-
 from transformers import AdamW
 from transformers.optimization import get_cosine_schedule_with_warmup
-
-tokenizer = KoBERTTokenizer.from_pretrained('skt/kobert-base-v1')
-bertmodel = torch.load('7emotions_model.pt')  # 전체 모델을 통째로 불러옴, 클래스 선언 필수
-vocab = nlp.vocab.BERTVocab.from_sentencepiece(tokenizer.vocab_file, padding_token='[PAD]')
-
-
-bertmodel.load_state_dict(torch.load('7emotions_model_state_dict.pt'))  # state_dict를 불러 온 후, 모델에 저장
-checkpoint = torch.load('7emotions_all.tar')   # dict 불러오기
-bertmodel.load_state_dict(checkpoint['model'])
-optimizer = optim.AdamW(bertmodel.parameters())
-optimizer.load_state_dict(checkpoint['optimizer'])
-
-# ★
-class BERTDataset(Dataset):
-    def __init__(self, dataset, sent_idx, label_idx, bert_tokenizer, vocab, max_len,
-                 pad, pair):
-        transform = BERTSentenceTransform(bert_tokenizer, max_seq_length=max_len,vocab=vocab, pad=pad, pair=pair)
-        #transform = nlp.data.BERTSentenceTransform(
-        #    tokenizer, max_seq_length=max_len, pad=pad, pair=pair)
-        self.sentences = [transform([i[sent_idx]]) for i in dataset]
-        self.labels = [np.int32(i[label_idx]) for i in dataset]
-
-    def __getitem__(self, i):
-        return (self.sentences[i] + (self.labels[i], ))
-
-    def __len__(self):
-        return (len(self.labels))
 
 class BERTSentenceTransform:
     r"""BERT style data transformation.
@@ -128,7 +91,7 @@ class BERTSentenceTransform:
         tokens_b = None
 
         if self._pair:
-            tokens_b = self._tokenizer(text_b)
+            tokens_b = self._tokenizer.tokenize(text_b)
 
         if tokens_b:
             # Modifies `tokens_a` and `tokens_b` in place so that the total
@@ -177,15 +140,23 @@ class BERTSentenceTransform:
 
         return np.array(input_ids, dtype='int32'), np.array(valid_length, dtype='int32'),\
             np.array(segment_ids, dtype='int32')
+    
+# ★
+class BERTDataset(Dataset):
+    def __init__(self, dataset, sent_idx, label_idx, bert_tokenizer, vocab, max_len,
+                 pad, pair):
+        transform = BERTSentenceTransform(bert_tokenizer, max_seq_length=max_len,vocab=vocab, pad=pad, pair=pair)
+        #transform = nlp.data.BERTSentenceTransform(
+        #    tokenizer, max_seq_length=max_len, pad=pad, pair=pair)
+        self.sentences = [transform([i[sent_idx]]) for i in dataset]
+        self.labels = [np.int32(i[label_idx]) for i in dataset]
 
-# Setting parameters
-max_len = 64
-batch_size = 64
-warmup_ratio = 0.1
-num_epochs = 5
-max_grad_norm = 1
-log_interval = 200
-learning_rate =  5e-5
+    def __getitem__(self, i):
+        return (self.sentences[i] + (self.labels[i], ))
+
+    def __len__(self):
+        return (len(self.labels))
+    
 
 class BERTClassifier(nn.Module):
     def __init__(self,
@@ -216,9 +187,16 @@ class BERTClassifier(nn.Module):
             out = self.dropout(pooler)
         return self.classifier(out)
     
+model = torch.load('SeungwanKOBERT/models/7emotions_model.pt', map_location=torch.device('cpu'))  # 전체 모델을 통째로 불러옴, 클래스 선언 필수
 
-#BERT 모델 불러오기
-model = BERTClassifier(bertmodel.bert , dr_rate=0.5)
+# Setting parameters
+max_len = 64
+batch_size = 64
+warmup_ratio = 0.1
+num_epochs = 5
+max_grad_norm = 1
+log_interval = 200
+learning_rate =  5e-5
 
 #optimizer와 schedule 설정
 no_decay = ['bias', 'LayerNorm.weight']
@@ -227,21 +205,30 @@ optimizer_grouped_parameters = [
     {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
 ]
 
-tok = nlp.data.BERTSPTokenizer(tokenizer, vocab, lower=False)
+optimizer = AdamW(optimizer_grouped_parameters, lr=learning_rate)
 
-device = torch.device("cpu")
+# Hugging Face를 통한 모델 및 토크나이저 Import
+from kobert_tokenizer import KoBERTTokenizer
+from transformers import BertModel
+
+tokenizer = KoBERTTokenizer.from_pretrained('skt/kobert-base-v1')
+# vocab = nlp.vocab.BERTVocab.from_sentencepiece(tokenizer.vocab_file, padding_token='[PAD]')
+vocab = tokenizer.vocab_file
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model.to(device)
 
 def predict(predict_sentence):
 
     data = [predict_sentence, '0']
     dataset_another = [data]
 
-    another_test = BERTDataset(dataset_another, 0, 1, tok, max_len, True, False)
+    another_test = BERTDataset(dataset_another, 0, 1, tokenizer, vocab, max_len, True, False)
     test_dataloader = torch.utils.data.DataLoader(another_test, batch_size=batch_size, num_workers=5)
     
     model.eval()
 
-    for batch_id, (token_ids, valid_length, segment_ids, label) in enumerate(tqdm_notebook(test_dataloader)):
+    for batch_id, (token_ids, valid_length, segment_ids, label) in enumerate(test_dataloader):
         token_ids = token_ids.long().to(device)
         segment_ids = segment_ids.long().to(device)
 
@@ -249,7 +236,6 @@ def predict(predict_sentence):
         label = label.long().to(device)
 
         out = model(token_ids, valid_length, segment_ids)
-
 
         test_eval=[]
         for i in out:
@@ -271,10 +257,7 @@ def predict(predict_sentence):
             elif np.argmax(logits) == 6:
                 test_eval.append("혐오가")
 
-            #test_eval.append(np.argmax(logits))
-
         print(">> 입력하신 내용에서 " + test_eval[0] + " 느껴집니다.")
 
-predict_sentence = '영화에 나오는 귀신이 너무 무섭네요'
 
-predict(predict_sentence)
+predict("나 오늘 너무 슬프다")
