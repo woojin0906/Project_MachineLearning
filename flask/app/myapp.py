@@ -254,21 +254,21 @@ def predict(predict_sentence):
             logits = logits.detach().cpu().numpy()
 
             if np.argmax(logits) == 0:
-                test_eval.append("공포가")
+                test_eval.append("공포")
             elif np.argmax(logits) == 1:
-                test_eval.append("놀람이")
+                test_eval.append("놀람")
             elif np.argmax(logits) == 2:
-                test_eval.append("분노가")
+                test_eval.append("분노")
             elif np.argmax(logits) == 3:
-                test_eval.append("슬픔이")
+                test_eval.append("슬픔")
             elif np.argmax(logits) == 4:
-                test_eval.append("중립이")
+                test_eval.append("중립")
             elif np.argmax(logits) == 5:
-                test_eval.append("행복이")
+                test_eval.append("행복")
             elif np.argmax(logits) == 6:
-                test_eval.append("혐오가")
+                test_eval.append("혐오")
 
-        return(">> 입력하신 내용에서 " + test_eval[0] + " 느껴집니다.")
+        return(test_eval[0])
 
 
 @app.route('/prediction', methods=['POST'])
@@ -280,7 +280,7 @@ def prediction():
     result = predict(text)
 
     # 예측 결과를 JSON 형식으로 반환
-    response = {'해당 글의 감정': result}
+    response = {'response': result}
     return jsonify(response)
 
 if __name__ == '__main__':
