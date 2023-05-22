@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,6 +22,7 @@ public class SecurityConfig {
                 .loginPage("/user/login")  // 로그인 주소
                 .defaultSuccessUrl("/") // 성공 시 이동할 주소
                 .usernameParameter("nickName") // user이름을 nickName로 사용할 것이기 때문에 field이름을 적어줘야 함  -> username이라 적은 경우엔 안적어도 됨
+                .passwordParameter("pw")// -> password라 적은 경우엔 안적어도 됨
                 .failureUrl("/user/login/error") // 로그인 실패 시 이동할 페이지
                 .and()
                 .logout()  // 로그아웃과 관련된 정보
