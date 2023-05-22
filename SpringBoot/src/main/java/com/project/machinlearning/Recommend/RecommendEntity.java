@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @Entity
 @ToString
+@IdClass(RecommendId.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "recommend")
