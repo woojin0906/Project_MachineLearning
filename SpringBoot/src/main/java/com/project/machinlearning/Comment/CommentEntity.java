@@ -36,4 +36,14 @@ public class CommentEntity {
     @Column(name="emotion", length = 5)
     private String emotion;
 
+    @Column(name="pw", length = 20)
+    private String pw;
+
+    public CommentEntity(DiaryEntity diary, Date writeDate, String content, String emotion, String pw) {
+        this.diary = diary;
+        this.writeDate = writeDate;
+        this.content = content;
+        this.emotion = emotion;
+        this.pw = pw;
+    }
 }
