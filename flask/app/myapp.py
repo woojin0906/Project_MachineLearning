@@ -274,7 +274,7 @@ def predict(predict_sentence):
 @app.route('/prediction', methods=['POST'])
 def prediction():
     data = request.get_json()  # 클라이언트로부터 데이터를 받아옴
-    text = data['text']  # 예측을 위한 텍스트 데이터 추출
+    text = data['content']  # 예측을 위한 텍스트 데이터 추출
 
     # predict 메서드를 호출하여 예측 수행
     result = predict(text)
