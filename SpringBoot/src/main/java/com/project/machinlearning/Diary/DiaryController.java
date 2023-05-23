@@ -1,10 +1,11 @@
 package com.project.machinlearning.Diary;
 
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+//@Controller
+@RestController
 @RequestMapping("/diary")
 public class DiaryController {
 
@@ -14,5 +15,16 @@ public class DiaryController {
     public DiaryController(DiaryService diaryService) {
         this.diaryService = diaryService;
     }
+
+    @GetMapping("/test")
+    public String test(){
+        return "테스트";
+    }
+
+    @PostMapping("/save")
+    public int saveDiary(@RequestBody DiaryRequestDTO diaryRequestDTo){
+        return diaryService.saveDiary(diaryRequestDTo);
+    }
+
 
 }

@@ -24,5 +24,4 @@ public class DiaryId implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date writeDate;
 
-    // 생성자, getter, setter 등 필요한 코드 작성
 }

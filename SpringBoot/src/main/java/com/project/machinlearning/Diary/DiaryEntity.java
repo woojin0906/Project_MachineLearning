@@ -38,5 +38,12 @@ public class DiaryEntity {
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
 
+    public DiaryEntity(DiaryId diaryId, String content, String emotion, int view, String photo) {
+        this.diaryId = diaryId;
+        this.content = content;
+        this.emotion = emotion;
+        this.view = view;
+        this.photo = photo;
+    }
 }
 
