@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class DiaryRequestDTO {
 
-    private Long diaryNum;
+    private Long numId;
 
     private String nickName;
 
@@ -17,8 +17,8 @@ public class DiaryRequestDTO {
 
     private String photo;
 
-    public DiaryRequestDTO(Long diaryNum, String nickName, String content, String emotion, int views, String photo) {
-        this.diaryNum = diaryNum;
+    public DiaryRequestDTO(Long numId, String nickName, String content, String emotion, int views, String photo) {
+        this.numId = numId;
         this.nickName = nickName;
         this.content = content;
         this.emotion = emotion;

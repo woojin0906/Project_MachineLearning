@@ -1,6 +1,7 @@
 package com.project.machinlearning.Diary;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.machinlearning.Comment.CommentEntity;
 import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Recommend.RecommendEntity;
@@ -24,6 +25,7 @@ public class DiaryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long numId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
     private UserEntity user;
@@ -57,11 +59,13 @@ public class DiaryEntity {
         this.view = view;
         this.photo = photo;
     }
-//    public void updateDiary(DiaryRequestDTO diaryRequestDTO) {
-//        this.content = diaryRequestDTO.getContent();
-//        this.emotion = diaryRequestDTO.getEmotion();
-//        this.view = diaryRequestDTO.getViews();
-//        this.photo = diaryRequestDTO.getPhoto();
-//    }
+
+    public void updateDiary(Date writeDate, String emotion, DiaryRequestDTO diaryRequestDTO) {
+        this.writeDate = writeDate;
+        this.content = diaryRequestDTO.getContent();
+        this.emotion = emotion;
+        this.view = diaryRequestDTO.getViews();
+        this.photo = diaryRequestDTO.getPhoto();
+    }
 }
 
