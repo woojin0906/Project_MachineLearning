@@ -2,10 +2,13 @@ package com.project.machinlearning.Diary;
 
 
 import com.project.machinlearning.Comment.CommentEntity;
+import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Recommend.RecommendEntity;
+import com.project.machinlearning.User.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -17,8 +20,16 @@ import java.util.List;
 @Table(name = "diary")
 public class DiaryEntity {
 
-    @EmbeddedId
-    private DiaryId diaryId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long numId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uid")
+    private UserEntity user;
+
+    @Temporal(TemporalType.DATE)
+    private Date writeDate;
 
     @Column(name="content", length = 254)
     private String content;
@@ -38,12 +49,19 @@ public class DiaryEntity {
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
 
-    public DiaryEntity(DiaryId diaryId, String content, String emotion, int view, String photo) {
-        this.diaryId = diaryId;
+    public DiaryEntity(UserEntity user, Date writeDate, String content, String emotion, int view, String photo) {
+        this.user = user;
+        this.writeDate = writeDate;
         this.content = content;
         this.emotion = emotion;
         this.view = view;
         this.photo = photo;
     }
+//    public void updateDiary(DiaryRequestDTO diaryRequestDTO) {
+//        this.content = diaryRequestDTO.getContent();
+//        this.emotion = diaryRequestDTO.getEmotion();
+//        this.view = diaryRequestDTO.getViews();
+//        this.photo = diaryRequestDTO.getPhoto();
+//    }
 }
 

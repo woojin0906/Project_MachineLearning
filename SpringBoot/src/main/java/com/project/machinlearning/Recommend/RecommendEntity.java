@@ -22,8 +22,7 @@ public class RecommendEntity {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "did")
-    @JoinColumn(name = "writeDate")
+    @JoinColumn(name = "numId")
     private DiaryEntity diary;
 
 }

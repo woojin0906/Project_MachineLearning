@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.machinlearning.Comment.DTO.CommentRequestDTO;
 import com.project.machinlearning.Diary.DiaryEntity;
-import com.project.machinlearning.Diary.DiaryId;
 import com.project.machinlearning.Diary.DiaryRepository;
+import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +16,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -42,8 +39,8 @@ public class CommentService {
         SimpleDateFormat formatter = new SimpleDateFormat(format);
         Date date = formatter.parse(commentRequestDTO.getDate());
 
-        DiaryId diaryId = new DiaryId(userRepository.findByNickName(commentRequestDTO.getNickname()),date);
-        Optional<DiaryEntity> diary = diaryRepository.findByDiaryId(diaryId);
+        UserEntity user = userRepository.findByNickName(commentRequestDTO.getNickname());
+        Optional<DiaryEntity> diary = diaryRepository.findByUser(user);
 
         if (diary.isPresent()) {
             Date currentDate = new Date();
