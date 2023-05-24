@@ -34,7 +34,7 @@ public class SecurityConfig {
                 // 스프링 3.0 이하 버전은 antMatchers(), mvcMatchers(), regexMatchers()으로 사용
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() // 페이지 이동할 경우 default로 인증이 걸리도록 되어있기 때문에 추가
                 .requestMatchers("/css/**", "/js/**").permitAll()  // 모든 사람에게 css 적용
-                .requestMatchers("/", "/user/**", "/item/**", "/images/**","/api/diary/**", "/api/comment/**" ).permitAll() // 아무나 페이지에 들어올 수 있고, member, item 밑에 있는 애들은 모두 permit 허용
+                .requestMatchers("/", "/user/**", "/item/**", "/images/**","/api/**" ).permitAll() // 아무나 페이지에 들어올 수 있고, member, item 밑에 있는 애들은 모두 permit 허용
                 .requestMatchers("/admin/**").hasRole("ADMIN") // admin인 애들만 admin에 접속 가능
                 .anyRequest().authenticated(); // 인증 받기
 

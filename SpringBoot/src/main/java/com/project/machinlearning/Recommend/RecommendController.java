@@ -1,10 +1,10 @@
 package com.project.machinlearning.Recommend;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.project.machinlearning.Recommend.DTO.RecommendRequestDTO;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/recommend")
+@RestController
+@RequestMapping("/api/recommend")
 public class RecommendController {
 
 
@@ -12,6 +12,11 @@ public class RecommendController {
 
     public RecommendController(RecommendService recommendService) {
         this.recommendService = recommendService;
+    }
+
+    @PostMapping("/save")
+    public Long saveRecommend(@RequestBody RecommendRequestDTO recommendRequestDTO){
+        return recommendService.saveRecommend(recommendRequestDTO);
     }
 
 }
