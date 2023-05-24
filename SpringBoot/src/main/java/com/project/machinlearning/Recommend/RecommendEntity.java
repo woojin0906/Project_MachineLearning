@@ -16,12 +16,12 @@ import lombok.*;
 public class RecommendEntity {
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
     private UserEntity user;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "numId")
     private DiaryEntity diary;
 

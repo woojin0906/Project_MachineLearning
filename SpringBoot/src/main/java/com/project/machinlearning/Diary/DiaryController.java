@@ -2,7 +2,9 @@ package com.project.machinlearning.Diary;
 
 
 import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
+import com.project.machinlearning.Diary.DTO.DiaryResponseDTO;
 import com.project.machinlearning.Diary.DTO.DiarySearchDTO;
+import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,11 +46,19 @@ public class DiaryController {
         return diaryService.listDiary();
     }
 
-    @GetMapping("/post")  // 리스트 단일 조회
-    public DiaryEntity postDiary(@RequestParam(value = "numId") Long numId) {
-        return diaryService.postDiary(numId);
+    @GetMapping("/post/{numId}")  // 리스트 단일 조회
+    public DiarySpecificationResponseDTO SpecificationDiary(@PathVariable Long numId) {
+        return diaryService.getDiaryWithCommentsAndRecommendations(numId).orElse(new DiarySpecificationResponseDTO());
     }
 
+    @GetMapping("/list/emotion/{emotion}") //감정으로 조회
+    public List<DiaryResponseDTO> listDiaryByEmotion(@PathVariable String emotion){
+        return diaryService.listDiaryByEmotion(emotion);
+    }
 
+    @GetMapping("/list/user/{nickName}")
+    public List<DiaryResponseDTO> listDiaryByNickName(@PathVariable String nickName){
+        return diaryService.listDiaryByNickName(nickName);
+    }
 
 }

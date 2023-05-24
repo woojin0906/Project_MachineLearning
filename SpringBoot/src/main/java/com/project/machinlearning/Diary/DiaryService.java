@@ -3,8 +3,12 @@ package com.project.machinlearning.Diary;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.machinlearning.Comment.CommentEntity;
+import com.project.machinlearning.Comment.CommentRepository;
+import com.project.machinlearning.Comment.DTO.CommentResponseDTO;
 import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
+import com.project.machinlearning.Diary.DTO.DiaryResponseDTO;
 import com.project.machinlearning.Diary.DTO.DiarySearchDTO;
+import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
 import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 import jakarta.transaction.Transactional;
@@ -27,6 +31,8 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
 
     private final UserRepository userRepository;
+
+    private final CommentRepository commentRepository;
 
     public int saveDiary(DiaryRequestDTO diaryRequestDTO){
 
@@ -137,7 +143,55 @@ public class DiaryService {
         return diaryRepository.findAll();
     }
 
-    public DiaryEntity postDiary(Long numId) {
-        return diaryRepository.findByNumId(numId).get();
+    public Optional<DiarySpecificationResponseDTO> getDiaryWithCommentsAndRecommendations(Long numId) {
+        Optional<DiaryEntity> diaryOptional = diaryRepository.getDiary(numId);
+        if (diaryOptional.isPresent()) {
+            DiaryEntity diaryEntity = diaryOptional.get();
+
+            List<CommentEntity> commentEntities = commentRepository.getCommentsByDiaryId(diaryEntity.getNumId());
+
+            List<CommentResponseDTO> commentDtoList = new ArrayList<>();
+            for (CommentEntity comment : commentEntities) {
+                CommentResponseDTO commentDto = new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion());
+                commentDtoList.add(commentDto);
+            }
+
+            int recommendCount = diaryEntity.getRecommends().size();
+
+            return Optional.of(new DiarySpecificationResponseDTO(
+                    diaryEntity.getNumId(),
+                    diaryEntity.getUser().getNickName(),
+                    diaryEntity.getWriteDate(),
+                    diaryEntity.getContent(),
+                    diaryEntity.getEmotion(),
+                    diaryEntity.getView(),
+                    diaryEntity.getPhoto(),
+                    recommendCount,
+                    commentDtoList
+            ));
+        } else {
+            return Optional.empty();
+        }
     }
+
+
+    public List<DiaryResponseDTO> listDiaryByEmotion(String emotion){
+        List<DiaryEntity> diary = diaryRepository.findByEmotionOrderByNumIdDesc(emotion);
+
+        List<DiaryResponseDTO> collect = diary.stream().map(m -> new DiaryResponseDTO(
+                m.getNumId(),m.getUser().getNickName(),m.getWriteDate(),m.getContent(),m.getEmotion(),m.getView(),m.getPhoto()
+                )).collect(Collectors.toList());
+
+        return collect;
+    }
+
+    public List<DiaryResponseDTO> listDiaryByNickName(String nickName){
+        List<DiaryEntity> diary = diaryRepository.findByUserNickNameOrderByNumIdDesc(nickName);
+        List<DiaryResponseDTO> collect = diary.stream().map(m -> new DiaryResponseDTO(
+                m.getNumId(),m.getUser().getNickName(),m.getWriteDate(),m.getContent(),m.getEmotion(),m.getView(),m.getPhoto()
+        )).collect(Collectors.toList());
+
+        return collect;
+    }
+
 }
