@@ -33,24 +33,18 @@ public class CommentService {
 
     private final UserRepository userRepository;
 
-    public String saveComment(CommentRequestDTO commentRequestDTO)throws ParseException {
+    public String saveComment(CommentRequestDTO commentRequestDTO){
 
-        String format = "yyyy-MM-dd";
-        SimpleDateFormat formatter = new SimpleDateFormat(format);
-        Date date = formatter.parse(commentRequestDTO.getDate());
-
-        UserEntity user = userRepository.findByNickName(commentRequestDTO.getNickname());
-        Optional<DiaryEntity> diary = diaryRepository.findByUser(user);
-
+        Optional<DiaryEntity> diary = diaryRepository.findByNumId(commentRequestDTO.getNumId());
         if (diary.isPresent()) {
             Date currentDate = new Date();
 
             // 감정 분류 api 호출
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
-                String externalApiUrl = "http://127.0.0.1:5000/prediction";  // 외부 API의 엔드포인트 URL
+                String externalApiUrl = "http://127.0.0.1:5000/prediction";  // API URL
 
-                // 전달할 데이터를 JSON 형식으로 변환
+                // JSON 변환
                 String content = commentRequestDTO.getContent();
                 ObjectMapper objectMapper = new ObjectMapper();
                 String requestBody = objectMapper.writeValueAsString(Map.of("content", content));
@@ -62,24 +56,39 @@ public class CommentService {
                         .build();
 
                 HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
                 // 응답 처리
                 if (response.statusCode() == 200) {
                     String responseBody = response.body();
                     JsonNode responseJson = objectMapper.readTree(responseBody);
                     String emotion = responseJson.get("response").asText();
-                    // 예를 들어, JSON 형식의 응답이라면 JSON 파싱을 통해 값을 추출하고 활용할 수 있습니다.
+                    // 응답 값 받아서 DB 저장
                     return commentRepository.save(new CommentEntity(diary.get(), currentDate, commentRequestDTO.getContent(),emotion, commentRequestDTO.getPw())).getEmotion();
                 }else{
-                    return "api 연결 실패";
+                    return "API 연결 실패";
                 }
             } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
-                    return "글 존재 안함";
+                    return "API 연결 실패";
             }
         } else {
-            return "글이없습니다.";
+            return "글이 없습니다.";
         }
     }
+
+    public String deleteComment(Long cid, String pw) {
+        CommentEntity comment = commentRepository.findByCid(cid)
+                .orElse(null);
+        if (comment == null) {
+            return "댓글이 존재하지 않습니다.";
+        }
+        if (!comment.getPw().equals(pw)) {
+            return "댓글 삭제 비밀번호가 다릅니다.";
+        }
+        commentRepository.delete(comment);
+        return "삭제가 완료되었습니다.";
+    }
+
 
 
 

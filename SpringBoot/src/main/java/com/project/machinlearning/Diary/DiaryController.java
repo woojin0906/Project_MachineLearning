@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 //@Controller
 @RestController
-@RequestMapping("/diary")
+@RequestMapping("/api/diary")
 public class DiaryController {
 
 
@@ -30,4 +30,5 @@ public class DiaryController {
 //    public int modifyDiary(@RequestBody DiaryRequestDTO diaryRequestDTo) {
 //        return diaryService.modifyDiary(diaryRequestDTo);
 //    }
+
 }

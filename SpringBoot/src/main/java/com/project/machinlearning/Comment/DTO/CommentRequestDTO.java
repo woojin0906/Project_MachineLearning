@@ -6,15 +6,12 @@ import lombok.Data;
 @Data
 public class CommentRequestDTO {
 
-    // private DiaryId diaryId; // UserEntity, Date
-    private String nickname;
-    private String date;
+    private Long numId;
     private String content;
     private String pw;
 
-    public CommentRequestDTO(String nickname, String date, String content, String pw) {
-        this.nickname = nickname;
-        this.date = date;
+    public CommentRequestDTO(Long numId, String content, String pw) {
+        this.numId = numId;
         this.content = content;
         this.pw = pw;
     }

@@ -23,7 +23,6 @@ public class CommentEntity {
     @JoinColumn(name = "numId")
     private DiaryEntity diary;
 
-    @Column(name = "writeDate", insertable = false, updatable = false)
     @Temporal(TemporalType.DATE)
     private Date writeDate;
 
@@ -36,7 +35,7 @@ public class CommentEntity {
     @Column(name="pw", length = 20)
     private String pw;
 
-    public CommentEntity(DiaryEntity diary, Date writeDate, String content, String emotion, String pw) {
+    public CommentEntity(DiaryEntity diary,Date writeDate ,String content, String emotion, String pw) {
         this.diary = diary;
         this.writeDate = writeDate;
         this.content = content;
