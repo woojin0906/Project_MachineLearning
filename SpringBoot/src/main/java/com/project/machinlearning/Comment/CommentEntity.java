@@ -19,11 +19,8 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "uid"),
-            @JoinColumn(name = "writeDate")
-    })
+    @ManyToOne
+    @JoinColumn(name = "numId")
     private DiaryEntity diary;
 
     @Column(name = "writeDate", insertable = false, updatable = false)

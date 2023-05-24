@@ -24,13 +24,12 @@ public class DiaryService {
         UserEntity user = userRepository.findByNickName(diaryRequestDTO.getNickName());
         if(user != null){
             Date currentDate = new Date();
-            DiaryId diaryid = new DiaryId(user, currentDate );
-            Optional<DiaryEntity> isdiary = diaryRepository.findByDiaryId(diaryid);
+            Optional<DiaryEntity> isdiary = diaryRepository.findByUser(user);
             if(isdiary.isPresent()){
                 return -1;
             }else{
                 //플라스크 서버 통신 + 감정 분석 + 사진 처리
-                DiaryEntity diary = new DiaryEntity(diaryid, diaryRequestDTO.getContent(),"분노",0,"사진");
+                DiaryEntity diary = new DiaryEntity(user, currentDate, diaryRequestDTO.getContent(),"분노",0,"사진");
                 System.out.println("되나");
                 diaryRepository.save(diary);
                 return 1;
@@ -39,4 +38,15 @@ public class DiaryService {
             return -2;
     }
 
+//    public int modifyDiary(DiaryRequestDTO diaryRequestDTO) {
+//        Optional<DiaryEntity> isdiary = diaryRepository.findById(diaryRequestDTO.getDiaryNum());
+//        if(isdiary.isPresent()){
+//            return -1;
+//        }else {
+//            DiaryEntity diaryEntity = isdiary.get();
+//            diaryEntity.updateDiary(diaryRequestDTO);
+//            System.out.println("되나");
+//            return 1;
+//        }
+//    }
 }

@@ -31,7 +31,7 @@ public class UserEntity {
     @Enumerated(EnumType.STRING) // 추가를 안하면 열거형은 숫자로 들어감
     private Role role;
 
-    @OneToMany(mappedBy = "diaryId.user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<DiaryEntity> diaries;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)

@@ -26,5 +26,8 @@ public class DiaryController {
         return diaryService.saveDiary(diaryRequestDTo);
     }
 
-
+//    @PutMapping("/modify/{diaryNum}")
+//    public int modifyDiary(@RequestBody DiaryRequestDTO diaryRequestDTo) {
+//        return diaryService.modifyDiary(diaryRequestDTo);
+//    }
 }
