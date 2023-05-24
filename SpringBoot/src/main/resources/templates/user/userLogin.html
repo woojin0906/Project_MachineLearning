@@ -17,6 +17,49 @@
     .error {
       color: #bd2130;
     }
+    html {
+      height: 100%;
+    }
+    body {
+      height: 100%;
+    }
+    form {
+      width: 400px;
+      margin: 0 auto;
+      height: 500px;
+      margin-top: 200px;
+      text-align: center;
+      border: 1px solid #a6a6a6;
+      box-shadow: 5px 5px;
+    }
+    h1 {
+      font-size: 45px;
+      margin-bottom: 40px;
+      margin-top: 40px;
+    }
+    .form-group {
+      margin: 20px;
+    }
+    #pw, #nickName {
+      padding: 10px 20px;
+      font-size: 15px;
+    }
+    button.btn.btn-primary {
+      width: 250px;
+      height: 40px;
+      border: 0px;
+      background-color: #000000;
+      color: white;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .btn-primary2 {
+      width: 200px;
+      margin-top: 20px;
+      border: 0px;
+      background-color: #ffffff;
+    }
   </style>
 </th:block>
 
@@ -34,26 +77,25 @@
 
 </th:block>
 <body>
-<div layout:fragment="content">
-
+<div>
   <!-- post로 날아가기 때문에 이 정보들을 들고 controller로 날아갈 수 있는 것 -->
   <form role="form" method="post" action="/user/login">
+    <h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1>
     <div class="form-group">
       <!-- 우리가 username이 아닌 nickName로 로그인을 하기 때문에 이건 userparameter로 security에 적어줘야 한다  -->
-      <label th:for="nickName">닉네임</label>
-      <input type="text" name="nickName" class="form-control" placeholder="닉네임을 입력해주세요">
+      <label th:for="nickName">닉네임</label><p>
+      <input type="text" name="nickName" id="nickName" class="form-control" placeholder="닉네임을 입력해주세요">
     </div>
     <div class="form-group">
       <!-- default는 password. 이거 바꾸면 이것도 security에 적어줘야 한다 -->
-      <label th:for="pw">비밀번호</label>
+      <label th:for="pw">비밀번호</label><p>
       <input type="password" name="pw" id="pw" class="form-control" placeholder="비밀번호 입력">
     </div>
     <p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p>
     <button class="btn btn-primary">로그인</button>
-    <button type="button" class="btn btn-primary" onClick="location.href='/user/new'">회원가입</button>
+    <button type="button" class="btn btn-primary2" onClick="location.href='/user/new'">회원가입</button>
     <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">
   </form>
-
 </div>
 </body>
 </html>
