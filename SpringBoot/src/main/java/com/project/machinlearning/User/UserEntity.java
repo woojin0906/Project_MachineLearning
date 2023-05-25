@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@ToString
+@ToString(exclude = {"diaries", "recommends"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user")

@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@ToString
+@ToString(exclude = "diary")
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "comment")

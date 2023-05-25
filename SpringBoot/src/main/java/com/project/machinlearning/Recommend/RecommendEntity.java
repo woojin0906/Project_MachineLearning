@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@ToString
+@ToString(exclude = {"user", "diary"})
 @IdClass(RecommendId.class)
 @AllArgsConstructor
 @NoArgsConstructor
