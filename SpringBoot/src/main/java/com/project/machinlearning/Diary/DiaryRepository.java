@@ -26,6 +26,14 @@ public interface DiaryRepository extends JpaRepository<DiaryEntity,Long> {
 
     List<DiaryEntity> findByUserNickNameOrderByNumIdDesc(String nickName);
 
+    @Query("SELECT d FROM DiaryEntity d LEFT JOIN FETCH d.comments c WHERE d.emotion LIKE %:emotion% ORDER BY d.numId DESC")
+    List<DiaryEntity> findByEmotionWithComments(@Param("emotion") String emotion);
+
+    @Query("SELECT d FROM DiaryEntity d LEFT JOIN FETCH d.comments c WHERE d.user.nickName LIKE %:nickName% ORDER BY d.numId DESC")
+    List<DiaryEntity> findByUserNickNameWithComments(@Param("nickName") String nickName);
+
+
+
     @Query("SELECT d " +
             "FROM DiaryEntity d " +
             "LEFT JOIN d.comments c " +

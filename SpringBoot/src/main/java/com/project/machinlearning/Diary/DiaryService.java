@@ -200,23 +200,61 @@ public class DiaryService {
         return result;
     }
 
-    public List<DiaryResponseDTO> listDiaryByEmotion(String emotion){
-        List<DiaryEntity> diary = diaryRepository.findByEmotionOrderByNumIdDesc(emotion);
 
-        List<DiaryResponseDTO> collect = diary.stream().map(m -> new DiaryResponseDTO(
-                m.getNumId(),m.getUser().getNickName(),m.getWriteDate(),m.getContent(),m.getEmotion(),m.getView(),m.getPhoto()
-                )).collect(Collectors.toList());
+    public List<DiarySpecificationResponseDTO> listDiaryByEmotion(String emotion) {
 
-        return collect;
+        List<DiaryEntity> diaryEntities = diaryRepository.findByEmotionWithComments(emotion);
+        List<DiarySpecificationResponseDTO> result = new ArrayList<>();
+
+        for (DiaryEntity diaryEntity : diaryEntities) {
+            List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream()
+                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion()))
+                    .collect(Collectors.toList());
+
+            DiarySpecificationResponseDTO diaryResponseDto = new DiarySpecificationResponseDTO(
+                    diaryEntity.getNumId(),
+                    diaryEntity.getUser().getUid(),
+                    diaryEntity.getWriteDate(),
+                    diaryEntity.getContent(),
+                    diaryEntity.getEmotion(),
+                    diaryEntity.getView(),
+                    diaryEntity.getPhoto(),
+                    diaryEntity.getRecommend(),
+                    commentDtoList
+            );
+
+            result.add(diaryResponseDto);
+        }
+
+        return result;
     }
 
-    public List<DiaryResponseDTO> listDiaryByNickName(String nickName){
-        List<DiaryEntity> diary = diaryRepository.findByUserNickNameOrderByNumIdDesc(nickName);
-        List<DiaryResponseDTO> collect = diary.stream().map(m -> new DiaryResponseDTO(
-                m.getNumId(),m.getUser().getNickName(),m.getWriteDate(),m.getContent(),m.getEmotion(),m.getView(),m.getPhoto()
-        )).collect(Collectors.toList());
+    public List<DiarySpecificationResponseDTO> listDiaryByNickName(String nickName) {
 
-        return collect;
+        List<DiaryEntity> diaryEntities = diaryRepository.findByUserNickNameWithComments(nickName);
+        List<DiarySpecificationResponseDTO> result = new ArrayList<>();
+
+        for (DiaryEntity diaryEntity : diaryEntities) {
+            List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream()
+                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion()))
+                    .collect(Collectors.toList());
+
+            DiarySpecificationResponseDTO diaryResponseDto = new DiarySpecificationResponseDTO(
+                    diaryEntity.getNumId(),
+                    diaryEntity.getUser().getUid(),
+                    diaryEntity.getWriteDate(),
+                    diaryEntity.getContent(),
+                    diaryEntity.getEmotion(),
+                    diaryEntity.getView(),
+                    diaryEntity.getPhoto(),
+                    diaryEntity.getRecommend(),
+                    commentDtoList
+            );
+
+            result.add(diaryResponseDto);
+        }
+
+        return result;
     }
 
 }
