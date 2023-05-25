@@ -57,12 +57,12 @@ public class DiaryController {
     }
 
     @GetMapping("/list/emotion/{emotion}") //감정으로 조회
-    public List<DiaryResponseDTO> listDiaryByEmotion(@PathVariable String emotion){
+    public List<DiarySpecificationResponseDTO> listDiaryByEmotion(@PathVariable("emotion") String emotion){
         return diaryService.listDiaryByEmotion(emotion);
     }
 
     @GetMapping("/list/user/{nickName}")
-    public List<DiaryResponseDTO> listDiaryByNickName(@PathVariable String nickName){
+    public List<DiarySpecificationResponseDTO> listDiaryByNickName(@PathVariable("nickName") String nickName){
         return diaryService.listDiaryByNickName(nickName);
     }
 
