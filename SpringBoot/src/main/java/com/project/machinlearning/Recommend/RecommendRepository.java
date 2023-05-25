@@ -10,4 +10,8 @@ public interface RecommendRepository extends JpaRepository<RecommendEntity, Reco
 
     Optional<RecommendEntity> findByDiaryNumIdAndUserUid(Long numId, Long uid);
 
+    boolean existsByDiaryNumIdAndUserUid(Long diaryNumId, Long userUid);
+
+    void deleteByDiaryNumIdAndUserUid(Long diaryNumId, Long userUid);
+
 }

@@ -45,18 +45,20 @@ public class DiaryEntity {
     @Column(name="photo")
     private String photo;
 
+    @Column(name="recommend",columnDefinition = "int default 0")
+    private int recommend;
+
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecommendEntity> recommends;
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
 
-    public DiaryEntity(UserEntity user, Date writeDate, String content, String emotion, int view, String photo) {
+    public DiaryEntity(UserEntity user, Date writeDate, String content, String emotion, String photo) {
         this.user = user;
         this.writeDate = writeDate;
         this.content = content;
         this.emotion = emotion;
-        this.view = view;
         this.photo = photo;
     }
 

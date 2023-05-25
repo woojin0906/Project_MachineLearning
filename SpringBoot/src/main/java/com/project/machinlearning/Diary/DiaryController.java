@@ -42,14 +42,14 @@ public class DiaryController {
         return diaryService.deleteDiary(numId);
     }
 
-    @GetMapping("/list")  // 리스트 전체 조회
-    public List<DiaryEntity> listDiary() {
-        return diaryService.listDiary();
+    @GetMapping("/list/{page}")  // 리스트 전체 조회
+    public List<DiarySpecificationResponseDTO> listDiary(@PathVariable int page ) {
+        return diaryService.getAllDiariesWithComments(page);
     }
 
     @GetMapping("/post/{numId}")  // 리스트 단일 조회
     public String SpecificationDiary(@PathVariable Long numId, Model model) {
-        DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId).orElse(new DiarySpecificationResponseDTO());
+        DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId);
         model.addAttribute("diarySpecificationResponseDTO", diarySpecificationResponseDTO);
         return "diary/diary";
     }

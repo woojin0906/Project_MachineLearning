@@ -13,6 +13,10 @@ import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -67,7 +71,7 @@ public class DiaryService {
                         JsonNode responseJson = objectMapper.readTree(responseBody);
                         String emotion = responseJson.get("response").asText();
                         // 응답 값 받아서 감정값을 포함하여 DB 저장
-                        DiaryEntity diary = new DiaryEntity(user, currentDate, diaryRequestDTO.getContent(),emotion,0,"사진");
+                        DiaryEntity diary = new DiaryEntity(user, currentDate, diaryRequestDTO.getContent(),emotion,"사진");
                         diaryRepository.save(diary);
                         return 1;
                     }else{
@@ -139,41 +143,62 @@ public class DiaryService {
         return "삭제가 완료되었습니다.";
     }
 
-    public List<DiaryEntity> listDiary() {
-        return diaryRepository.findAll();
-    }
 
-    public Optional<DiarySpecificationResponseDTO> getDiaryWithCommentsAndRecommendations(Long numId) {
+    public DiarySpecificationResponseDTO getDiaryWithCommentsAndRecommendations(Long numId) {
         Optional<DiaryEntity> diaryOptional = diaryRepository.getDiary(numId);
         if (diaryOptional.isPresent()) {
             DiaryEntity diaryEntity = diaryOptional.get();
+            List<CommentEntity> commentEntities = diaryEntity.getComments();
 
-            List<CommentEntity> commentEntities = commentRepository.getCommentsByDiaryId(diaryEntity.getNumId());
+            List<CommentResponseDTO> commentDtoList = commentEntities.stream()
+                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion()))
+                    .collect(Collectors.toList());
 
-            List<CommentResponseDTO> commentDtoList = new ArrayList<>();
-            for (CommentEntity comment : commentEntities) {
-                CommentResponseDTO commentDto = new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion());
-                commentDtoList.add(commentDto);
-            }
-
-            int recommendCount = diaryEntity.getRecommends().size();
-
-            return Optional.of(new DiarySpecificationResponseDTO(
+            return new DiarySpecificationResponseDTO(
                     diaryEntity.getNumId(),
-                    diaryEntity.getUser().getNickName(),
+                    diaryEntity.getUser().getUid(),
                     diaryEntity.getWriteDate(),
                     diaryEntity.getContent(),
                     diaryEntity.getEmotion(),
                     diaryEntity.getView(),
                     diaryEntity.getPhoto(),
-                    recommendCount,
+                    diaryEntity.getRecommend(),
                     commentDtoList
-            ));
+            );
         } else {
-            return Optional.empty();
+            return new DiarySpecificationResponseDTO();
         }
     }
 
+    public List<DiarySpecificationResponseDTO> getAllDiariesWithComments(int page) {
+        int pageSize = 10; // 한 페이지에 표시할 항목 수
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("numId").descending());
+
+        List<DiaryEntity> diaryEntities = diaryRepository.findAllWithComments(pageable);
+        List<DiarySpecificationResponseDTO> result = new ArrayList<>();
+
+        for (DiaryEntity diaryEntity : diaryEntities) {
+            List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream()
+                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion()))
+                    .collect(Collectors.toList());
+
+            DiarySpecificationResponseDTO diaryResponseDto = new DiarySpecificationResponseDTO(
+                    diaryEntity.getNumId(),
+                    diaryEntity.getUser().getUid(),
+                    diaryEntity.getWriteDate(),
+                    diaryEntity.getContent(),
+                    diaryEntity.getEmotion(),
+                    diaryEntity.getView(),
+                    diaryEntity.getPhoto(),
+                    diaryEntity.getRecommend()
+                    ,commentDtoList
+            );
+
+            result.add(diaryResponseDto);
+        }
+
+        return result;
+    }
 
     public List<DiaryResponseDTO> listDiaryByEmotion(String emotion){
         List<DiaryEntity> diary = diaryRepository.findByEmotionOrderByNumIdDesc(emotion);

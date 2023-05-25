@@ -25,26 +25,38 @@ public class RecommendService {
 
 
     public Long saveRecommend(RecommendRequestDTO recommendRequestDTO) {
-        Optional<RecommendEntity> existingRecommend = recommendRepository.findByDiaryNumIdAndUserUid(
+        boolean existingRecommend = recommendRepository.existsByDiaryNumIdAndUserUid(
                 recommendRequestDTO.getNum_id(), recommendRequestDTO.getUid());
-        if (existingRecommend.isPresent()) {
-            // 이미 추천이 존재하는 경우, 데이터베이스에서 해당 추천 삭제
-            recommendRepository.delete(existingRecommend.get());
-            return 2L;
+
+        if (existingRecommend) {
+            Optional<DiaryEntity> diary = diaryRepository.findByNumId(recommendRequestDTO.getNum_id());
+            if (diary.isPresent()) {
+                DiaryEntity existingDiary = diary.get();
+                existingDiary.setRecommend(existingDiary.getRecommend() - 1);
+            }
+
+            recommendRepository.deleteByDiaryNumIdAndUserUid(
+                    recommendRequestDTO.getNum_id(), recommendRequestDTO.getUid());
+
+            return 2L; // 이미 추천이 존재하는 경우
         }
 
         Optional<UserEntity> user = userRepository.findById(recommendRequestDTO.getUid());
         Optional<DiaryEntity> diary = diaryRepository.findByNumId(recommendRequestDTO.getNum_id());
 
         if (user.isEmpty() || diary.isEmpty()) {
-            // 사용자 또는 다이어리가 존재하지 않는 경우
-            return -1L;
+            return -1L; // 사용자 또는 다이어리가 존재하지 않는 경우
         }
 
-        RecommendEntity newRecommend = new RecommendEntity(user.get(), diary.get());
+        DiaryEntity existingDiary = diary.get();
+        existingDiary.setRecommend(existingDiary.getRecommend() + 1);
+
+        RecommendEntity newRecommend = new RecommendEntity(user.get(), existingDiary);
         recommendRepository.save(newRecommend);
-        return 1L;
+
+        return 1L; // 추천 정보 저장 성공
     }
+
 
 
 

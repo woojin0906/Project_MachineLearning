@@ -5,6 +5,8 @@ import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Diary.DTO.DiarySearchDTO;
 import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
 import com.project.machinlearning.User.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,8 +28,14 @@ public interface DiaryRepository extends JpaRepository<DiaryEntity,Long> {
 
     @Query("SELECT d " +
             "FROM DiaryEntity d " +
-            "WHERE d.numId = :numId")
+            "LEFT JOIN d.comments c " +
+            "WHERE d.numId = :numId " +
+            "GROUP BY d")
     Optional<DiaryEntity> getDiary(@Param("numId") Long numId);
+
+    @Query("SELECT d FROM DiaryEntity d LEFT JOIN FETCH d.comments c ORDER BY d.numId DESC")
+    List<DiaryEntity> findAllWithComments(Pageable pageable);
+
 
 
 }
