@@ -12,16 +12,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ *    다이어리 등록, 수정, 조회 기능을 하는 컨트롤러 계층
+ *
+ *   @version          1.00 / 2023.05.23
+ *   @author           한승완, 전우진
+ */
 @Controller
 @Log4j2
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping("/new")
     public String userForm(Model model) {

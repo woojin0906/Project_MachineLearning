@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
+/**
+ *    댓글 작성, 삭제
+ *
+ *   @version          1.00 / 2023.05.23
+ *   @author           한승완
+ */
 @RestController
 @RequestMapping("/api/comment")
 public class CommentController {

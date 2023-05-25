@@ -6,14 +6,11 @@ import com.project.machinlearning.Comment.CommentEntity;
 import com.project.machinlearning.Comment.CommentRepository;
 import com.project.machinlearning.Comment.DTO.CommentResponseDTO;
 import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
-import com.project.machinlearning.Diary.DTO.DiaryResponseDTO;
-import com.project.machinlearning.Diary.DTO.DiarySearchDTO;
 import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
 import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,6 +24,14 @@ import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+/**
+ *    다이어리 등록, 수정, 조회, 검색
+ *    - 서비스 로직
+ *
+ *   @version          1.00 / 2023.05.23
+ *   @author           한승완
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -36,8 +41,11 @@ public class DiaryService {
 
     private final UserRepository userRepository;
 
-    private final CommentRepository commentRepository;
 
+    /**
+     * flask api server 접근하여 감정을 분류한 후 저장
+     * - 한승완 2023.05.23
+     */
     public int saveDiary(DiaryRequestDTO diaryRequestDTO){
 
         UserEntity user = userRepository.findByNickName(diaryRequestDTO.getNickName());
@@ -88,6 +96,10 @@ public class DiaryService {
             return -1;
     }
 
+    /**
+     * 다이어리 탐색하여 있을경우 수정 후 저장
+     * - 전우진 2023.05.24
+     */
     public int modifyDiary(Long numId, DiaryRequestDTO diaryRequestDTO) {
         DiaryEntity diary = diaryRepository.findByNumId(numId)
                 .orElse(null);
@@ -133,6 +145,10 @@ public class DiaryService {
         return -1;
     }
 
+    /**
+     * 다이어리를 탐색한 후 삭제
+     * - 전우진 2023.05.24
+     */
     public String deleteDiary(Long numId) {
         DiaryEntity diary = diaryRepository.findByNumId(numId)
                 .orElse(null);
@@ -144,6 +160,10 @@ public class DiaryService {
     }
 
 
+    /**
+     * 단일 다이어리, 좋아요, 댓글 처리 후 리턴
+     * - 한승완 2023.05.25
+     */
     public DiarySpecificationResponseDTO getDiaryWithCommentsAndRecommendations(Long numId) {
         Optional<DiaryEntity> diaryOptional = diaryRepository.getDiary(numId);
         if (diaryOptional.isPresent()) {
@@ -170,6 +190,10 @@ public class DiaryService {
         }
     }
 
+    /**
+     * 다이어리를 페이징 후 최근 값 부터 DTO 형태로 리턴
+     * - 한승완 2023.05.25
+     */
     public List<DiarySpecificationResponseDTO> getAllDiariesWithComments(int page) {
         int pageSize = 10; // 한 페이지에 표시할 항목 수
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("numId").descending());
@@ -201,6 +225,10 @@ public class DiaryService {
     }
 
 
+    /**
+     * 다이어리를 감정으로 검색하여 동일한 감정만 리턴
+     * - 한승완 2023.05.25
+     */
     public List<DiarySpecificationResponseDTO> listDiaryByEmotion(String emotion) {
 
         List<DiaryEntity> diaryEntities = diaryRepository.findByEmotionWithComments(emotion);
@@ -229,6 +257,10 @@ public class DiaryService {
         return result;
     }
 
+    /**
+     * 다이어리를 사용자 이름 검색하여 동일한 감정만 리턴
+     * - 한승완 2023.05.25
+     */
     public List<DiarySpecificationResponseDTO> listDiaryByNickName(String nickName) {
 
         List<DiaryEntity> diaryEntities = diaryRepository.findByUserNickNameWithComments(nickName);

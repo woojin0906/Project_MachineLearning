@@ -24,6 +24,10 @@ public class RecommendService {
     private final DiaryRepository diaryRepository;
 
 
+    /**
+     * DB 에서 좋아요 상황을 확인한 후 좋아요 개수 수정 후 DB 등록
+     * - 한승완 2023.05.24
+     */
     public Long saveRecommend(RecommendRequestDTO recommendRequestDTO) {
         boolean existingRecommend = recommendRepository.existsByDiaryNumIdAndUserUid(
                 recommendRequestDTO.getNum_id(), recommendRequestDTO.getUid());

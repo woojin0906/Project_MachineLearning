@@ -1,5 +1,4 @@
 package com.project.machinlearning.config;
-// 로그인 보안 관련
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ *    스프링부트 시큐리티 로그인 필터 Config
+ *
+ *   @version          1.00 / 2023.05.23
+ *   @author           전우진
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

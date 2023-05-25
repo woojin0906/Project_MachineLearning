@@ -8,6 +8,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ *    서버 Cors 세팅
+ *
+ *   @version          1.00 / 2023.05.23
+ *   @author           한승완
+ */
 @Configuration
 public class CorsConfig {
 

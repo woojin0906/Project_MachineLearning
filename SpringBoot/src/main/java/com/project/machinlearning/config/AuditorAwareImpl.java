@@ -1,11 +1,16 @@
 package com.project.machinlearning.config;
-// 현재 로그인한 사용자의 정보를 등록자와 수정자로 지정하기 위한 클래스
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
+/**
+ *    현재 로그인한 사용자의 정보를 등록자와 수정자로 지정
+ *
+ *   @version          1.00 / 2023.05.22
+ *   @author           전우진
+ */
 public class AuditorAwareImpl implements AuditorAware<String> {
 
     @Override

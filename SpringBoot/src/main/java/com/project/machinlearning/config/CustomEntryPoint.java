@@ -1,14 +1,18 @@
 package com.project.machinlearning.config;
-// 인증되지 않은 사용자 요청 시 에러
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 
+/**
+ *    인증되지 않은 사용자 요청 시 에러나도록 엔트리 포인트 설정
+ *
+ *   @version          1.00 / 2023.05.22
+ *   @author           전우진
+ */
 public class CustomEntryPoint implements AuthenticationEntryPoint {
 
     @Override

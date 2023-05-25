@@ -17,6 +17,10 @@ public class UserService implements UserDetailsService  {
 
     private final UserRepository userRepository;
 
+    /**
+     * 유저 저장
+     * - 전우진 2023.05.22
+     */
     public UserEntity saveUser(UserEntity userEntity) {
         // 중복확인
         validateDuplicate(userEntity);
@@ -24,6 +28,10 @@ public class UserService implements UserDetailsService  {
         return userRepository.save(userEntity);
     }
 
+    /**
+     * 유저 유효성 검사
+     * - 전우진 2023.05.22
+     */
     private void validateDuplicate(UserEntity userEntity) {
         // 닉네임으로 찾았을 때 값이 있는지 없는지 판단
         UserEntity findUser = userRepository.findByNickName(userEntity.getNickName());
@@ -33,6 +41,10 @@ public class UserService implements UserDetailsService  {
         }
     }
 
+    /**
+     * 닉네임 호출
+     * - 전우진 2023.05.22
+     */
     @Override
     public UserDetails loadUserByUsername(String nickName) throws UsernameNotFoundException {
         // DB에 있는 nickName을 찾아서 가져옴

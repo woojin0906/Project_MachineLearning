@@ -31,8 +31,10 @@ public class CommentService {
 
     private final DiaryRepository diaryRepository;
 
-    private final UserRepository userRepository;
-
+    /**
+     * flask api server 접근하여 감정 분류 후 댓글 저장
+     * - 한승완 2023.05.23
+     */
     public String saveComment(CommentRequestDTO commentRequestDTO){
 
         Optional<DiaryEntity> diary = diaryRepository.findByNumId(commentRequestDTO.getNumId());
@@ -76,6 +78,10 @@ public class CommentService {
         }
     }
 
+    /**
+     * 댓글 삭제 비밀번호 검증하여 댓글 삭제
+     * - 한승완 2023.05.24
+     */
     public String deleteComment(Long cid, String pw) {
         CommentEntity comment = commentRepository.findByCid(cid)
                 .orElse(null);
