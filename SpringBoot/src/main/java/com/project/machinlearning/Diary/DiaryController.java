@@ -5,6 +5,7 @@ import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Diary.DTO.DiaryResponseDTO;
 import com.project.machinlearning.Diary.DTO.DiarySearchDTO;
 import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,8 +48,10 @@ public class DiaryController {
     }
 
     @GetMapping("/post/{numId}")  // 리스트 단일 조회
-    public DiarySpecificationResponseDTO SpecificationDiary(@PathVariable Long numId) {
-        return diaryService.getDiaryWithCommentsAndRecommendations(numId).orElse(new DiarySpecificationResponseDTO());
+    public String SpecificationDiary(@PathVariable Long numId, Model model) {
+        DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId).orElse(new DiarySpecificationResponseDTO());
+        model.addAttribute("diarySpecificationResponseDTO", diarySpecificationResponseDTO);
+        return "diary/diary";
     }
 
     @GetMapping("/list/emotion/{emotion}") //감정으로 조회
