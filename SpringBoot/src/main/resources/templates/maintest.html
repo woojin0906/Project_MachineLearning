@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Instagram</title>
+    <link href="/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="/css/main.css" rel="stylesheet" type="text/css" />
+    <!-- favicon -->
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="instagram-icon" href="/img/favicon.png">
+</head>
+<body>
+<!-- navigation -->
+<nav>
+    <h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1>
+    <div class="menu">
+        <div class="nav_menu">
+            <img src="/img/home.png" alt="홈">
+            <div class="nav_span"><span>홈</span></div>
+        </div>
+
+        <div class="nav_menu">
+            <img src="/img/dm.png" alt="DM">
+            <div class="nav_span"><span>검색</span></div>
+        </div>
+
+        <div class="nav_menu">
+            <img src="/img/home.png" alt="홈">
+            <div class="nav_span"><span>만들기</span></div>
+        </div>
+
+        <div class="nav_menu">
+            <img class="pic" src="/img/profile.png" alt="마이페이지">
+            <div class="nav_span"><span>프로필</span></div>
+        </div>
+
+        <div class="nav_menu">
+            <div class="nav_span"><span>로그아웃</span></div>
+        </div>
+    </div>
+</nav>
+<!-- main -->
+<main>
+    <div class="feeds">
+        <!-- article -->
+        <article>
+
+            <header>
+                <div class="profile-of-article">
+                    <img class="img-profile pic" src="/img/profile.png" alt="dlwlrma님의 프로필 사진">
+                    <span class="userID main-id point-span">honggildong</span>
+                </div>
+                <img class="icon-react icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
+            </header>
+            <div class="main-image">
+                <img src="/img/dog.jpg" alt="user님의 피드 사진" class="mainPic">
+            </div>
+            <div class="icons-react">
+                <div class="icons-left">
+                    <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                    <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/comment.png" alt="말풍선">
+                    <img class="icon-react" src="/img/dm.png" alt="DM">
+                </div>
+                <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/bookmark.png" alt="북마크">
+            </div>
+            <!-- article text data -->
+            <div class="reaction">
+                <div class="liked-people">
+                    <img class="pic" src="/img/profile.png" alt="johnnyjsuh님의 프로필 사진">
+                    <p><span class="point-span">johnnyjsuh</span>님 <span class="point-span">외 2,412,751명</span>이 좋아합니다</p>
+                </div>
+                <div class="description">
+                    <p><span class="point-span userID">홍길동</span><span class="at-tag">@wkorea @gucci</span> 🌱</p>
+                </div>
+                <div class="comment-section">
+                    <ul class="comments">
+                        <li>
+                            <span><span class="point-span userID">honggildong</span>내가 입으면 더 잘어울릴 것 같아</span>
+                            <div>
+                                <img class="comment-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
+                                <div class="comment-like">
+                                    <img class="comment-heart" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                                    <img class="comment-heart-liked" src="/img/liked.png" alt="좋아요된하트">
+                                </div>
+                            </div>
+                        </li>
+                        <!-- input 값 여기에 추가 -->
+                    </ul>
+                    <div class="time-log">
+                        <span>32분 전</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hl"></div>
+            <div class="comment">
+                <input id="input-comment" class="input-comment" type="text" placeholder="댓글 달기..." >
+                <button type="submit" class="submit-comment" disabled>게시</button>
+            </div>
+            </form>
+        </article>
+    </div>
+    <!-- main-right -->
+    <div class="main-right">
+        <div class="myProfile">
+            <img class="pic" src="/img/profile.png" alt="thisisyourhyung님의 프로필 사진">
+            <div>
+                <span class="userID point-span">홍길동</span>
+                <span class="sub-span">HongGilDong</span>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <p class="insta-sccript">
+        소개 ∙ 도움말 ∙ 홍보 센터 ∙ API ∙ 채용 정보 ∙ 개인정보처리방침 ∙ <br>약관 ∙ 위치 ∙ 인기계정 ∙ 해시태그 ∙ 언어
+        <br><br>
+        © 2020 INSTAGRAM FROM FACEBOOK
+    </p>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>

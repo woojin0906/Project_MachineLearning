@@ -62,10 +62,11 @@ h1 {
 
 /* main */
 main {
-    width: 500px;
+    width: 960px;
     margin: 0 auto;
     padding-top: 94px;
     padding-bottom: 40px;
+    margin-left: 270px;
 }
 .main-right {
     width: 310px;
@@ -79,7 +80,9 @@ main {
     display: inline-block;
 }
 article, .section-story, .section-recommend {
+    background-color: #fff;
     border-radius: 3px;
+    border: 1px solid #DBDBDB;
 }
 article {
     margin-bottom: 60px;
@@ -337,14 +340,3 @@ ul.story-list .profile-text {
     display: flex;
     align-items: flex-start;
 }
-
-.table_img img {
-    width: 498px;
-}
-.table_writeCom_td {
-    border-top: 1px solid #ddd;
-}
-table {
-     margin-bottom: 50px;
-     background-color: #fffeee;
- }
