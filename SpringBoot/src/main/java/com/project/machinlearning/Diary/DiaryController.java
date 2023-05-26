@@ -5,13 +5,16 @@ import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Diary.DTO.DiaryResponseDTO;
 import com.project.machinlearning.Diary.DTO.DiarySearchDTO;
 import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *    다이어리 등록, 수정, 조회, 검색
@@ -35,9 +38,20 @@ public class DiaryController {
         return "테스트";
     }
 
-    @PostMapping("/save")  // 다이어리 저장
-    public int saveDiary(@RequestBody DiaryRequestDTO diaryRequestDTo){
-        return diaryService.saveDiary(diaryRequestDTo);
+    @GetMapping("/save")
+    public String save(){
+        return "diary/saveDiary";
+    }
+
+    @PostMapping("/save_proc")  // 다이어리 저장
+    public void saveDiary(@RequestBody DiaryRequestDTO diaryRequestDTo, Model model, Principal principal, HttpServletResponse response) throws IOException {
+        String nickName = principal.getName();
+        model.addAttribute("nickName", nickName);
+        diaryRequestDTo.setNickName(nickName);
+        diaryService.saveDiary(diaryRequestDTo);
+
+        // 응답으로 성공 상태 코드 전송
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     @PutMapping("/post")  // 다이어리 수정
@@ -50,13 +64,12 @@ public class DiaryController {
         return diaryService.deleteDiary(numId);
     }
 
-    @GetMapping("/list/{page}")  // 다이어리 전체 조회
-    public String listDiary(@PathVariable int page, Model model, Principal principal) {
+    @GetMapping({"/list","/list/{page}"})  // 다이어리 전체 조회
+    public String listDiary(Model model, Principal principal, @PathVariable Optional<Integer> page) {
+        int pageNumber = page.orElse(1);
         String nickName = principal.getName();
+        List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(pageNumber);
         model.addAttribute("nickName", nickName);
-        System.out.println(nickName);
-
-        List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(page);
         model.addAttribute("lists", lists);
         return "main";
     }

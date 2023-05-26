@@ -161,13 +161,14 @@ public class DiaryService {
 
 
     /**
-     * 단일 다이어리, 좋아요, 댓글 처리 후 리턴
-     * - 한승완 2023.05.25
+     * 단일 다이어리 조회수 1 증가 후 다이어리, 좋아요, 댓글 리턴
+     * - 한승완 2023.05.26
      */
     public DiarySpecificationResponseDTO getDiaryWithCommentsAndRecommendations(Long numId) {
         Optional<DiaryEntity> diaryOptional = diaryRepository.getDiary(numId);
         if (diaryOptional.isPresent()) {
             DiaryEntity diaryEntity = diaryOptional.get();
+            diaryEntity.setView(diaryEntity.getView()+1);
             List<CommentEntity> commentEntities = diaryEntity.getComments();
 
             List<CommentResponseDTO> commentDtoList = commentEntities.stream()

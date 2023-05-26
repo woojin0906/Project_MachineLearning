@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+  <title>Instagram</title>
+  <link href="/css/common.css" rel="stylesheet" type="text/css" />
+  <link href="/css/diary.css" rel="stylesheet" type="text/css" />
+  <!-- favicon -->
+  <link rel="icon" href="/img/favicon.png">
+  <link rel="instagram-icon" href="/img/favicon.png">
+</head>
+
+<body>
+<!-- navigation -->
+<nav>
+  <h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1>
+  <div class="menu">
+    <div class="nav_menu">
+      <img src="/img/home.png" alt="홈">
+      <div class="nav_span"><span>홈</span></div>
+    </div>
+
+    <div class="nav_menu">
+      <img src="/img/dm.png" alt="DM">
+      <div class="nav_span"><span>검색</span></div>
+    </div>
+
+    <div class="nav_menu">
+      <img src="/img/home.png" alt="홈">
+      <div class="nav_span"><span>만들기</span></div>
+    </div>
+
+    <div class="nav_menu">
+      <img class="pic" src="/img/profile.png" alt="마이페이지">
+      <div class="nav_span"><span>프로필</span></div>
+    </div>
+
+    <div class="nav_menu">
+      <div class="nav_span"><span>로그아웃</span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- main -->
+<main>
+  <div>
+    <form role="form" id="diaryForm">
+      <div>
+        <label for="content" style="margin-bottom: 10px; font-weight: bold;">내용:</label>
+        <textarea id="content" name="content" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
+      </div>
+      <div>
+        <label for="photo" style="margin-bottom: 10px; font-weight: bold;">사진:</label>
+        <textarea id="photo" name="photo" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
+      </div>
+      <button type="button" onclick="submitForm()" style="margin-top: 10px; padding: 10px 20px; background-color: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">등록</button>
+    </form>
+  </div>
+</main>
+
+
+<footer>
+  <p class="insta-sccript">
+    소개 ∙ 도움말 ∙ 홍보 센터 ∙ API ∙ 채용 정보 ∙ 개인정보처리방침 ∙ <br>약관 ∙ 위치 ∙ 인기계정 ∙ 해시태그 ∙ 언어
+    <br><br>
+    © 2020 INSTAGRAM FROM FACEBOOK
+  </p>
+</footer>
+
+<script>
+  function submitForm() {
+    var formData = {
+      content: $('#content').val(),
+      photo: $('#photo').val()
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/diary/save_proc',
+      contentType: 'application/json',
+      data: JSON.stringify(formData),
+      success: function(response) {
+        // 서버로부터의 응답 처리
+        window.location.href = '/api/diary/list/1';
+      },
+      error: function(xhr, status, error) {
+        console.log(xhr.responseText);
+        // 오류 처리
+      }
+    });
+  }
+</script>
+</body>
+
+</html>
