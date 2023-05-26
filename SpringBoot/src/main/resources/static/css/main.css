@@ -134,6 +134,8 @@ header {
 .icon-react {
     width: 24px;
     height: 24px;
+    margin-left: 20px;
+    margin-right: 5px;
 }
 .icons-left {
     display: flex;
@@ -223,12 +225,16 @@ div.time-log span {
 /* comment input */
 .input-comment {
     font-size: 14px;
-    width: 448px;
-    height: 18px;
-    padding: 28px 16px;
+    width: 435px;
+    height: 15px;
+    padding: 23px 15px;
     border-style: none;
     box-sizing: border-box;
     color: #262626;
+    background-color: #ffffff;
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+    margin: 5px
 }
 .input-comment:focus {
     outline: none;
@@ -237,17 +243,16 @@ div.time-log span {
     color: #8e8e8e;
 }
 button.submit-comment {
-    color: #0095f6;
-    background-color: #fff;
+    color: #ffffff;
+    background-color: #ffce58;
     border-style: none;
     height: 40px;
     width: 40px;
     padding: 4px;
-    font-size: 14px;
-    font-weight: 600;
-}
-.submit-comment:disabled {
-    color: #B9DFFC;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
 }
 button.submit-comment:focus {
     outline: none;
@@ -339,12 +344,57 @@ ul.story-list .profile-text {
 }
 
 .table_img img {
-    width: 498px;
+    width: 458px;
 }
 .table_writeCom_td {
     border-top: 1px solid #ddd;
 }
-table {
+.cotent_table {
      margin-bottom: 50px;
      background-color: #fffeee;
  }
+.comment_table {
+    margin: 5px;
+    background-color: #fbf5c4;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.comment_emotion {
+    color: orange;
+    margin-right: 10px;
+    width: 40px;
+    text-align: center;
+}
+.comment_content {
+    margin-right: 10px;
+    width: 299px;
+}
+.comment_date {
+    color: #c7c7c7;
+    width: 80px;
+    text-align: center;
+}
+td.table_img {
+    text-align: center;
+}
+td.table_header {
+    height: 50px;
+    text-align: center;
+}
+td.table_content {
+    padding: 10px 20px;
+}
+.table_recommend {
+    margin-right: 10px;
+    width: 80.6%;
+}
+.table_writeDate {
+    text-align: center;
+}
+td.table_view {
+    text-align: right;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    font-size: 15px;
+}

@@ -27,9 +27,9 @@ public class CommentController {
         return commentService.saveComment(commentRequestDTO);
     }
 
-    @DeleteMapping("/delete") //댓글 삭제
-    public String deleteComment(@RequestParam(value = "cid") Long cid, @RequestParam(value = "pw") String pw){
-        return commentService.deleteComment(cid,pw);
+    @DeleteMapping("/delete/{cid}") //댓글 삭제
+    public String deleteComment(@PathVariable("cid") Long cid){
+        return commentService.deleteComment(cid);
     }
 
 

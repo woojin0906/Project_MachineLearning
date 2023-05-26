@@ -31,6 +31,8 @@ public class CommentService {
 
     private final DiaryRepository diaryRepository;
 
+    private final UserRepository userRepository;
+
     /**
      * flask api server 접근하여 감정 분류 후 댓글 저장
      * - 한승완 2023.05.23
@@ -38,6 +40,7 @@ public class CommentService {
     public String saveComment(CommentRequestDTO commentRequestDTO){
 
         Optional<DiaryEntity> diary = diaryRepository.findByNumId(commentRequestDTO.getNumId());
+        Optional<UserEntity> user = userRepository.findById(commentRequestDTO.getUid());
         if (diary.isPresent()) {
             Date currentDate = new Date();
 
@@ -65,7 +68,7 @@ public class CommentService {
                     JsonNode responseJson = objectMapper.readTree(responseBody);
                     String emotion = responseJson.get("response").asText();
                     // 응답 값 받아서 DB 저장
-                    return commentRepository.save(new CommentEntity(diary.get(), currentDate, commentRequestDTO.getContent(),emotion, commentRequestDTO.getPw())).getEmotion();
+                    return commentRepository.save(new CommentEntity(diary.get(), currentDate, commentRequestDTO.getContent(),emotion, user.get())).getEmotion();
                 }else{
                     return "API 연결 실패";
                 }
@@ -82,14 +85,11 @@ public class CommentService {
      * 댓글 삭제 비밀번호 검증하여 댓글 삭제
      * - 한승완 2023.05.24
      */
-    public String deleteComment(Long cid, String pw) {
+    public String deleteComment(Long cid) {
         CommentEntity comment = commentRepository.findByCid(cid)
                 .orElse(null);
         if (comment == null) {
             return "댓글이 존재하지 않습니다.";
-        }
-        if (!comment.getPw().equals(pw)) {
-            return "댓글 삭제 비밀번호가 다릅니다.";
         }
         commentRepository.delete(comment);
         return "삭제가 완료되었습니다.";

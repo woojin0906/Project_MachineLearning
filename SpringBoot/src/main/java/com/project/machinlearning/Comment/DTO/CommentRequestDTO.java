@@ -8,11 +8,11 @@ public class CommentRequestDTO {
 
     private Long numId;
     private String content;
-    private String pw;
+    private Long uid;
 
-    public CommentRequestDTO(Long numId, String content, String pw) {
+    public CommentRequestDTO(Long numId, String content, Long uid) {
         this.numId = numId;
         this.content = content;
-        this.pw = pw;
+        this.uid = uid;
     }
 }
