@@ -54,6 +54,7 @@ public class DiaryController {
     public String listDiary(@PathVariable int page, Model model, Principal principal) { //, Authentication authentication
         String nickName = principal.getName();
         model.addAttribute("nickName", nickName);
+        System.out.println(nickName);
 //        String name = authentication.getName();
 //        model.addAttribute("name", name);
         List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(page);

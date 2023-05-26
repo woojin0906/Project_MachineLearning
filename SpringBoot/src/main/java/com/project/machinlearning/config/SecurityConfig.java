@@ -26,7 +26,7 @@ public class SecurityConfig {
 
         http.formLogin() // 로그인과 관련된 주소
                 .loginPage("/user/login")  // 로그인 주소
-                .defaultSuccessUrl("/") // 성공 시 이동할 주소
+                .defaultSuccessUrl("/api/diary/list/1") // 성공 시 이동할 주소
                 .usernameParameter("nickName") // user이름을 nickName로 사용할 것이기 때문에 field이름을 적어줘야 함  -> username이라 적은 경우엔 안적어도 됨
                 .passwordParameter("pw")// -> password라 적은 경우엔 안적어도 됨
                 .failureUrl("/user/login/error") // 로그인 실패 시 이동할 페이지
