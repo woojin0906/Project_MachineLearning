@@ -3,13 +3,12 @@ package com.project.machinlearning.Diary;
 
 import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
-<<<<<<< Updated upstream
+
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.Authentication;
-=======
+
 import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
->>>>>>> Stashed changes
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -75,15 +74,11 @@ public class DiaryController {
         String nickName = principal.getName();
         List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(pageNumber);
         model.addAttribute("nickName", nickName);
-<<<<<<< Updated upstream
-=======
 
         UserEntity user = userRepository.findByNickName(nickName);
         model.addAttribute("uid", user.getUid());
         System.out.println(nickName);
 
-        List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(page);
->>>>>>> Stashed changes
         model.addAttribute("lists", lists);
         return "main";
     }
