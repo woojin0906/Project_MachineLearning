@@ -14,7 +14,38 @@
     <!-- jquery 적용 -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 </head>
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
 
+        function deleteComment(obj){
+            var cid = obj.dataset.id;
+
+            var url = "/api/comment/delete/" + cid;
+                $.ajax({
+                    url: url,
+                    type: "DELETE",
+                    dataType: "json",
+                    cache: false,
+                    success: function (result, status) {
+                        location.href = '/api/diary/list/1';
+                    },
+                    error: function (jqXHR, status, error) {
+
+                        if (jqXHR.status == '401') {
+                            alert('로그인 후 이용해주세요');
+                            location.href = '/user/login';
+                        } else {
+                            alert(jqXHR.responseJSON.message);
+                        }
+
+                    }
+                });
+        }
+
+    </script>
+
+</th:block>
 
 <body>
 <!-- navigation -->
@@ -51,7 +82,7 @@
     <div class="feeds">
         <!-- article -->
         <article>
-            <form role="form" method="get" action="/api/comment/save">
+            <form method="POST" action="/api/comment/save">
                 <table class="cotent_table" th:each="list : ${lists}">
                     <tr>
                         <td class="table_header"><img class="img-profile pic" src="/img/happy.png" alt="사용자의 감정 정보"></td>
@@ -79,7 +110,7 @@
                                     <td class="comment_emotion"><span th:text="${comment.emotion}">행복</span></td>
                                     <td class="comment_content"><span th:text="${comment.content}">내가 입으면 더 잘어울릴 것 같아</span></td>
                                     <td class="comment_date"><span th:text="${comment.writeDate}">2022-03-05</span></td>
-                                    <td><button type="button" class="btn_open" >삭제</button></td>
+                                    <td><button type="button" class="btn_open" th:data-id="${comment.cid}" onclick="deleteComment(this)">삭제</button></td>
                                 </tr>
                             </table>
                         </td>
@@ -88,13 +119,16 @@
                         <td class="table_view">조회수 : <span class="point-span" th:text="${list.view}"></span></td>
                     </tr>
                     <tr>
-                        <td class="table_writeCom_td"><input id="input-comment" class="input-comment" type="text" placeholder="댓글 달기..." >
-                            <button type="submit" class="submit-comment" disabled>게시</button></td>
+                        <td class="table_writeCom_td">
+                            <input id="input-comment" class="input-comment" type="text" placeholder="댓글 달기..." >
+                            <button type="submit" class="submit-comment">등록</button></td>
                     </tr>
                 </table>
             </form>
         </article>
     </div>
+    <!--  csrf 체크해서 이동 -->
+    <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">
 </main>
 <footer>
     <p class="insta-sccript">

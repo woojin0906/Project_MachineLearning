@@ -14,10 +14,13 @@ public class CommentResponseDTO {
 
     private String emotion;
 
-    public CommentResponseDTO(Long cid, Date writeDate, String content, String emotion) {
+    private Long uid;
+
+    public CommentResponseDTO(Long cid, Date writeDate, String content, String emotion, Long uid) {
         this.cid = cid;
         this.writeDate = writeDate;
         this.content = content;
         this.emotion = emotion;
+        this.uid = uid;
     }
 }

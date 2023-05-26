@@ -7,9 +7,11 @@ import com.project.machinlearning.Diary.DiaryEntity;
 import com.project.machinlearning.Diary.DiaryRepository;
 import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -95,8 +97,18 @@ public class CommentService {
         return "삭제가 완료되었습니다.";
     }
 
+    @Transactional(readOnly = true)
+    public boolean validateComment(Long cid, String name) {
+        UserEntity user = userRepository.findByNickName(name);
+        CommentEntity comment = commentRepository.findById(cid).orElseThrow(EntityNotFoundException::new);
 
+        String writer = comment.getUser().getNickName();
 
+        if(!StringUtils.equals(user.getNickName(), writer)) {
+            return false;
+        }
 
+        return true;
+    }
 
 }

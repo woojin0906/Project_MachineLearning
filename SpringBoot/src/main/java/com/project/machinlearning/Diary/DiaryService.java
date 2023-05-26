@@ -171,7 +171,7 @@ public class DiaryService {
             List<CommentEntity> commentEntities = diaryEntity.getComments();
 
             List<CommentResponseDTO> commentDtoList = commentEntities.stream()
-                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion()))
+                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion(), comment.getUser().getUid()))
                     .collect(Collectors.toList());
 
             return new DiarySpecificationResponseDTO(
@@ -203,7 +203,7 @@ public class DiaryService {
 
         for (DiaryEntity diaryEntity : diaryEntities) {
             List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream()
-                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion()))
+                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion(), comment.getUser().getUid()))
                     .collect(Collectors.toList());
 
             DiarySpecificationResponseDTO diaryResponseDto = new DiarySpecificationResponseDTO(
@@ -236,7 +236,7 @@ public class DiaryService {
 
         for (DiaryEntity diaryEntity : diaryEntities) {
             List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream()
-                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion()))
+                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion(), comment.getUser().getUid()))
                     .collect(Collectors.toList());
 
             DiarySpecificationResponseDTO diaryResponseDto = new DiarySpecificationResponseDTO(
@@ -268,7 +268,7 @@ public class DiaryService {
 
         for (DiaryEntity diaryEntity : diaryEntities) {
             List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream()
-                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion()))
+                    .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion(), comment.getUser().getUid()))
                     .collect(Collectors.toList());
 
             DiarySpecificationResponseDTO diaryResponseDto = new DiarySpecificationResponseDTO(
