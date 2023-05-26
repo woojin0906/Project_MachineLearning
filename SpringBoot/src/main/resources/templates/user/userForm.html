@@ -71,7 +71,7 @@
 
 <body>
 <div>
-  <form action="/user/new" role="form" method="post"
+  <form th:action="@{/user/new}" role="form" method="post"
         th:object="${userFormDto}">
     <h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1>
     <div class="form-group">

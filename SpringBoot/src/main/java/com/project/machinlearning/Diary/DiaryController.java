@@ -5,10 +5,12 @@ import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Diary.DTO.DiaryResponseDTO;
 import com.project.machinlearning.Diary.DTO.DiarySearchDTO;
 import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -21,7 +23,6 @@ import java.util.List;
 //@RestController
 @RequestMapping("/api/diary")
 public class DiaryController {
-
 
     private final DiaryService diaryService;
 
@@ -50,11 +51,16 @@ public class DiaryController {
     }
 
     @GetMapping("/list/{page}")  // 다이어리 전체 조회
-    public String listDiary(@PathVariable int page, Model model) {
+    public String listDiary(@PathVariable int page, Model model, Principal principal) { //, Authentication authentication
+        String nickName = principal.getName();
+        model.addAttribute("nickName", nickName);
+//        String name = authentication.getName();
+//        model.addAttribute("name", name);
         List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(page);
         model.addAttribute("lists", lists);
         return "main";
     }
+
     @GetMapping("/post/{numId}")  // 단일 다이어리 조회
     public String SpecificationDiary(@PathVariable Long numId, Model model) {
         DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId);
