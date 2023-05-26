@@ -58,17 +58,17 @@
         </div>
 
         <div class="nav_menu">
-            <img src="/img/dm.png" alt="DM">
+            <img src="/img/search.png" alt="검색">
             <div class="nav_span"><span>검색</span></div>
         </div>
 
         <div class="nav_menu">
-            <img src="/img/home.png" alt="홈">
+            <img src="/img/plus.png" alt="만들기">
             <div class="nav_span"><span>만들기</span></div>
         </div>
 
         <div class="nav_menu">
-            <img class="pic" src="/img/profile.png" alt="마이페이지">
+            <img class="pic" src="/img/user.png" alt="마이페이지">
             <div class="nav_span"><span th:text="${nickName}">프로필</span></div>
         </div>
 
@@ -85,7 +85,7 @@
             <form method="POST" action="/api/comment/save">
                 <table class="cotent_table" th:each="list : ${lists}">
                     <tr>
-                        <td class="table_header"><img class="img-profile pic" src="/img/happy.png" alt="사용자의 감정 정보"></td>
+                        <td class="table_header"><img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보"></td>
                     </tr>
                     <tr>
                         <td class="table_img"><img src="/img/dog.jpg" alt="user님의 피드 사진" class="mainPic"></td>

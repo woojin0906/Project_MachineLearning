@@ -51,12 +51,11 @@ public class DiaryController {
     }
 
     @GetMapping("/list/{page}")  // 다이어리 전체 조회
-    public String listDiary(@PathVariable int page, Model model, Principal principal) { //, Authentication authentication
+    public String listDiary(@PathVariable int page, Model model, Principal principal) {
         String nickName = principal.getName();
         model.addAttribute("nickName", nickName);
         System.out.println(nickName);
-//        String name = authentication.getName();
-//        model.addAttribute("name", name);
+
         List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(page);
         model.addAttribute("lists", lists);
         return "main";

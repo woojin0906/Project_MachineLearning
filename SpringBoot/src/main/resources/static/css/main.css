@@ -398,3 +398,7 @@ td.table_view {
     padding-bottom: 10px;
     font-size: 15px;
 }
+a:hover, a:link, a:visited, a:active {
+    text-decoration-line: none;
+    color: #000000;
+}
