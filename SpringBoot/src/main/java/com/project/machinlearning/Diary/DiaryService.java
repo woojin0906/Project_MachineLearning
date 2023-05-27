@@ -210,7 +210,7 @@ public class DiaryService {
             String emotion = diaryEntity.getEmotion();
             String imgurl="";
             if(emotion.equals("공포")) {
-                imgurl="/img/happy.png";
+                imgurl="/img/emoji.png";
             } else if(emotion.equals("놀람")) {
                 imgurl="/img/surprised.png";
             } else if(emotion.equals("분노")) {
@@ -248,9 +248,11 @@ public class DiaryService {
      * 다이어리를 감정으로 검색하여 동일한 감정만 리턴
      * - 한승완 2023.05.25
      */
-    public List<DiarySpecificationResponseDTO> listDiaryByEmotion(String emotion) {
+    public List<DiarySpecificationResponseDTO> listDiaryByEmotion(String emotion, int page) {
+        int pageSize = 10; // 한 페이지에 표시할 항목 수
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("numId").descending());
 
-        List<DiaryEntity> diaryEntities = diaryRepository.findByEmotionWithComments(emotion);
+        List<DiaryEntity> diaryEntities = diaryRepository.findByEmotionWithComments(emotion, pageable);
         List<DiarySpecificationResponseDTO> result = new ArrayList<>();
 
         for (DiaryEntity diaryEntity : diaryEntities) {

@@ -402,3 +402,11 @@ a:hover, a:link, a:visited, a:active {
     text-decoration-line: none;
     color: #000000;
 }
+.main_category {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.btn_confused, .btn_happy, .btn_suprised, .btn_angry, .btn_emoji, .btn_sad, .btn_neutral {
+    padding: 5px 15px;
+    margin-right: 5px;
+}

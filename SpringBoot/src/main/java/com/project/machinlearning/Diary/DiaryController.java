@@ -91,8 +91,18 @@ public class DiaryController {
     }
 
     @GetMapping("/list/emotion/{emotion}") // 감정으로 다이어리 조회
-    public List<DiarySpecificationResponseDTO> listDiaryByEmotion(@PathVariable("emotion") String emotion){
-        return diaryService.listDiaryByEmotion(emotion);
+    public String listDiaryByEmotion(@PathVariable("emotion") String emotion, Model model, Principal principal, @PathVariable Optional<Integer> page){
+        int pageNumber = page.orElse(1);
+        String nickName = principal.getName();
+        List<DiarySpecificationResponseDTO> lists = diaryService.listDiaryByEmotion(emotion, pageNumber);
+        model.addAttribute("nickName", nickName);
+
+        UserEntity user = userRepository.findByNickName(nickName);
+        model.addAttribute("uid", user.getUid());
+        System.out.println(nickName);
+
+        model.addAttribute("lists", lists);
+        return "main";
     }
 
     @GetMapping("/list/user/{nickName}") // 닉네임으로 다이어리 조회
