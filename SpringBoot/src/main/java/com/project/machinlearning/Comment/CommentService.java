@@ -37,7 +37,7 @@ public class CommentService {
      * flask api server 접근하여 감정 분류 후 댓글 저장
      * - 한승완 2023.05.23
      */
-    public String saveComment(CommentRequestDTO commentRequestDTO){
+    public Long saveComment(CommentRequestDTO commentRequestDTO){
 
         Optional<DiaryEntity> diary = diaryRepository.findByNumId(commentRequestDTO.getNumId());
         Optional<UserEntity> user = userRepository.findById(commentRequestDTO.getUid());
@@ -68,16 +68,17 @@ public class CommentService {
                     JsonNode responseJson = objectMapper.readTree(responseBody);
                     String emotion = responseJson.get("response").asText();
                     // 응답 값 받아서 DB 저장
-                    return commentRepository.save(new CommentEntity(diary.get(), currentDate, commentRequestDTO.getContent(),emotion, user.get())).getEmotion();
+                    commentRepository.save(new CommentEntity(diary.get(), currentDate, commentRequestDTO.getContent(),emotion, user.get()));
+                    return 1L;
                 }else{
-                    return "API 연결 실패";
+                    return -2L;
                 }
             } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
-                    return "API 연결 실패";
+                    return -2L;
             }
         } else {
-            return "글이 없습니다.";
+            return -1L;
         }
     }
 

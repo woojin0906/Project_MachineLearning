@@ -26,7 +26,7 @@ public class CommentController {
     }
 
     @PostMapping("/save") //댓글 작성
-    public String saveComment(@RequestBody CommentRequestDTO commentRequestDTO) {
+    public Long saveComment(@RequestBody CommentRequestDTO commentRequestDTO) {
         return commentService.saveComment(commentRequestDTO);
     }
 

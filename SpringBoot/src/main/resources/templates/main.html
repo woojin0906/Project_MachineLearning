@@ -18,6 +18,44 @@
 <th:block layout:fragment="script">
     <script th:inline="javascript">
 
+        document.addEventListener("DOMContentLoaded", function() {
+            var commentTables = document.getElementsByClassName("comment_table");
+
+            for (var i = 0; i < commentTables.length; i++) {
+                var commentTable = commentTables[i];
+                var commentRows = commentTable.getElementsByTagName("tr");
+
+                for (var j = 0; j < commentRows.length; j++) {
+                    var emotionCell = commentRows[j].getElementsByClassName("comment_emotion")[0];
+                    var emotionText = emotionCell.innerText.trim();
+
+                    var imgurl = "";
+                    if (emotionText === "공포") {
+                        imgurl = "/img/happy.png";
+                    } else if (emotionText === "놀람") {
+                        imgurl = "/img/surprised.png";
+                    } else if (emotionText === "분노") {
+                        imgurl = "/img/angry.png";
+                    } else if (emotionText === "슬픔") {
+                        imgurl = "/img/sad.png";
+                    } else if (emotionText === "중립") {
+                        imgurl = "/img/neutral.png";
+                    } else if (emotionText === "행복") {
+                        imgurl = "/img/happy.png";
+                    } else if (emotionText === "혐오") {
+                        imgurl = "/img/confused.png";
+                    }
+
+                    var imgElement = document.createElement("img");
+                    imgElement.src = imgurl;
+                    imgElement.style.maxWidth = "100%";
+                    imgElement.style.height = "auto";
+                    emotionCell.innerHTML = "";
+                    emotionCell.appendChild(imgElement);
+                }
+            }
+        });
+
         function deleteComment(obj){
             var cid = obj.dataset.id;
 
@@ -67,8 +105,8 @@
                 }
             });
         }
-        function saveComment(obj){
-            var content = $("input[name=input-comment]").val();
+        function saveComment(obj) {
+            var content = $("#input-comment").val();
             var numId = obj.dataset.value;
             var url = "/api/comment/save";
             console.log(content + numId +[[${uid}]]);
@@ -76,23 +114,22 @@
                 url: url,
                 type: "POST",
                 dataType: "json",
-                data: JSON.stringify({numId: numId, uid:[[${uid}]], content:content}),
+                data: JSON.stringify({numId: numId ,uid:[[${uid}]], content:content }),
                 cache: false,
                 contentType: 'application/json',
                 success: function (result, status) {
-                    window.location.href = '/api/diary/list/1';
+                    // 서버로부터의 응답 처리
+                    location.href = '/api/diary/list/1';
                 },
                 error: function (jqXHR, status, error) {
-
                     if (jqXHR.status == '401') {
                         alert('로그인 후 이용해주세요');
                         location.href = '/user/login';
-                    } else {
-                        alert(jqXHR.responseJSON.message);
                     }
                 }
             });
         }
+
 
     </script>
 
@@ -171,7 +208,7 @@
                     </tr>
                     <tr>
                         <td class="table_writeCom_td">
-                            <input id="input-comment" name="input-comment" class="input-comment" type="text" placeholder="댓글 달기..." >
+                            <input id="input-comment" name="input-comment" class="input-comment" type="text" placeholder="댓글 달기...">
                             <button type="button" class="submit-comment" th:data-value="${list.numId}" onclick="saveComment(this)">등록</button></td>
                     </tr>
                 </table>
