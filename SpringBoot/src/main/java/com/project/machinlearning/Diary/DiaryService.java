@@ -11,11 +11,14 @@ import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -38,23 +41,38 @@ import java.util.stream.Collectors;
 @Transactional
 public class DiaryService {
 
+    // application properties에 설정해놓은 itemImgLocation를 가져와서 service에서 uploadfile 할 때 사용
+    @Value(value = "${itemImgLocation}")
+    private String itemImgLocation;
+
     private final DiaryRepository diaryRepository;
 
     private final UserRepository userRepository;
 
+    private final FileService fileService;
 
     /**
      * flask api server 접근하여 감정을 분류한 후 저장
      * - 한승완 2023.05.23
      */
-    public int saveDiary(DiaryRequestDTO diaryRequestDTO){
+    public int saveDiary(DiaryRequestDTO diaryRequestDTO, MultipartFile itemImgeFileList) {
+
+        String oriImgName = itemImgeFileList.getOriginalFilename(); // 원본 경로
+
+        // fileService에서 만든 imgName
+        String imgName = "";
+        // 이미지 경로
+        String imgUrl = "";
 
         UserEntity user = userRepository.findByNickName(diaryRequestDTO.getNickName());
+        System.out.println("aaaaaaaaaaa");
         if(user != null){
-
+            System.out.println("user != null");
             Date currentDate = new Date();
             Optional<DiaryEntity> currentDiary = diaryRepository.findByUserAndWriteDate(user, currentDate);
+
             if(currentDiary.isPresent()){
+                System.out.println("currentDiary.isPresent()");
                 return -1;
             }else{
                 try {
@@ -74,13 +92,23 @@ public class DiaryService {
 
                     HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
+                    // 원래 경로가 값이 비어있는지 타임리프 유틸을 이용해서 확인
+                    if(!StringUtils.isEmpty(oriImgName)) {
+                        // 진짜 이미지 이름 받아옴
+                        // 파일의 정보는 itemImgFile에 다 있으니까 이걸 byte배열로 가져옴
+                        imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgeFileList.getBytes());
+                        imgUrl = "/images/item/" + imgName;
+                    }
+                    System.out.println(response.statusCode());
+
                     // 응답 처리
                     if (response.statusCode() == 200) {
                         String responseBody = response.body();
                         JsonNode responseJson = objectMapper.readTree(responseBody);
                         String emotion = responseJson.get("response").asText();
                         // 응답 값 받아서 감정값을 포함하여 DB 저장
-                        DiaryEntity diary = new DiaryEntity(user, currentDate, diaryRequestDTO.getContent(),emotion,"사진");
+                        System.out.println(diaryRequestDTO.getContent() + emotion + oriImgName + imgName+ imgUrl);
+                        DiaryEntity diary = new DiaryEntity(user, currentDate, diaryRequestDTO.getContent(),emotion,imgUrl, oriImgName, imgName );
                         diaryRepository.save(diary);
                         return 1;
                     }else{
@@ -96,6 +124,7 @@ public class DiaryService {
         }
             return -1;
     }
+
 
     /**
      * 다이어리 탐색하여 있을경우 수정 후 저장

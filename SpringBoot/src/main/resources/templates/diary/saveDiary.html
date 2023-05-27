@@ -46,17 +46,30 @@
 
 <!-- main -->
 <main>
+<!--  <div>-->
+<!--    <form role="form" id="diaryForm">-->
+<!--      <div>-->
+<!--        <label for="content" style="margin-bottom: 10px; font-weight: bold;">내용:</label>-->
+<!--        <textarea id="content" name="content" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <label for="photo" style="margin-bottom: 10px; font-weight: bold;">사진:</label>-->
+<!--        <input type="file" id="photo"  name="itemImgFile" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">-->
+<!--      </div>-->
+<!--      <button type="button" onclick="submitForm()" style="margin-top: 10px; padding: 10px 20px; background-color: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">등록</button>-->
+<!--    </form>-->
+<!--  </div>-->
   <div>
-    <form role="form" id="diaryForm">
+    <form role="form" id="diaryForm" enctype="multipart/form-data" action="/api/diary/save_proc" method="post">
       <div>
         <label for="content" style="margin-bottom: 10px; font-weight: bold;">내용:</label>
         <textarea id="content" name="content" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
       </div>
       <div>
         <label for="photo" style="margin-bottom: 10px; font-weight: bold;">사진:</label>
-        <textarea id="photo" name="photo" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
+        <input type="file" id="photo"  name="itemImgFile" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
       </div>
-      <button type="button" onclick="submitForm()" style="margin-top: 10px; padding: 10px 20px; background-color: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">등록</button>
+      <button type="submit" style="margin-top: 10px; padding: 10px 20px; background-color: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">등록</button>
     </form>
   </div>
 </main>
@@ -71,27 +84,28 @@
 </footer>
 
 <script>
-  function submitForm() {
-    var formData = {
-      content: $('#content').val(),
-      photo: $('#photo').val()
-    };
-
-    $.ajax({
-      type: 'POST',
-      url: '/api/diary/save_proc',
-      contentType: 'application/json',
-      data: JSON.stringify(formData),
-      success: function(response) {
-        // 서버로부터의 응답 처리
-        window.location.href = '/api/diary/list/1';
-      },
-      error: function(xhr, status, error) {
-        console.log(xhr.responseText);
-        // 오류 처리
-      }
-    });
-  }
+  // function submitForm() {
+  //
+  //   var img = $('#itemImgFile').val()
+  //   var formData = {
+  //     content: $('#content').val(),
+  //     photo: img
+  //   };
+  //
+  //   $.ajax({
+  //     type: 'POST',
+  //     url: '/api/diary/save_proc',
+  //     data: JSON.stringify(formData),
+  //     success: function(response) {
+  //       // 서버로부터의 응답 처리
+  //       window.location.href = '/api/diary/list/1';
+  //     },
+  //     error: function(xhr, status, error) {
+  //       console.log(xhr.responseText);
+  //       // 오류 처리
+  //     }
+  //   });
+  // }
 </script>
 </body>
 

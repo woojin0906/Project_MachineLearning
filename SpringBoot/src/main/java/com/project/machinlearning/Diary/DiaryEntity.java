@@ -43,8 +43,12 @@ public class DiaryEntity {
     @Column(name = "views", columnDefinition = "int default 0")
     private int view;
 
-    @Column(name="photo")
+    @Column(name="photo") // 이미지 경로
     private String photo;
+
+    private String imgName; // 이미지 파일명 // 원본 파일명
+
+    private String imgUrl;
 
     @Column(name="recommend",columnDefinition = "int default 0")
     private int recommend;
@@ -59,12 +63,14 @@ public class DiaryEntity {
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
 
-    public DiaryEntity(UserEntity user, Date writeDate, String content, String emotion, String photo) {
+    public DiaryEntity(UserEntity user, Date writeDate, String content, String emotion, String photo, String imgName, String imgUrl) {
         this.user = user;
         this.writeDate = writeDate;
         this.content = content;
         this.emotion = emotion;
         this.photo = photo;
+        this.imgName = imgName;
+        this.imgUrl = imgUrl;
     }
 
     public void updateDiary(Date writeDate, String emotion, DiaryRequestDTO diaryRequestDTO) {

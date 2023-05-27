@@ -13,17 +13,23 @@ public class DiaryRequestDTO {
 
     private String emotion;
 
-    private int views;
+    private Integer views;
 
-    private String photo;
+    private String photo; // 원본 파일명
 
-    public DiaryRequestDTO(Long numId, String nickName, String content, String emotion, int views, String photo) {
+    private String imgName; // 이미지 파일명
+
+    private String imgUrl; // 이미지 경로
+
+    public DiaryRequestDTO(Long numId, String nickName, String content, String emotion, Integer views, String photo, String imgName, String imgUrl) {
         this.numId = numId;
         this.nickName = nickName;
         this.content = content;
         this.emotion = emotion;
         this.views = views;
         this.photo = photo;
+        this.imgName = imgName;
+        this.imgUrl = imgUrl;
     }
 
 }

@@ -9,9 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -47,15 +49,16 @@ public class DiaryController {
         return "diary/saveDiary";
     }
 
-    @PostMapping("/save_proc")  // 다이어리 저장
-    public void saveDiary(@RequestBody DiaryRequestDTO diaryRequestDTo, Model model, Principal principal, HttpServletResponse response) throws IOException {
+    @PostMapping(value="/save_proc")  // 다이어리 저장
+    public String saveDiary(@Valid DiaryRequestDTO diaryRequestDTo, @RequestParam("itemImgFile") MultipartFile itemImgFileList, Model model, Principal principal, HttpServletResponse response) throws IOException {
         String nickName = principal.getName();
         model.addAttribute("nickName", nickName);
         diaryRequestDTo.setNickName(nickName);
-        diaryService.saveDiary(diaryRequestDTo);
+        diaryService.saveDiary(diaryRequestDTo, itemImgFileList);
 
         // 응답으로 성공 상태 코드 전송
         response.setStatus(HttpServletResponse.SC_OK);
+        return "redirect:/api/diary/list";
     }
 
     @PutMapping("/post")  // 다이어리 수정
