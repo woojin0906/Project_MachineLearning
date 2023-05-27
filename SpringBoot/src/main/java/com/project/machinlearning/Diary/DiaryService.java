@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class DiaryService {
 
-    // application properties에 설정해놓은 itemImgLocation를 가져와서 service에서 uploadfile 할 때 사용
+
     @Value(value = "${itemImgLocation}")
     private String itemImgLocation;
 
@@ -52,27 +52,24 @@ public class DiaryService {
     private final FileService fileService;
 
     /**
-     * flask api server 접근하여 감정을 분류한 후 저장
-     * - 한승완 2023.05.23
+     * flask api server 접근하여 감정을 분류한 후 저장, 사진 저장
+     * - 한승완 2023.05.23, 전우진 2023.05.28
      */
     public int saveDiary(DiaryRequestDTO diaryRequestDTO, MultipartFile itemImgeFileList) {
 
-        String oriImgName = itemImgeFileList.getOriginalFilename(); // 원본 경로
+        String oriImgName = itemImgeFileList.getOriginalFilename();
 
-        // fileService에서 만든 imgName
         String imgName = "";
-        // 이미지 경로
+
         String imgUrl = "";
 
         UserEntity user = userRepository.findByNickName(diaryRequestDTO.getNickName());
-        System.out.println("aaaaaaaaaaa");
+
         if(user != null){
-            System.out.println("user != null");
             Date currentDate = new Date();
             Optional<DiaryEntity> currentDiary = diaryRepository.findByUserAndWriteDate(user, currentDate);
 
             if(currentDiary.isPresent()){
-                System.out.println("currentDiary.isPresent()");
                 return -1;
             }else{
                 try {
@@ -92,10 +89,9 @@ public class DiaryService {
 
                     HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-                    // 원래 경로가 값이 비어있는지 타임리프 유틸을 이용해서 확인
                     if(!StringUtils.isEmpty(oriImgName)) {
-                        // 진짜 이미지 이름 받아옴
-                        // 파일의 정보는 itemImgFile에 다 있으니까 이걸 byte배열로 가져옴
+                        // 실제 이미지 값
+                        // 파일의 정보는 byte배열
                         imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgeFileList.getBytes());
                         imgUrl = "/images/item/" + imgName;
                     }

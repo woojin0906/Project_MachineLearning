@@ -46,9 +46,9 @@ public class DiaryEntity {
     @Column(name="photo") // 이미지 경로
     private String photo;
 
-    private String imgName; // 이미지 파일명 // 원본 파일명
+    private String imgName; // 이미지 파일명
 
-    private String imgUrl;
+    private String imgUrl; // 원본 파일명
 
     @Column(name="recommend",columnDefinition = "int default 0")
     private int recommend;
