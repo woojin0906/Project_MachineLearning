@@ -105,28 +105,6 @@
                 }
             });
         }
-        function listDiary(obj) {
-            var emotion = obj.dataset.value;
-            var url = "/api/diary/list/emotion/" + emotion;
-            console.log("/api/diary/list/emotion/" + emotion);
-            $.ajax({
-                url: url,
-                type: "GET",
-                dataType: "json",
-                cache: false,
-                contentType: 'application/json',
-                success: function (result, status) {
-                    // 서버로부터의 응답 처리
-                    location.href = "/api/diary/list/emotion/" + emotion;
-                },
-                error: function (jqXHR, status, error) {
-                    if (jqXHR.status == '401') {
-                        alert('로그인 후 이용해주세요');
-                        location.href = '/user/login';
-                    }
-                }
-            });
-        }
 
         function saveComment(obj) {
             var content = $("#input-comment").val();
@@ -190,14 +168,13 @@
 <!-- main -->
 <main>
     <div class="main_category">
-
-        <button class="btn_emoji" type="button" data-value="공포" onclick="listDiary(this)">공포</button>
-        <button class="btn_suprised" type="button" data-value="놀람" onclick="listDiary(this)">놀람</button>
-        <button class="btn_angry" type="button" data-value="분노" onclick="listDiary(this)">분노</button>
-        <button class="btn_sad" type="button" data-value="슬픔" onclick="listDiary(this)">슬픔</button>
-        <button class="btn_neutral" type="button" data-value="중립" onclick="listDiary(this)">중립</button>
-        <button class="btn_happy" type="button" data-value="행복" onclick="listDiary(this)">행복</button>
-        <button class="btn_confused" type="button" data-value="혐오" onclick="listDiary(this)">혐오</button>
+        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/공포" class="btn_a">공포</a></button>
+        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/놀람" class="btn_a">놀람</a></button>
+        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/분노" class="btn_a">분노</a></button>
+        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/슬픔" class="btn_a">슬픔</a></button>
+        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/중립" class="btn_a">중립</a></button>
+        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/행복" class="btn_a">행복</a></button>
+        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/혐오" class="btn_a">혐오</a></button>
     </div>
 
     <div class="feeds">

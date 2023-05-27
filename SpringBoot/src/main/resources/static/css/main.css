@@ -110,8 +110,8 @@ header {
     align-items: center;
 }
 .img-profile {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     border: 1px solid #fafafa;
     border-radius: 100%;
 }
@@ -406,7 +406,18 @@ a:hover, a:link, a:visited, a:active {
     text-align: center;
     margin-bottom: 50px;
 }
-.btn_confused, .btn_happy, .btn_suprised, .btn_angry, .btn_emoji, .btn_sad, .btn_neutral {
-    padding: 5px 15px;
+.btn_emoji {
+    padding: 6px 17px;
     margin-right: 5px;
+    background-color: #ffe28a;
+    border: 1px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+}
+button.btn_open {
+    background-color: #f2f2f2;
+    border: 1px solid #bababa;
+    border-radius: 5px;
 }
