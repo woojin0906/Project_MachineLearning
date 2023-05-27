@@ -21,6 +21,7 @@ public class DiarySpecificationResponseDTO {
     private int view; // 조회수
     private String photo; // 사진
     private int recommend; // 총 추천 개수
+    private boolean isrecommend;
 
     List<CommentResponseDTO> comments = new ArrayList<>(); // 댓글 리스트
 
@@ -34,6 +35,19 @@ public class DiarySpecificationResponseDTO {
         this.view = view;
         this.photo = photo;
         this.recommend = recommend;
+        this.comments = comments;
+    }
+
+    public DiarySpecificationResponseDTO(Long numId, Long uid, Date writeDate, String content, String emotion, int view, String photo, int recommend, boolean isrecommend, List<CommentResponseDTO> comments) {
+        this.numId = numId;
+        this.uid = uid;
+        this.writeDate = writeDate;
+        this.content = content;
+        this.emotion = emotion;
+        this.view = view;
+        this.photo = photo;
+        this.recommend = recommend;
+        this.isrecommend = isrecommend;
         this.comments = comments;
     }
 }

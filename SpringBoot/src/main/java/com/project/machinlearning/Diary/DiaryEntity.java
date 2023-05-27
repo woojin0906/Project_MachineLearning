@@ -8,6 +8,7 @@ import com.project.machinlearning.Recommend.RecommendEntity;
 import com.project.machinlearning.User.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.Date;
 import java.util.List;
@@ -48,9 +49,13 @@ public class DiaryEntity {
     @Column(name="recommend",columnDefinition = "int default 0")
     private int recommend;
 
+    @JsonIgnore
+    @BatchSize(size = 500)
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecommendEntity> recommends;
 
+    @JsonIgnore
+    @BatchSize(size = 500)
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
 

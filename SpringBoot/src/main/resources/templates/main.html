@@ -192,7 +192,10 @@
                         <td>
                             <table>
                                 <tr>
-                                    <td class="table_recommend"><img onclick="saveRecommend(this)" th:data-value="${list.numId}" class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트"><span class="point-span" th:text="${list.recommend}"></span></td>
+                                    <td class="table_recommend">
+                                        <img onclick="saveRecommend(this)" th:data-value="${list.numId}" class="icon-react" alt="하트"
+                                             th:src="${list.isrecommend ? '/img/liked.png' : 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png'}">
+                                        <span class="point-span" th:text="${list.recommend}"></span></td>
                                     <td class="table_writeDate"><span class="userID main-id point-span" th:text="${list.writeDate}">2022-05-05</span></td>
                                 </tr>
                             </table>

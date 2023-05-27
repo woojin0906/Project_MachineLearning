@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -195,9 +196,9 @@ public class DiaryService {
      * 다이어리를 페이징 후 최근 값 부터 DTO 형태로 리턴
      * - 한승완 2023.05.25
      */
-    public List<DiarySpecificationResponseDTO> getAllDiariesWithComments(int page) {
-        int pageSize = 10; // 한 페이지에 표시할 항목 수
-        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("numId").descending());
+    public List<DiarySpecificationResponseDTO> getAllDiariesWithComments(int page,UserEntity user) {
+
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("numId").descending());
 
         List<DiaryEntity> diaryEntities = diaryRepository.findAllWithComments(pageable);
         List<DiarySpecificationResponseDTO> result = new ArrayList<>();
@@ -233,7 +234,8 @@ public class DiaryService {
                     imgurl,
                     diaryEntity.getView(),
                     diaryEntity.getPhoto(),
-                    diaryEntity.getRecommend()
+                    diaryEntity.getRecommend(),
+                    diaryEntity.getRecommends().stream().anyMatch(recommendEntity -> recommendEntity.getUser().equals(user))
                     ,commentDtoList
             );
 
@@ -248,10 +250,9 @@ public class DiaryService {
      * 다이어리를 감정으로 검색하여 동일한 감정만 리턴
      * - 한승완 2023.05.25
      */
-    public List<DiarySpecificationResponseDTO> listDiaryByEmotion(String emotion, int page) {
-        int pageSize = 10; // 한 페이지에 표시할 항목 수
-        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("numId").descending());
+    public List<DiarySpecificationResponseDTO> listDiaryByEmotion(String emotion, int page, UserEntity user) {
 
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("numId").descending());
         List<DiaryEntity> diaryEntities = diaryRepository.findByEmotionWithComments(emotion, pageable);
         List<DiarySpecificationResponseDTO> result = new ArrayList<>();
 
@@ -287,6 +288,7 @@ public class DiaryService {
                     diaryEntity.getView(),
                     diaryEntity.getPhoto(),
                     diaryEntity.getRecommend(),
+                    diaryEntity.getRecommends().stream().anyMatch(recommendEntity -> recommendEntity.getUser().equals(user)),
                     commentDtoList
             );
 
@@ -302,6 +304,7 @@ public class DiaryService {
      */
     public List<DiarySpecificationResponseDTO> listDiaryByNickName(String nickName) {
 
+        UserEntity user = userRepository.findByNickName(nickName);
         List<DiaryEntity> diaryEntities = diaryRepository.findByUserNickNameWithComments(nickName);
         List<DiarySpecificationResponseDTO> result = new ArrayList<>();
 
@@ -319,6 +322,7 @@ public class DiaryService {
                     diaryEntity.getView(),
                     diaryEntity.getPhoto(),
                     diaryEntity.getRecommend(),
+                    diaryEntity.getRecommends().stream().anyMatch(recommendEntity -> recommendEntity.getUser().equals(user)),
                     commentDtoList
             );
 

@@ -72,14 +72,14 @@ public class DiaryController {
     public String listDiary(Model model, Principal principal, @PathVariable Optional<Integer> page) {
         int pageNumber = page.orElse(1);
         String nickName = principal.getName();
-        List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(pageNumber);
-        model.addAttribute("nickName", nickName);
 
         UserEntity user = userRepository.findByNickName(nickName);
-        model.addAttribute("uid", user.getUid());
-        System.out.println(nickName);
+        List<DiarySpecificationResponseDTO> lists = diaryService.getAllDiariesWithComments(pageNumber,user);
 
+        model.addAttribute("nickName", nickName);
+        model.addAttribute("uid", user.getUid());
         model.addAttribute("lists", lists);
+
         return "main";
     }
 
@@ -94,14 +94,14 @@ public class DiaryController {
     public String listDiaryByEmotion(@PathVariable("emotion") String emotion, Model model, Principal principal, @PathVariable Optional<Integer> page){
         int pageNumber = page.orElse(1);
         String nickName = principal.getName();
-        List<DiarySpecificationResponseDTO> lists = diaryService.listDiaryByEmotion(emotion, pageNumber);
-        model.addAttribute("nickName", nickName);
 
         UserEntity user = userRepository.findByNickName(nickName);
-        model.addAttribute("uid", user.getUid());
-        System.out.println(nickName);
+        List<DiarySpecificationResponseDTO> lists = diaryService.listDiaryByEmotion(emotion, pageNumber, user);
 
+        model.addAttribute("nickName", nickName);
+        model.addAttribute("uid", user.getUid());
         model.addAttribute("lists", lists);
+
         return "main";
     }
 
