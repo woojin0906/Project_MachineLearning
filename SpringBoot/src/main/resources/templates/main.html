@@ -58,15 +58,21 @@
 
         function deleteComment(obj){
             var cid = obj.dataset.id;
-
             var url = "/api/comment/delete/" + cid;
-                $.ajax({
+            var emotion2 = localStorage.getItem('emotion');
+            console.log(emotion2);
+
+            $.ajax({
                     url: url,
                     type: "DELETE",
                     dataType: "json",
                     cache: false,
                     success: function (result, status) {
-                        location.href = '/api/diary/list/1';
+                        if (emotion2) {
+                            location.href = '/api/diary/list/emotion/' + emotion2;
+                        } else {
+                            location.href = '/api/diary/list/1';
+                        }
                     },
                     error: function (jqXHR, status, error) {
 
@@ -84,6 +90,9 @@
         function saveRecommend(obj){
             var numId = obj.dataset.value;
             var url = "/api/recommend/save";
+            var emotion2 = localStorage.getItem('emotion');
+            console.log(emotion2);
+
             $.ajax({
                 url: url,
                 type: "POST",
@@ -92,7 +101,11 @@
                 cache: false,
                 contentType: 'application/json',
                 success: function (result, status) {
-                    location.href = '/api/diary/list/1';
+                    if (emotion2) {
+                        location.href = '/api/diary/list/emotion/' + emotion2;
+                    } else {
+                        location.href = '/api/diary/list/1';
+                    }
                 },
                 error: function (jqXHR, status, error) {
 
@@ -110,6 +123,9 @@
             var content = $("#input-comment").val();
             var numId = obj.dataset.value;
             var url = "/api/comment/save";
+            var emotion2 = localStorage.getItem('emotion');
+
+            console.log(emotion2);
             console.log(content + numId +[[${uid}]]);
             $.ajax({
                 url: url,
@@ -119,8 +135,11 @@
                 cache: false,
                 contentType: 'application/json',
                 success: function (result, status) {
-                    // 서버로부터의 응답 처리
-                    location.href = '/api/diary/list/1';
+                    if (emotion2) {
+                        location.href = '/api/diary/list/emotion/' + emotion2;
+                    } else {
+                        location.href = '/api/diary/list/1';
+                    }
                 },
                 error: function (jqXHR, status, error) {
                     if (jqXHR.status == '401') {
@@ -142,9 +161,13 @@
     <div class="menu">
         <div class="nav_menu">
             <img src="/img/home.png" alt="홈">
-            <div class="nav_span"><span><a href="/api/diary/list/1">홈</a></span></div>
+            <div class="nav_span"><span><a onclick="deleteEmotion()" href="/api/diary/list/1">홈</a></span></div>
         </div>
-
+        <script>
+            function deleteEmotion() {
+                localStorage.removeItem('emotion');
+            }
+        </script>
         <div class="nav_menu">
             <img src="/img/search.png" alt="검색">
             <div class="nav_span"><span>검색</span></div>
@@ -168,14 +191,19 @@
 <!-- main -->
 <main>
     <div class="main_category">
-        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/공포" class="btn_a">공포</a></button>
-        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/놀람" class="btn_a">놀람</a></button>
-        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/분노" class="btn_a">분노</a></button>
-        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/슬픔" class="btn_a">슬픔</a></button>
-        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/중립" class="btn_a">중립</a></button>
-        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/행복" class="btn_a">행복</a></button>
-        <button class="btn_emoji" type="button"><a href="/api/diary/list/emotion/혐오" class="btn_a">혐오</a></button>
+        <button class="btn_emoji" type="button" onclick="setEmotion('공포')"><a href="/api/diary/list/emotion/공포" class="btn_a">공포</a></button>
+        <button class="btn_emoji" type="button" onclick="setEmotion('놀람')"><a href="/api/diary/list/emotion/놀람" class="btn_a">놀람</a></button>
+        <button class="btn_emoji" type="button" onclick="setEmotion('분노')"><a href="/api/diary/list/emotion/분노" class="btn_a">분노</a></button>
+        <button class="btn_emoji" type="button" onclick="setEmotion('슬픔')"><a href="/api/diary/list/emotion/슬픔" class="btn_a">슬픔</a></button>
+        <button class="btn_emoji" type="button" onclick="setEmotion('중립')"><a href="/api/diary/list/emotion/중립" class="btn_a">중립</a></button>
+        <button class="btn_emoji" type="button" onclick="setEmotion('행복')"><a href="/api/diary/list/emotion/행복" class="btn_a">행복</a></button>
+        <button class="btn_emoji" type="button" onclick="setEmotion('혐오')"><a href="/api/diary/list/emotion/혐오" class="btn_a">혐오</a></button>
     </div>
+    <script>
+        function setEmotion(emotion) {
+            localStorage.setItem('emotion', emotion);
+        }
+    </script>
 
     <div class="feeds">
         <!-- article -->
