@@ -4,19 +4,25 @@ package com.project.machinlearning.Diary;
 import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 
 import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,29 +51,64 @@ public class DiaryController {
     }
 
     @GetMapping("/save")
-    public String save(){
+    public String save(Principal principal, Model model) {
+        String nickName = principal.getName();
+        model.addAttribute("nickName", nickName);
+
+        Date today = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 E요일");
+        String strNowDate = simpleDateFormat.format(today);
+
+
+        model.addAttribute("strNowDate", strNowDate);
+        model.addAttribute("diarySpecificationResponseDTO", new DiarySpecificationResponseDTO());
         return "diary/saveDiary";
     }
 
     @PostMapping(value="/save_proc")  // 다이어리 저장
-    public String saveDiary(@Valid DiaryRequestDTO diaryRequestDTo, @RequestParam("itemImgFile") MultipartFile itemImgFileList, Model model, Principal principal, HttpServletResponse response) throws IOException {
-        String nickName = principal.getName();
-        model.addAttribute("nickName", nickName);
-        diaryRequestDTo.setNickName(nickName);
-        diaryService.saveDiary(diaryRequestDTo, itemImgFileList);
+    public String saveDiary(@Valid DiaryRequestDTO diaryRequestDTo, @RequestParam("itemImgFile") MultipartFile itemImgFileList, Model model, Principal principal, HttpServletResponse response, BindingResult bindingResult) throws IOException {
 
+        if(bindingResult.hasErrors()) {
+            return "diary/saveDiary";
+        }
+        try {
+            String nickName = principal.getName();
+            model.addAttribute("nickName", nickName);
+            diaryRequestDTo.setNickName(nickName);
+            diaryService.saveDiary(diaryRequestDTo, itemImgFileList);
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "diary/saveDiary";
+        }
         // 응답으로 성공 상태 코드 전송
         response.setStatus(HttpServletResponse.SC_OK);
-        return "redirect:/api/diary/list";
+        return "redirect:/api/diary/list/1";
     }
 
-    @PutMapping("/post")  // 다이어리 수정
-    public int modifyDiary(@RequestParam(value = "numId") Long numId, @RequestBody DiaryRequestDTO diaryRequestDTo) {
+    @GetMapping("/post/{numId}")  // 다이어리 수정
+    public String modifyDiary(@PathVariable Long numId, Model model, Principal principal) {
+
+        String nickName = principal.getName();
+        model.addAttribute("nickName", nickName);
+
+        Date today = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 E요일");
+        String strNowDate = simpleDateFormat.format(today);
+
+        model.addAttribute("strNowDate", strNowDate);
+
+        DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId);
+        model.addAttribute("diarySpecificationResponseDTO", diarySpecificationResponseDTO);
+        return "diary/saveDiary";
+    }
+
+    @PutMapping("/post/{numId}")  // 다이어리 수정
+    public int modifyDiary(@PathVariable Long numId, @RequestBody DiaryRequestDTO diaryRequestDTo) {
         return diaryService.modifyDiary(numId, diaryRequestDTo);
     }
 
-    @DeleteMapping("/post")  // 다이어리 삭제
-    public String deleteDiary(@RequestParam(value = "numId") Long numId){
+    @DeleteMapping("/delete/{numId}")  // 다이어리 삭제
+    public String deleteDiary(@PathVariable Long numId){
         return diaryService.deleteDiary(numId);
     }
 
@@ -86,7 +127,7 @@ public class DiaryController {
         return "main";
     }
 
-    @GetMapping("/post/{numId}")  // 단일 다이어리 조회
+    @GetMapping("/posts/{numId}")  // 단일 다이어리 조회
     public String SpecificationDiary(@PathVariable Long numId, Model model) {
         DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId);
         model.addAttribute("diarySpecificationResponseDTO", diarySpecificationResponseDTO);

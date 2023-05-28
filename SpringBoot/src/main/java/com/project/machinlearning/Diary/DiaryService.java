@@ -9,7 +9,8 @@ import com.project.machinlearning.Diary.DTO.DiaryRequestDTO;
 import com.project.machinlearning.Diary.DTO.DiarySpecificationResponseDTO;
 import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -70,7 +71,7 @@ public class DiaryService {
             Optional<DiaryEntity> currentDiary = diaryRepository.findByUserAndWriteDate(user, currentDate);
 
             if(currentDiary.isPresent()){
-                return -1;
+                throw new IllegalStateException("이미 등록된 사용자 입니다.");
             }else{
                 try {
                     HttpClient httpClient = HttpClient.newHttpClient();
@@ -127,6 +128,7 @@ public class DiaryService {
      * - 전우진 2023.05.24
      */
     public int modifyDiary(Long numId, DiaryRequestDTO diaryRequestDTO) {
+
         DiaryEntity diary = diaryRepository.findByNumId(numId)
                 .orElse(null);
         if (diary != null) {
@@ -157,6 +159,8 @@ public class DiaryService {
                         diary.setEmotion(emotion);
                         diary.setContent(diaryRequestDTO.getContent());
                         diary.setPhoto(diaryRequestDTO.getPhoto());
+                        diary.setImgName(diaryRequestDTO.getImgName());
+                        diary.setImgUrl(diaryRequestDTO.getImgUrl());
                         diary.setView(diaryRequestDTO.getViews());
                         diaryRepository.save(diary);
                         return 1;
@@ -355,6 +359,20 @@ public class DiaryService {
         }
 
         return result;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean validateDiary(Long numId, String name) {
+        UserEntity user = userRepository.findByNickName(name);
+        DiaryEntity diary = diaryRepository.findById(numId).orElseThrow(EntityNotFoundException::new);
+
+        String writer = diary.getUser().getNickName();
+
+        if(!StringUtils.equals(user.getNickName(), writer)) {
+            return false;
+        }
+
+        return true;
     }
 
 }

@@ -12,51 +12,94 @@
   <link rel="icon" href="/img/favicon.png">
   <link rel="instagram-icon" href="/img/favicon.png">
 </head>
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
 
+  <script th:inline="javascript">
+    $(document).ready(function(){
+      var errorMessage = [[${errorMessage}]];
+      if(errorMessage != null){
+        alert(errorMessage);
+      }
+    });
+  </script>
+
+</th:block>
 <body>
 <!-- navigation -->
 <nav>
-  <h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1>
+  <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
   <div class="menu">
     <div class="nav_menu">
       <img src="/img/home.png" alt="홈">
-      <div class="nav_span"><span>홈</span></div>
+      <div class="nav_span"><span><a onclick="deleteEmotion()" href="/api/diary/list/1">홈</a></span></div>
+    </div>
+    <script>
+      function deleteEmotion() {
+        localStorage.removeItem('emotion');
+      }
+    </script>
+
+    <div class="nav_menu">
+      <img src="/img/plus.png" alt="만들기">
+      <div class="nav_span"><a href="/api/diary/save"><span>만들기</span></a></div>
     </div>
 
     <div class="nav_menu">
-      <img src="/img/dm.png" alt="DM">
-      <div class="nav_span"><span>검색</span></div>
+      <img class="pic" src="/img/user.png" alt="마이페이지">
+      <div class="nav_span"><span th:text="${nickName}">프로필</span></div>
     </div>
 
     <div class="nav_menu">
-      <img src="/img/home.png" alt="홈">
-      <div class="nav_span"><span>만들기</span></div>
-    </div>
-
-    <div class="nav_menu">
-      <img class="pic" src="/img/profile.png" alt="마이페이지">
-      <div class="nav_span"><span>프로필</span></div>
-    </div>
-
-    <div class="nav_menu">
-      <div class="nav_span"><span>로그아웃</span></div>
+      <div class="nav_span"><span><a href="/user/logout">로그아웃</a></span></div>
     </div>
   </div>
 </nav>
 
 <!-- main -->
 <main>
-  <div>
-    <form role="form" id="diaryForm" enctype="multipart/form-data" action="/api/diary/save_proc" method="post">
-      <div>
-        <label for="content" style="margin-bottom: 10px; font-weight: bold;">내용:</label>
-        <textarea id="content" name="content" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
+
+  <div class="main_div" th:object="${diarySpecificationResponseDTO}">
+    <h1 th:if="${#strings.isEmpty(diarySpecificationResponseDTO.numId)}" class="main_h1">일기 등록</h1>
+    <form th:if="${#strings.isEmpty(diarySpecificationResponseDTO.numId)}" role="form" id="diaryForm" enctype="multipart/form-data" action="/api/diary/save_proc" method="post">
+      <div class="main_nickDate">
+        <label for="content" style="margin-bottom: 10px; font-weight: bold; font-size: 18px;">[[${nickName}]]</label>
+        <div class="main_date">
+          <label for="content" style="margin-bottom: 10px;">[[${strNowDate}]]</label>
+        </div>
       </div>
       <div>
-        <label for="photo" style="margin-bottom: 10px; font-weight: bold;">사진:</label>
-        <input type="file" id="photo"  name="itemImgFile" required style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+        <label class="main_label" for="content">내용:</label>
+        <textarea th:field="*{content}" id="content" name="content" required style="margin-top: 10px; width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
       </div>
-      <button type="submit" style="margin-top: 10px; padding: 10px 20px; background-color: #0095f6; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">등록</button>
+      <div>
+        <label class="main_label" for="photo" >사진:</label>
+        <input type="file" id="photo"  name="itemImgFile" required style="height: 100px; padding: 10px;">
+      </div>
+      <div class="main_btn">
+        <button type="submit" style="margin-top: 10px; padding: 10px 20px; background-color: #ffca5a; color: #fff; border: none; border-radius: 5px;font-weight: bold; cursor: pointer; font-size: 16px;">등록</button>
+      </div>
+    </form>
+
+    <h1 th:unless="${#strings.isEmpty(diarySpecificationResponseDTO.numId)}" class="main_h1">일기 수정</h1>
+    <form th:unless="${#strings.isEmpty(diarySpecificationResponseDTO.numId)}" role="form" th:action="@{/api/diary/post/{id}(id = ${numId})}" th:method="put">
+      <div class="main_nickDate">
+        <label for="content" style="margin-bottom: 10px; font-weight: bold; font-size: 18px;">[[${nickName}]]</label>
+        <div class="main_date">
+          <label for="content" style="margin-bottom: 10px;">[[${strNowDate}]]</label>
+        </div>
+      </div>
+      <div>
+        <label class="main_label" for="content">내용:</label>
+        <textarea th:field="*{content}" name="content" required style="margin-top: 10px; width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
+      </div>
+      <div>
+        <label class="main_label" for="photo" >사진:</label>
+        <input type="file" name="itemImgFile" required style="height: 100px; padding: 10px;">
+      </div>
+      <div class="main_btn">
+        <button type="submit" style="margin-top: 10px; padding: 10px 20px; background-color: #ffca5a; color: #fff; border: none; border-radius: 5px;font-weight: bold; cursor: pointer; font-size: 16px;">수정</button>
+      </div>
     </form>
   </div>
 </main>

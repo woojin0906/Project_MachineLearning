@@ -17,6 +17,12 @@
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+        $(document).ready(function(){
+            var errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){
+                alert(errorMessage);
+            }
+        });
 
         document.addEventListener("DOMContentLoaded", function() {
             var commentTables = document.getElementsByClassName("comment_table");
@@ -85,6 +91,32 @@
 
                     }
                 });
+        }
+
+        function deleteDiary(obj){
+            var numId = obj.dataset.id;
+            var url = "/api/diary/delete/" + numId;
+            console.log(numId);
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
+                        location.href = '/api/diary/list/1';
+
+                },
+                error: function (jqXHR, status, error) {
+
+                    if (jqXHR.status == '401') {
+                        alert('로그인 후 이용해주세요');
+                        location.href = '/user/login';
+                    } else {
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
         }
 
         function saveRecommend(obj){
@@ -157,7 +189,7 @@
 <body>
 <!-- navigation -->
 <nav>
-    <h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1>
+    <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
     <div class="menu">
         <div class="nav_menu">
             <img src="/img/home.png" alt="홈">
@@ -168,10 +200,6 @@
                 localStorage.removeItem('emotion');
             }
         </script>
-        <div class="nav_menu">
-            <img src="/img/search.png" alt="검색">
-            <div class="nav_span"><span>검색</span></div>
-        </div>
 
         <div class="nav_menu">
             <img src="/img/plus.png" alt="만들기">
@@ -211,7 +239,24 @@
             <form>
                 <table class="cotent_table" th:each="list : ${lists}">
                     <tr>
-                        <td class="table_header"><img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보"></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td class="table_header">
+                                        <img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보">
+                                    </td>
+                                    <td class="table_header_dropdown">
+                                        <div class="dropdown">
+                                            <span class="dropbtn">drop down</span>
+                                            <div class="dropdown-content">
+                                                <a  th:if="${uid} eq *{list.uid}" class="dropdown_a" th:href="@{/api/diary/post/{id}(id = ${list.numId})}">수정</a>
+                                                <button th:if="${uid} eq *{list.uid}" type="button" class="dropdown_a" th:data-id="${list.numId}" onclick="deleteDiary(this)">삭제</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                     <tr>
                         <td class="table_img"><img th:src="${list.photo}" alt="피드 사진" class="mainPic"></td>
@@ -239,7 +284,7 @@
                                     <td class="comment_emotion"><span th:text="${comment.emotion}">행복</span></td>
                                     <td class="comment_content"><span th:text="${comment.content}">내가 입으면 더 잘어울릴 것 같아</span></td>
                                     <td class="comment_date"><span th:text="${comment.writeDate}">2022-03-05</span></td>
-                                    <td><button type="button" class="btn_open" th:data-id="${comment.cid}" onclick="deleteComment(this)">삭제</button></td>
+                                    <td><button  th:if="${uid} eq *{comment.uid}" type="button" class="btn_open" th:data-id="${comment.cid}" onclick="deleteComment(this)">삭제</button></td>
                                 </tr>
                             </table>
                         </td>

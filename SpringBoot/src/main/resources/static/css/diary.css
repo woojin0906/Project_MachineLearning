@@ -66,6 +66,7 @@ main {
     margin: 0 auto;
     padding-top: 94px;
     padding-bottom: 40px;
+    height: 800px;
 }
 .main-right {
     width: 310px;
@@ -344,4 +345,32 @@ ul.story-list .profile-text {
 .recommend-friend-profile {
     display: flex;
     align-items: flex-start;
+}
+.main_div {
+    background-color: #fffeee;
+    padding: 15px;
+}
+.main_h1 {
+    text-align: center;
+}
+.main_date {
+    text-align: right;
+    margin-right: 5px;
+    padding-top: 10px;
+}
+.main_nickDate {
+    padding-bottom: 30px;
+    padding-top: 20px;
+    text-align: right;
+}
+.main_label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.main_btn {
+    text-align: center;
+}
+a:hover, a:link, a:visited, a:active {
+    text-decoration-line: none;
+    color: #000000;
 }
