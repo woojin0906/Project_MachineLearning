@@ -344,7 +344,7 @@ ul.story-list .profile-text {
 }
 
 .table_img img {
-    width: 458px;
+    width: 358px;
 }
 .table_writeCom_td {
     border-top: 1px solid #ddd;
@@ -387,7 +387,9 @@ td.table_header_dropdown {
     width: 10%;
 }
 td.table_content {
-    padding: 10px 20px;
+    padding: 20px 20px;
+    vertical-align: top;
+    font-size: 16px;
 }
 .table_recommend {
     margin-right: 10px;

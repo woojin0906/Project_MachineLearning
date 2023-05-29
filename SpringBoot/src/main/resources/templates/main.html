@@ -249,7 +249,7 @@
                                         <div class="dropdown">
                                             <span class="dropbtn">drop down</span>
                                             <div class="dropdown-content">
-                                                <a  th:if="${uid} eq *{list.uid}" class="dropdown_a" th:href="@{/api/diary/post/{id}(id = ${list.numId})}">수정</a>
+                                                <a th:if="${uid} eq *{list.uid}" class="dropdown_a" th:href="@{/api/diary/post/{id}(id = ${list.numId})}">수정</a>
                                                 <button th:if="${uid} eq *{list.uid}" type="button" class="dropdown_a" th:data-id="${list.numId}" onclick="deleteDiary(this)">삭제</button>
                                             </div>
                                         </div>
@@ -259,7 +259,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="table_img"><img th:src="${list.photo}" alt="피드 사진" class="mainPic"></td>
+                        <td th:if="${not #strings.isEmpty(list.photo)}" class="table_img"><img th:src="${list.photo}" alt="피드 사진" class="mainPic"></td>
                     </tr>
                     <tr>
                         <td>
@@ -275,7 +275,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="table_content"><span class="at-tag" th:text="${list.content}">이미 알고 있었어 미지근해진 널 돌이키려는 짓도 무의미할 걸 알아서 그냥 있을거야 Nothing 미친듯이 다투는 일도 Sick of it 여기저기 널 씹고 다녀도 No Baby I just wanna stay in my agit 달리 할 거 없이 그냥 혼자 취해 춤을 춰 Baby I just wanna stay in my agit 달리 할 거 없이 그냥 혼자 취해 춤을 춰 이제 나는 네게 아무 것도 아닌데 그걸</span></td>
+                            <td th:if="${#strings.isEmpty(list.photo)}" class="table_content"><div th:text="${list.content}" style="min-height: 300px;" >내용</div></td>
+                            <td th:unless="${#strings.isEmpty(list.photo)}" class="table_content" th:text="${list.content}">내용</td>
                     </tr>
                     <tr>
                         <td>
