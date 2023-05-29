@@ -11,6 +11,7 @@ import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 
 import jakarta.validation.Valid;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -149,9 +150,19 @@ public class DiaryController {
         return "main";
     }
 
-    @GetMapping("/list/user/{nickName}") // 닉네임으로 다이어리 조회
-    public List<DiarySpecificationResponseDTO> listDiaryByNickName(@PathVariable("nickName") String nickName){
-        return diaryService.listDiaryByNickName(nickName);
+    @GetMapping("/list/user") // 닉네임으로 다이어리 조회
+    public String listDiaryByNickName(Model model, Principal principal){
+        String nickName = principal.getName();
+
+        UserEntity user = userRepository.findByNickName(nickName);
+        List<DiarySpecificationResponseDTO> lists = diaryService.listDiaryByNickName(nickName);
+
+        model.addAttribute("nickName", nickName);
+        model.addAttribute("lists", lists);
+        model.addAttribute("uid", user.getUid());
+
+        return "diary/mypage";
+
     }
 
 }
