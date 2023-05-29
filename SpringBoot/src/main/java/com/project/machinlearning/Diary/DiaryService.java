@@ -193,7 +193,7 @@ public class DiaryService {
      * 단일 다이어리 조회수 1 증가 후 다이어리, 좋아요, 댓글 리턴
      * - 한승완 2023.05.26
      */
-    public DiarySpecificationResponseDTO getDiaryWithCommentsAndRecommendations(Long numId) {
+    public DiarySpecificationResponseDTO getDiaryWithCommentsAndRecommendations(Long numId, UserEntity user) {
         Optional<DiaryEntity> diaryOptional = diaryRepository.getDiary(numId);
         if (diaryOptional.isPresent()) {
             DiaryEntity diaryEntity = diaryOptional.get();
@@ -231,6 +231,7 @@ public class DiaryService {
                     diaryEntity.getView(),
                     diaryEntity.getPhoto(),
                     diaryEntity.getRecommend(),
+                    diaryEntity.getRecommends().stream().anyMatch(recommendEntity -> recommendEntity.getUser().equals(user)),
                     commentDtoList
             );
         } else {
