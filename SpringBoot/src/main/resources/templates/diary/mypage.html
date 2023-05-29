@@ -37,6 +37,13 @@
             max-width: 100%;
             height: auto;
         }
+        .img-profile {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #fafafa;
+            border-radius: 100%;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <!-- 사용자 스크립트 추가 -->
@@ -210,9 +217,9 @@
 <nav>
     <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
     <div class="menu">
-        <div class="nav_menu">
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/1">
             <img src="/img/home.png" alt="홈">
-            <div class="nav_span"><span><a onclick="deleteEmotion()" href="/api/diary/list/1">홈</a></span></div>
+            <div class="nav_span"><span>홈</span></div></a>
         </div>
         <script>
             function deleteEmotion() {
@@ -220,9 +227,9 @@
             }
         </script>
 
-        <div class="nav_menu">
+        <div class="nav_menu"><a href="/api/diary/save">
             <img src="/img/plus.png" alt="만들기">
-            <div class="nav_span"><a href="/api/diary/save"><span>만들기</span></a></div>
+            <div class="nav_span"><span>만들기</span></div></a>
         </div>
 
         <div class="nav_menu"><a href="/api/diary/list/user" >
@@ -230,8 +237,8 @@
             <div class="nav_span"><span th:text="${nickName}">프로필</span></div></a>
         </div>
 
-        <div class="nav_menu">
-            <div class="nav_span"><span><a href="/user/logout">로그아웃</a></span></div>
+        <div class="nav_menu"><a href="/user/logout">
+            <div class="nav_span"><span>로그아웃</span></div></a>
         </div>
     </div>
 </nav>
@@ -254,20 +261,22 @@
 <!--    </script>-->
     <div class="grid-container">
         <div class="grid-item" th:each="list : ${lists}">
-            <td class="table_img">
-                <img th:src="${list.photo}" alt="피드 사진" class="mainPic" width="150" height="150">
-            </td>
+            <a th:href="@{/api/diary/posts/{id}(id = ${list.numId})}">
+<!--            <td class="table_img">-->
+<!--                <img th:src="${list.photo}" alt="피드 사진" class="mainPic" width="150" height="150">-->
+<!--            </td>-->
             <div>
                 <img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보">
                 <p th:text="${list.content}"></p>
-                <td class="table_recommend">
-                    <img onclick="saveRecommend(this)" th:data-value="${list.numId}" class="icon-react" alt="하트"
-                     th:src="${list.isrecommend ? '/img/liked.png' : 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png'}">
-                    <span class="point-span" th:text="${list.recommend}">
-                    </span>
-                </td>
+<!--                <td class="table_recommend">-->
+<!--                    <img onclick="saveRecommend(this)" th:data-value="${list.numId}" class="icon-react" alt="하트"-->
+<!--                     th:src="${list.isrecommend ? '/img/liked.png' : 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png'}">-->
+<!--                    <span class="point-span" th:text="${list.recommend}">-->
+<!--                    </span>-->
+<!--                </td>-->
                 <p th:text="${list.writeDate}"></p>
             </div>
+            </a>
         </div>
     <!--  csrf 체크해서 이동 -->
     <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">

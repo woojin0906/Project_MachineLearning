@@ -1,95 +1,274 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Instagram</title>
   <link href="/css/common.css" rel="stylesheet" type="text/css" />
-  <link href="/css/diary.css" rel="stylesheet" type="text/css" />
+  <link href="/css/main.css" rel="stylesheet" type="text/css" />
   <!-- favicon -->
   <link rel="icon" href="/img/favicon.png">
   <link rel="instagram-icon" href="/img/favicon.png">
+  <!-- jquery 적용 -->
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 </head>
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+    $(document).ready(function(){
+      var errorMessage = [[${errorMessage}]];
+      if(errorMessage != null){
+        alert(errorMessage);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var commentTables = document.getElementsByClassName("comment_table");
+
+      for (var i = 0; i < commentTables.length; i++) {
+        var commentTable = commentTables[i];
+        var commentRows = commentTable.getElementsByTagName("tr");
+
+        for (var j = 0; j < commentRows.length; j++) {
+          var emotionCell = commentRows[j].getElementsByClassName("comment_emotion")[0];
+          var emotionText = emotionCell.innerText.trim();
+
+          var imgurl = "";
+          if (emotionText === "공포") {
+            imgurl = "/img/emoji.png";
+          } else if (emotionText === "놀람") {
+            imgurl = "/img/surprised.png";
+          } else if (emotionText === "분노") {
+            imgurl = "/img/angry.png";
+          } else if (emotionText === "슬픔") {
+            imgurl = "/img/sad.png";
+          } else if (emotionText === "중립") {
+            imgurl = "/img/neutral.png";
+          } else if (emotionText === "행복") {
+            imgurl = "/img/happy.png";
+          } else if (emotionText === "혐오") {
+            imgurl = "/img/confused.png";
+          }
+
+          var imgElement = document.createElement("img");
+          imgElement.src = imgurl;
+          imgElement.style.maxWidth = "100%";
+          imgElement.style.height = "auto";
+          emotionCell.innerHTML = "";
+          emotionCell.appendChild(imgElement);
+        }
+      }
+    });
+
+    function deleteComment(obj){
+      var numId = obj.dataset.value;
+      var cid = obj.dataset.id;
+      var url = "/api/comment/delete/" + cid;
+
+      $.ajax({
+        url: url,
+        type: "DELETE",
+        dataType: "json",
+        cache: false,
+        success: function (result, status) {
+            location.href = '/api/diary/posts/' + numId;
+        },
+        error: function (jqXHR, status, error) {
+
+          if (jqXHR.status == '401') {
+            alert('로그인 후 이용해주세요');
+            location.href = '/user/login';
+          } else {
+            alert(jqXHR.responseJSON.message);
+          }
+
+        }
+      });
+    }
+
+    function deleteDiary(obj){
+      var numId = obj.dataset.id;
+      var url = "/api/diary/delete/" + numId;
+      console.log(numId);
+      $.ajax({
+        url: url,
+        type: "DELETE",
+        dataType: "json",
+        cache: false,
+        success: function (result, status) {
+          location.href = '/api/diary/list/user';
+        },
+        error: function (jqXHR, status, error) {
+
+          if (jqXHR.status == '401') {
+            alert('로그인 후 이용해주세요');
+            location.href = '/user/login';
+          } else {
+            alert(jqXHR.responseJSON.message);
+          }
+
+        }
+      });
+    }
+
+    function saveRecommend(obj){
+      var numId = obj.dataset.value;
+      var url = "/api/recommend/save";
+
+      $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify({num_id: numId, uid:[[${uId}]]}),
+        cache: false,
+        contentType: 'application/json',
+        success: function (result, status) {
+            location.href = '/api/diary/posts/' + numId;
+        },
+        error: function (jqXHR, status, error) {
+
+          if (jqXHR.status == '401') {
+            alert('로그인 후 이용해주세요');
+            location.href = '/user/login';
+          } else {
+            alert(jqXHR.responseJSON.message);
+          }
+        }
+      });
+    }
+
+    function saveComment(obj) {
+      var content = $("#input-comment").val();
+      var numId = obj.dataset.value;
+      var url = "/api/comment/save";
+
+      $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify({numId: numId , content:content ,uid:[[${uId}]]}),
+        cache: false,
+        contentType: 'application/json',
+        success: function (result, status) {
+            location.href = '/api/diary/posts/' + numId;
+        },
+        error: function (jqXHR, status, error) {
+          if (jqXHR.status == '401') {
+            alert('로그인 후 이용해주세요');
+            location.href = '/user/login';
+          }
+        }
+      });
+    }
+
+  </script>
+
+</th:block>
 <body>
 <!-- navigation -->
 <nav>
-  <h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1>
+  <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
   <div class="menu">
-    <div class="nav_menu">
+    <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/1">
       <img src="/img/home.png" alt="홈">
-      <div class="nav_span"><span>홈</span></div>
+      <div class="nav_span"><span>홈</span></div></a>
+    </div>
+    <script>
+      function deleteEmotion() {
+        localStorage.removeItem('emotion');
+      }
+    </script>
+
+    <div class="nav_menu"><a href="/api/diary/save">
+      <img src="/img/plus.png" alt="만들기">
+      <div class="nav_span"><span>만들기</span></div></a>
     </div>
 
-    <div class="nav_menu">
-      <img src="/img/dm.png" alt="DM">
-      <div class="nav_span"><span>검색</span></div>
+    <div class="nav_menu"><a href="/api/diary/list/user" >
+      <img class="pic" src="/img/user.png" alt="마이페이지">
+      <div class="nav_span"><span th:text="${nickName}">프로필</span></div></a>
     </div>
 
-    <div class="nav_menu">
-      <img src="/img/home.png" alt="홈">
-      <div class="nav_span"><span>만들기</span></div>
-    </div>
-
-    <div class="nav_menu">
-      <img class="pic" src="/img/profile.png" alt="마이페이지">
-      <div class="nav_span"><span>프로필</span></div>
-    </div>
-
-    <div class="nav_menu">
-      <div class="nav_span"><span>로그아웃</span></div>
+    <div class="nav_menu"><a href="/user/logout">
+      <div class="nav_span"><span>로그아웃</span></div></a>
     </div>
   </div>
 </nav>
 <!-- main -->
 <main>
-  <div class="feeds">
-    <!-- article -->
-    <article th:object="${diarySpecificationResponseDTO}">
-
-      <header>
-        <div class="profile-of-article">
-          <img class="img-profile pic" src="/img/happy.png" alt="사용자의 감정 정보">
-          <span class="userID main-id point-span" th:text="*{writeDate}">2022-05-05</span>
-        </div>
-        <img class="icon-react icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
-      </header>
-      <div class="main_width">
-        <div class="main-image">
-         <img src="/img/dog.jpg" alt="user님의 피드 사진" class="mainPic">
-        </div>
-        <div class="icons-react">
-          <div class="icons-left">
-            <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
-            <span class="point-span">[[*{view}]]</span>
-          </div>
-        </div>
-        <!-- article text data -->
-        <div class="reaction">
-          <div class="description">
-            <p><span class="at-tag" th:text="*{content}">@wkorea @gucci</span></p>
-          </div>
-          <div class="comment-section">
-            <ul class="comments">
-              <li>
-                <span><span class="point-span userID">김이박</span>내가 입으면 더 잘어울릴 것 같아</span>
-                <div>
-                  <img class="comment-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
-                </div>
-              </li>
-              <!-- input 값 여기에 추가 -->
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="hl"></div>
-      <div class="comment">
-        <input id="input-comment" class="input-comment" type="text" placeholder="댓글 달기..." >
-        <button type="submit" class="submit-comment" disabled>게시</button>
-      </div>
-      </form>
-    </article>
-  </div>
+    <div class="feeds">
+      <!-- article -->
+      <article>
+        <form>
+          <table class="cotent_table" th:object="${diarySpecificationResponseDTO}">
+            <tr>
+              <td>
+                <table>
+                  <tr>
+                    <td class="table_header">
+                      <img class="img-profile pic" th:src="${diarySpecificationResponseDTO.emotion}" alt="사용자의 감정 정보">
+                    </td>
+                    <td class="table_header_dropdown">
+                      <div class="dropdown">
+                        <span class="dropbtn">drop down</span>
+                        <div class="dropdown-content">
+<!--                          <a th:if="${uId} eq *{uid}" class="dropdown_a" th:href="@{/api/diary/post/{id}(id = ${numId})}">수정</a>-->
+                          <button th:if="${uId} eq *{uid}" type="button" class="dropdown_a" th:data-id="${numId}" onclick="deleteDiary(this)">삭제</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td th:if="${not #strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_img"><img th:src="${diarySpecificationResponseDTO.photo}" alt="피드 사진" class="mainPic"></td>
+            </tr>
+            <tr>
+              <td>
+                <table>
+                  <tr>
+                    <td class="table_recommend">
+                      <img onclick="saveRecommend(this)" th:data-value="${numId}" class="icon-react" alt="하트"
+                           th:src="${diarySpecificationResponseDTO.isrecommend ? '/img/liked.png' : 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png'}">
+                      <span class="point-span" th:text="${diarySpecificationResponseDTO.recommend}"></span></td>
+                    <td class="table_writeDate"><span class="userID main-id point-span" th:text="${diarySpecificationResponseDTO.writeDate}">2022-05-05</span></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td th:if="${#strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_content"><div th:text="${diarySpecificationResponseDTO.content}" style="min-height: 300px;" >내용</div></td>
+              <td th:unless="${#strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_content" th:text="${diarySpecificationResponseDTO.content}">내용</td>
+            </tr>
+            <tr>
+              <td>
+                <table class="comment_table" th:each="comment : ${diarySpecificationResponseDTO.comments}">
+                  <tr>
+                    <td class="comment_emotion"><span th:text="${comment.emotion}">행복</span></td>
+                    <td class="comment_content"><span th:text="${comment.content}">내가 입으면 더 잘어울릴 것 같아</span></td>
+                    <td class="comment_date"><span th:text="${comment.writeDate}">2022-03-05</span></td>
+                    <td><button  th:if="${uId} eq ${comment.uid}" type="button" class="btn_open" th:data-id="${comment.cid}" th:data-value="${numId}" onclick="deleteComment(this)">삭제</button></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="table_view">조회수 : <span class="point-span" th:text="${diarySpecificationResponseDTO.view}"></span></td>
+            </tr>
+            <tr>
+              <td class="table_writeCom_td">
+                <input id="input-comment" name="input-comment" class="input-comment" type="text" placeholder="댓글 달기...">
+                <button type="button" class="submit-comment" th:data-value="${numId}" onclick="saveComment(this)">등록</button></td>
+            </tr>
+          </table>
+        </form>
+      </article>
+    </div>
+    <!--  csrf 체크해서 이동 -->
+    <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">
 </main>
 <footer>
   <p class="insta-sccript">

@@ -189,7 +189,6 @@ public class DiaryService {
         return "삭제가 완료되었습니다.";
     }
 
-
     /**
      * 단일 다이어리 조회수 1 증가 후 다이어리, 좋아요, 댓글 리턴
      * - 한승완 2023.05.26
@@ -205,12 +204,30 @@ public class DiaryService {
                     .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion(), comment.getUser().getUid()))
                     .collect(Collectors.toList());
 
+            String emotion = diaryEntity.getEmotion();
+            String imgurl="";
+            if(emotion.equals("공포")) {
+                imgurl="/img/emoji.png";
+            } else if(emotion.equals("놀람")) {
+                imgurl="/img/surprised.png";
+            } else if(emotion.equals("분노")) {
+                imgurl="/img/angry.png";
+            } else if(emotion.equals("슬픔")) {
+                imgurl="/img/sad.png";
+            } else if(emotion.equals("중립")) {
+                imgurl="/img/neutral.png";
+            } else if(emotion.equals("행복")) {
+                imgurl="/img/happy.png";
+            } else if(emotion.equals("혐오")) {
+                imgurl="/img/confused.png";
+            }
+
             return new DiarySpecificationResponseDTO(
                     diaryEntity.getNumId(),
                     diaryEntity.getUser().getUid(),
                     diaryEntity.getWriteDate(),
                     diaryEntity.getContent(),
-                    diaryEntity.getEmotion(),
+                    imgurl,
                     diaryEntity.getView(),
                     diaryEntity.getPhoto(),
                     diaryEntity.getRecommend(),

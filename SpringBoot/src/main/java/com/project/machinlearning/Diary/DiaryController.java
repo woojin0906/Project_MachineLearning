@@ -109,8 +109,9 @@ public class DiaryController {
     }
 
     @DeleteMapping("/delete/{numId}")  // 다이어리 삭제
-    public String deleteDiary(@PathVariable Long numId){
-        return diaryService.deleteDiary(numId);
+    public @ResponseBody ResponseEntity deleteDiary(@PathVariable Long numId){
+        diaryService.deleteDiary(numId);
+        return new ResponseEntity<Long>(numId, HttpStatus.OK);
     }
 
     @GetMapping({"/list","/list/{page}"})  // 다이어리 전체 조회
@@ -129,7 +130,13 @@ public class DiaryController {
     }
 
     @GetMapping("/posts/{numId}")  // 단일 다이어리 조회
-    public String SpecificationDiary(@PathVariable Long numId, Model model) {
+    public String SpecificationDiary(@PathVariable Long numId, Model model, Principal principal) {
+        String nickName = principal.getName();
+
+        UserEntity user = userRepository.findByNickName(nickName);
+        model.addAttribute("nickName", nickName);
+        model.addAttribute("uId", user.getUid());
+
         DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId);
         model.addAttribute("diarySpecificationResponseDTO", diarySpecificationResponseDTO);
         return "diary/diary";

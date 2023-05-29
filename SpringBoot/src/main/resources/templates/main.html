@@ -103,7 +103,9 @@
                 dataType: "json",
                 cache: false,
                 success: function (result, status) {
+
                         location.href = '/api/diary/list/1';
+
 
                 },
                 error: function (jqXHR, status, error) {
@@ -191,9 +193,9 @@
 <nav>
     <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
     <div class="menu">
-        <div class="nav_menu">
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/1">
             <img src="/img/home.png" alt="홈">
-            <div class="nav_span"><span><a onclick="deleteEmotion()" href="/api/diary/list/1">홈</a></span></div>
+            <div class="nav_span"><span>홈</span></div></a>
         </div>
         <script>
             function deleteEmotion() {
@@ -201,9 +203,9 @@
             }
         </script>
 
-        <div class="nav_menu">
+        <div class="nav_menu"><a href="/api/diary/save">
             <img src="/img/plus.png" alt="만들기">
-            <div class="nav_span"><a href="/api/diary/save"><span>만들기</span></a></div>
+            <div class="nav_span"><span>만들기</span></div></a>
         </div>
 
         <div class="nav_menu"><a href="/api/diary/list/user" >
@@ -211,8 +213,8 @@
             <div class="nav_span"><span th:text="${nickName}">프로필</span></div></a>
         </div>
 
-        <div class="nav_menu">
-            <div class="nav_span"><span><a href="/user/logout">로그아웃</a></span></div>
+        <div class="nav_menu"><a href="/user/logout">
+            <div class="nav_span"><span>로그아웃</span></div></a>
         </div>
     </div>
 </nav>
@@ -249,7 +251,7 @@
                                         <div class="dropdown">
                                             <span class="dropbtn">drop down</span>
                                             <div class="dropdown-content">
-                                                <a th:if="${uid} eq *{list.uid}" class="dropdown_a" th:href="@{/api/diary/post/{id}(id = ${list.numId})}">수정</a>
+<!--                                                <a th:if="${uid} eq *{list.uid}" class="dropdown_a" th:href="@{/api/diary/post/{id}(id = ${list.numId})}">수정</a>-->
                                                 <button th:if="${uid} eq *{list.uid}" type="button" class="dropdown_a" th:data-id="${list.numId}" onclick="deleteDiary(this)">삭제</button>
                                             </div>
                                         </div>
