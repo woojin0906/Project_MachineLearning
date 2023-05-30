@@ -6,10 +6,10 @@ ul,li {
     list-style-position: inside;
 }
 footer p {
-    margin-top: 18px;
-    font-size: 11px;
-    color: #c7c7c7;
-    line-height: 18px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #000000;
+    line-height: 20px;
     text-align: center;
 }
 .pic {
@@ -30,18 +30,18 @@ span.point-span {
 }
 /* nav */
 nav {
-    width: 200px;
+    width: 250px;
     height: 100%;
     position: fixed;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #000000;
 }
 .nav_menu {
     margin: 10px;
-    padding: 20px;
-    font-size: 20px;
+    padding: 25px;
+    font-size: 40px;
 }
 .nav_menu img {
-    width: 25px;
+    width: 35px;
     float: left;
     margin-right: 15px;
 }
@@ -49,7 +49,7 @@ nav {
     height: 21px;
     padding: 3px;
     font-weight: bold;
-    font-size: 17px;
+    font-size: 20px;
 }
 .menu {
     margin-top: 50px;
@@ -57,7 +57,7 @@ nav {
 h1 {
     margin-left: 20px;
     margin-top: 30px;
-    font-size: 30px;
+    font-size: 50px;
 }
 
 /* main */

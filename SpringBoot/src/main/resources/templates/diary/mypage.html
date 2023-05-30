@@ -34,8 +34,10 @@
             width: 250px; /* 원하는 가로 크기로 설정 */
             height: 300px; /* 원하는 세로 크기로 설정 */
             border: 2px solid #000; /* Change the color to black (#000) */
+            box-shadow: 10px 5px;
         }
         .mainPic {
+            box-shadow: 3px 3px 3px;
             width: 150px;
             height: 150px;
         }
@@ -269,14 +271,13 @@
         <div class="grid-item" th:each="list : ${lists}" >
             <a th:href="@{/api/diary/posts/{id}(id = ${list.numId})}">
                 <div class="content-wrapper">
-                    <p th:text="${list.writeDate}" style="line-height: 20px; height: 30px; margin: 0;"></p>
+                    <div style="display: flex; margin-bottom: 30px; align-items: center;">
+                        <p th:text="${list.writeDate}" style="line-height: 30px; height: 30px; text-align: left; font-weight: bold; font-size: 22px; margin-left: 0px; margin-right: 40px;order: 1;"></p>
+                        <img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보" style="width: 40px; height: 40px; margin-top: 0; order: 2;">
+                    </div>
                     <td class="table_img">
                         <img th:src="${list.photo}" alt="피드 사진" class="mainPic" width="150" height="150">
                     </td>
-                    <div>
-                        <img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보" style="width: 40px; height: 40px;">
-<!--                        <p th:text="${list.content}"></p>-->
-                    </div>
                 </div>
             </a>
         </div>

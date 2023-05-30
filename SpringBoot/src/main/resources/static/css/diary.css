@@ -6,10 +6,10 @@ ul,li {
     list-style-position: inside;
 }
 footer p {
-    margin-top: 18px;
-    font-size: 11px;
-    color: #c7c7c7;
-    line-height: 18px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #000000;
+    line-height: 20px;
     text-align: center;
 }
 .pic {
@@ -33,7 +33,7 @@ nav {
     width: 200px;
     height: 100%;
     position: fixed;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #000000;
 }
 .nav_menu {
     margin: 10px;
