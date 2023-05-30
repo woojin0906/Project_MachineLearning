@@ -96,9 +96,10 @@ public class DiaryController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 E요일");
         String strNowDate = simpleDateFormat.format(today);
 
-        model.addAttribute("strNowDate", strNowDate);
 
-        DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId);
+        model.addAttribute("strNowDate", strNowDate);
+        UserEntity user = userRepository.findByNickName(nickName);
+        DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId,user);
         model.addAttribute("diarySpecificationResponseDTO", diarySpecificationResponseDTO);
         return "diary/saveDiary";
     }
@@ -137,7 +138,7 @@ public class DiaryController {
         model.addAttribute("nickName", nickName);
         model.addAttribute("uId", user.getUid());
 
-        DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId);
+        DiarySpecificationResponseDTO diarySpecificationResponseDTO = diaryService.getDiaryWithCommentsAndRecommendations(numId,user);
         model.addAttribute("diarySpecificationResponseDTO", diarySpecificationResponseDTO);
         return "diary/diary";
     }

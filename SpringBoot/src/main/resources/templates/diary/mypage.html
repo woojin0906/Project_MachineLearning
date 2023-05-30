@@ -14,6 +14,11 @@
     <!-- jquery 적용 -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <style>
+        .content-wrapper {
+            max-width: 100%;
+            max-height: 100%;
+            overflow: hidden;
+        }
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr); /* 그리드 컨테이너의 열 수 설정 */
@@ -23,11 +28,12 @@
         }
 
         .grid-item {
-            background-color: #f1f1f1;
+            /*background-color: #f1f1f1;*/
             padding: 20px;
             text-align: center;
-            width: 230px; /* 원하는 가로 크기로 설정 */
-            height: 260px; /* 원하는 세로 크기로 설정 */
+            width: 250px; /* 원하는 가로 크기로 설정 */
+            height: 300px; /* 원하는 세로 크기로 설정 */
+            border: 2px solid #000; /* Change the color to black (#000) */
         }
         .mainPic {
             width: 150px;
@@ -260,22 +266,18 @@
 <!--        }-->
 <!--    </script>-->
     <div class="grid-container">
-        <div class="grid-item" th:each="list : ${lists}">
+        <div class="grid-item" th:each="list : ${lists}" >
             <a th:href="@{/api/diary/posts/{id}(id = ${list.numId})}">
-<!--            <td class="table_img">-->
-<!--                <img th:src="${list.photo}" alt="피드 사진" class="mainPic" width="150" height="150">-->
-<!--            </td>-->
-            <div>
-                <img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보">
-                <p th:text="${list.content}"></p>
-<!--                <td class="table_recommend">-->
-<!--                    <img onclick="saveRecommend(this)" th:data-value="${list.numId}" class="icon-react" alt="하트"-->
-<!--                     th:src="${list.isrecommend ? '/img/liked.png' : 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png'}">-->
-<!--                    <span class="point-span" th:text="${list.recommend}">-->
-<!--                    </span>-->
-<!--                </td>-->
-                <p th:text="${list.writeDate}"></p>
-            </div>
+                <div class="content-wrapper">
+                    <p th:text="${list.writeDate}" style="line-height: 20px; height: 30px; margin: 0;"></p>
+                    <td class="table_img">
+                        <img th:src="${list.photo}" alt="피드 사진" class="mainPic" width="150" height="150">
+                    </td>
+                    <div>
+                        <img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보" style="width: 40px; height: 40px;">
+<!--                        <p th:text="${list.content}"></p>-->
+                    </div>
+                </div>
             </a>
         </div>
     <!--  csrf 체크해서 이동 -->
@@ -289,6 +291,5 @@
         © 2020 INSTAGRAM FROM FACEBOOK
     </p>
 </footer>
-
 </body>
 </html>
