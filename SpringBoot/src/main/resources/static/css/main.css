@@ -244,7 +244,7 @@ div.time-log span {
 }
 button.submit-comment {
     color: #ffffff;
-    background-color: #ffce58;
+    background-color: #000000;
     border-style: none;
     height: 40px;
     width: 40px;
@@ -350,15 +350,18 @@ ul.story-list .profile-text {
     border-top: 1px solid #ddd;
 }
 .cotent_table {
-     margin-bottom: 50px;
-     background-color: #fffeee;
- }
+    margin-bottom: 50px;
+    background-color: #ffffff;
+    box-shadow: 7px 5px;
+    border: 2px solid #000000;
+}
 .comment_table {
     margin: 5px;
-    background-color: #fbf5c4;
+    background-color: #f1f1f1;
     border-radius: 5px;
     margin-left: 10px;
     margin-right: 10px;
+    border: 1px solid #acacac;
 }
 .comment_emotion {
     color: orange;
@@ -368,11 +371,11 @@ ul.story-list .profile-text {
 }
 .comment_content {
     margin-right: 10px;
-    width: 299px;
+    width: 280px;
 }
 .comment_date {
     color: #c7c7c7;
-    width: 80px;
+    width: 100px;
     text-align: center;
 }
 td.table_img {
@@ -381,7 +384,7 @@ td.table_img {
 td.table_header {
     height: 50px;
     text-align: center;
-    padding-left: 40px;
+    padding-left: 210px;
 }
 td.table_header_dropdown {
     width: 10%;
@@ -415,12 +418,16 @@ a:hover, a:link, a:visited, a:active {
 .btn_emoji {
     padding: 6px 17px;
     margin-right: 5px;
-    background-color: #ffe28a;
     border: 1px;
     border-radius: 5px;
     font-size: 14px;
     font-weight: bold;
     color: #ffffff;
+    background-color: #000000;
+}
+a.btn_a {
+    color: white;
+    font-weight: bold;
 }
 button.btn_open {
     background-color: #f2f2f2;
@@ -451,4 +458,10 @@ a.dropdown_a {
     border-radius: 10px;
     margin-top: 5px;
     border: 1px solid #dddddd;
+}
+img.dropbtn {
+    width: 20px;
+    height: 20px;
+    margin-left: 170px;
+    margin-right: 10px;
 }

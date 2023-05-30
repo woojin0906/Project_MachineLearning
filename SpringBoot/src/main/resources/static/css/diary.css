@@ -347,8 +347,10 @@ ul.story-list .profile-text {
     align-items: flex-start;
 }
 .main_div {
-    background-color: #fffeee;
+    background-color: #ffffff;
     padding: 15px;
+    border: 2px solid #000000;
+    box-shadow: 10px 5px;
 }
 .main_h1 {
     text-align: center;
