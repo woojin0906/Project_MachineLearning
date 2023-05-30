@@ -153,9 +153,9 @@
             });
         }
 
-        function saveComment(obj) {
-            var content = $("#input-comment").val();
-            var numId = obj.dataset.value;
+        function saveComment(button) {
+            var content = $(button).prev('.input-comment').val();
+            var numId = button.dataset.value;
             var url = "/api/comment/save";
             var emotion2 = localStorage.getItem('emotion');
 
@@ -184,6 +184,11 @@
             });
         }
 
+        function deleteEmotion() {
+            localStorage.removeItem('emotion');
+            console.log(localStorage.getItem('emotion'));
+        }
+
     </script>
 
 </th:block>
@@ -197,23 +202,18 @@
             <img src="/img/home.png" alt="홈">
             <div class="nav_span"><span>홈</span></div></a>
         </div>
-        <script>
-            function deleteEmotion() {
-                localStorage.removeItem('emotion');
-            }
-        </script>
 
-        <div class="nav_menu"><a href="/api/diary/save">
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/save">
             <img src="/img/plus.png" alt="만들기">
             <div class="nav_span"><span>만들기</span></div></a>
         </div>
 
-        <div class="nav_menu"><a href="/api/diary/list/user" >
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/user" >
             <img class="pic" src="/img/user.png" alt="마이페이지">
             <div class="nav_span"><span th:text="${nickName}">프로필</span></div></a>
         </div>
 
-        <div class="nav_menu"><a href="/user/logout">
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/user/logout">
             <div class="nav_span"><span>로그아웃</span></div></a>
         </div>
     </div>
