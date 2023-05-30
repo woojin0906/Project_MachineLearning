@@ -287,7 +287,8 @@
                                     <td class="comment_emotion"><span th:text="${comment.emotion}">행복</span></td>
                                     <td class="comment_content"><span th:text="${comment.content}">내가 입으면 더 잘어울릴 것 같아</span></td>
                                     <td class="comment_date"><span th:text="${comment.writeDate}">2022-03-05</span></td>
-                                    <td><button  th:if="${uid} eq *{comment.uid}" type="button" class="btn_open" th:data-id="${comment.cid}" onclick="deleteComment(this)">삭제</button></td>
+                                    <td><button th:if="${uid} eq *{comment.uid}" type="button" class="btn_open" th:data-id="${comment.cid}" onclick="deleteComment(this)">삭제</button></td>
+                                    <td><button th:unless="${uid} eq *{comment.uid}" disabled type="button" class="btn_open" th:data-id="${comment.cid}" onclick="deleteComment(this)">삭제</button></td>
                                 </tr>
                             </table>
                         </td>
