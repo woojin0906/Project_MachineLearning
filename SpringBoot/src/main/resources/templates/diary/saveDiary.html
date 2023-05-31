@@ -17,11 +17,30 @@
 
   <script th:inline="javascript">
     $(document).ready(function(){
-      var errorMessage = [[${errorMessage}]];
+      let errorMessage = [[${errorMessage}]]; <!-- th:inline="javascript"이 있어야만 에러메시지 인식됨 -->
       if(errorMessage != null){
         alert(errorMessage);
       }
+
+      bindDomEvent();
+
     });
+
+    function bindDomEvent(){
+      $("#photo").on("change", function() {
+        let fileName = $(this).val().split("\\").pop();  //이미지 파일명
+        let fileExt = fileName.substring(fileName.lastIndexOf(".")+1); // 확장자 추출
+        fileExt = fileExt.toLowerCase(); //소문자 변환
+        //파일 첨부 시 이미지 파일인지 검사한다.
+        if(fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" && fileExt != "png" && fileExt != "bmp"){
+          alert("이미지 파일만 등록이 가능합니다.");
+          return;
+        }
+        //화면에 파일명을 나타낸다
+        $(this).siblings("#photo").html(fileName);
+      });
+    }
+
   </script>
 
 </th:block>

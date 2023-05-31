@@ -222,12 +222,12 @@
 <main>
     <div class="main_category">
         <button class="btn_emoji" type="button" onclick="setEmotion('공포')"><a href="/api/diary/list/emotion/공포" class="btn_a">공포</a></button>
-        <button class="btn_emoji" type="button" onclick="setEmotion('놀람')"><a href="/api/diary/list/emotion/놀람" class="btn_a">놀람</a></button>
-        <button class="btn_emoji" type="button" onclick="setEmotion('분노')"><a href="/api/diary/list/emotion/분노" class="btn_a">분노</a></button>
-        <button class="btn_emoji" type="button" onclick="setEmotion('슬픔')"><a href="/api/diary/list/emotion/슬픔" class="btn_a">슬픔</a></button>
-        <button class="btn_emoji" type="button" onclick="setEmotion('중립')"><a href="/api/diary/list/emotion/중립" class="btn_a">중립</a></button>
-        <button class="btn_emoji" type="button" onclick="setEmotion('행복')"><a href="/api/diary/list/emotion/행복" class="btn_a">행복</a></button>
-        <button class="btn_emoji" type="button" onclick="setEmotion('혐오')"><a href="/api/diary/list/emotion/혐오" class="btn_a">혐오</a></button>
+        <button class="btn_surprise" type="button" onclick="setEmotion('놀람')"><a href="/api/diary/list/emotion/놀람" class="btn_a">놀람</a></button>
+        <button class="btn_angry" type="button" onclick="setEmotion('분노')"><a href="/api/diary/list/emotion/분노" class="btn_a">분노</a></button>
+        <button class="btn_sad" type="button" onclick="setEmotion('슬픔')"><a href="/api/diary/list/emotion/슬픔" class="btn_a">슬픔</a></button>
+        <button class="btn_neutral" type="button" onclick="setEmotion('중립')"><a href="/api/diary/list/emotion/중립" class="btn_a">중립</a></button>
+        <button class="btn_happy" type="button" onclick="setEmotion('행복')"><a href="/api/diary/list/emotion/행복" class="btn_a">행복</a></button>
+        <button class="btn_confused" type="button" onclick="setEmotion('혐오')"><a href="/api/diary/list/emotion/혐오" class="btn_a">혐오</a></button>
     </div>
     <script>
         function setEmotion(emotion) {
@@ -262,6 +262,7 @@
                     </tr>
                     <tr>
                         <td th:if="${not #strings.isEmpty(list.photo)}" class="table_img"><img th:src="${list.photo}" alt="피드 사진" class="mainPic"></td>
+                        <td th:if="${#strings.isEmpty(list.photo)}" class="table_img"><img src="/img/logo.png" alt="피드 사진" class="mainPic"></td>
                     </tr>
                     <tr>
                         <td>
@@ -277,8 +278,8 @@
                         </td>
                     </tr>
                     <tr>
-                            <td th:if="${#strings.isEmpty(list.photo)}" class="table_content"><div th:text="${list.content}" style="min-height: 300px;" >내용</div></td>
-                            <td th:unless="${#strings.isEmpty(list.photo)}" class="table_content" th:text="${list.content}">내용</td>
+                        <td class="table_content" th:text="${list.content}" th:onclick="'location.href=\'' + @{/api/diary/posts/{id}(id = ${list.numId})} + '\''"> 내용</td>
+
                     </tr>
                     <tr>
                         <td>
@@ -310,9 +311,7 @@
 </main>
 <footer>
     <p class="insta-sccript">
-        소개 ∙ 도움말 ∙ 홍보 센터 ∙ API ∙ 채용 정보 ∙ 개인정보처리방침 ∙ <br>약관 ∙ 위치 ∙ 인기계정 ∙ 해시태그 ∙ 언어
-        <br><br>
-        © 2020 INSTAGRAM FROM FACEBOOK
+        Copyright © 2023 - All right reserved by Classbinu
     </p>
 </footer>
 

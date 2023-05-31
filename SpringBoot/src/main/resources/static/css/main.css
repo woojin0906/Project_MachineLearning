@@ -25,7 +25,7 @@ span.sub-span {
 }
 span.point-span {
     font-weight: 500;
-    font-size: 14px;
+    font-size: 16px;
     color: #262626;
 }
 /* nav */
@@ -110,8 +110,8 @@ header {
     align-items: center;
 }
 .img-profile {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border: 1px solid #fafafa;
     border-radius: 100%;
 }
@@ -392,11 +392,12 @@ td.table_header_dropdown {
 td.table_content {
     padding: 20px 20px;
     vertical-align: top;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
 }
 .table_recommend {
     margin-right: 10px;
-    width: 80.6%;
+    width: 78.5%;
 }
 .table_writeDate {
     text-align: center;
@@ -411,11 +412,15 @@ a:hover, a:link, a:visited, a:active {
     text-decoration-line: none;
     color: #000000;
 }
+button.dropdown_a {
+    margin-left: 155px;
+    margin-top: 10px;
+}
 .main_category {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
-.btn_emoji {
+.btn_emoji, .btn_surprise, .btn_sad, .btn_confused, .btn_happy, .btn_angry, .btn_neutral {
     padding: 6px 17px;
     margin-right: 5px;
     border: 1px;
@@ -424,6 +429,7 @@ a:hover, a:link, a:visited, a:active {
     font-weight: bold;
     color: #ffffff;
     background-color: #000000;
+    margin-bottom: 20px;
 }
 a.btn_a {
     color: white;
@@ -464,4 +470,25 @@ img.dropbtn {
     height: 20px;
     margin-left: 170px;
     margin-right: 10px;
+}
+.btn_emoji:hover {
+    background-color: #acc2d3;
+}
+.btn_surprise:hover {
+    background-color: #dedefc;
+}
+.btn_angry:hover {
+    background-color: #ff7373;
+}
+.btn_happy:hover {
+    background-color: #fdbcc6;
+}
+.btn_sad:hover {
+    background-color: #c4c4c4;
+}
+.btn_neutral:hover {
+    background-color: #ffc744;
+}
+.btn_confused:hover {
+    background-color: #b3dcc2;
 }

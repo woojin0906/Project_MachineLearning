@@ -212,7 +212,7 @@
                     </td>
                     <td class="table_header_dropdown">
                       <div class="dropdown">
-                        <span class="dropbtn">drop down</span>
+                          <img class="dropbtn" src="/img/diary_menu.png"></img>
                         <div class="dropdown-content">
 <!--                          <a th:if="${uId} eq *{uid}" class="dropdown_a" th:href="@{/api/diary/post/{id}(id = ${numId})}">수정</a>-->
                           <button th:if="${uId} eq *{uid}" type="button" class="dropdown_a" th:data-id="${numId}" onclick="deleteDiary(this)">삭제</button>
@@ -225,6 +225,7 @@
             </tr>
             <tr>
               <td th:if="${not #strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_img"><img th:src="${diarySpecificationResponseDTO.photo}" alt="피드 사진" class="mainPic"></td>
+              <td th:if="${#strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_img"><img src="/img/logo.png" alt="피드 사진" class="mainPic"></td>
             </tr>
             <tr>
               <td>
@@ -240,8 +241,7 @@
               </td>
             </tr>
             <tr>
-              <td th:if="${#strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_content"><div th:text="${diarySpecificationResponseDTO.content}" style="min-height: 300px;" >내용</div></td>
-              <td th:unless="${#strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_content" th:text="${diarySpecificationResponseDTO.content}">내용</td>
+              <td class="table_content" th:text="${diarySpecificationResponseDTO.content}">내용</td>
             </tr>
             <tr>
               <td>
@@ -250,7 +250,9 @@
                     <td class="comment_emotion"><span th:text="${comment.emotion}">행복</span></td>
                     <td class="comment_content"><span th:text="${comment.content}">내가 입으면 더 잘어울릴 것 같아</span></td>
                     <td class="comment_date"><span th:text="${comment.writeDate}">2022-03-05</span></td>
-                    <td><button  th:if="${uId} eq ${comment.uid}" type="button" class="btn_open" th:data-id="${comment.cid}" th:data-value="${numId}" onclick="deleteComment(this)">삭제</button></td>
+
+                    <td><button th:if="${uId} eq ${comment.uid}" type="button" class="btn_open" th:data-id="${comment.cid}"  th:data-value="${numId}"  onclick="deleteComment(this)">삭제</button></td>
+                    <td><button th:unless="${uId} eq ${comment.uid}" disabled type="button" class="btn_open" th:data-id="${comment.cid}"  th:data-value="${numId}"  onclick="deleteComment(this)">삭제</button></td>
                   </tr>
                 </table>
               </td>
