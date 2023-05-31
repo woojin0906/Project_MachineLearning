@@ -68,4 +68,9 @@ public class UserController {
         return "user/userLogin"; //에러가 발생하면서 다시 로그인 폼으로 돌아간다
     }
 
+    @GetMapping("/ban")
+    public String ban() {
+        return "user/ban";
+    }
+
 }

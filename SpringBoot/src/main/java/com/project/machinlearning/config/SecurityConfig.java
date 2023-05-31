@@ -38,12 +38,15 @@ public class SecurityConfig {
         http.authorizeHttpRequests()  // 인증 여부 확인 -> 스프링 3.0 이하 버전은 authorizeRequests()로 설정
                 // 스프링 3.0 이하 버전은 antMatchers(), mvcMatchers(), regexMatchers()으로 사용
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() // 페이지 이동할 경우 default로 인증이 걸리도록 되어있기 때문에 추가
-                .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/resources/**", "/error").permitAll()  // 모든 사람에게 css 적용
-                .requestMatchers("/", "/user/**", "/api/**", "/images/**").permitAll() // 아무나 페이지에 들어올 수 있고, member, item 밑에 있는 애들은 모두 permit 허용
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/resources/**", "/error", "/api/**", "/images/**", "/").hasRole("USER")  // 모든 사람에게 css 적용
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/resources/**", "/error", "/api/**", "/images/**", "/").hasRole("ADMIN")
+                .requestMatchers("/user/**").permitAll()// 아무나 페이지에 들어올 수 있고, member, item 밑에 있는 애들은 모두 permit 허용
                 .requestMatchers("/admin/**").hasRole("ADMIN") // admin인 애들만 admin에 접속 가능
+                .requestMatchers("/ban/**").hasRole("BAN") // ban인 애들만 ban에 접속 가능
                 .anyRequest().authenticated(); // 인증 받기
 
         http.exceptionHandling()  // 권한이 없는 경우
+                .accessDeniedPage("/user/ban")
                 .authenticationEntryPoint(new CustomEntryPoint());
 
         return http.build();
