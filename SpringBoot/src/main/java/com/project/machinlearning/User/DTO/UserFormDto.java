@@ -19,4 +19,6 @@ public class UserFormDto {
     @Length(min = 6, max = 20, message = "최소 6자, 최대 20자를 입력하세요.")
     private String pw;
 
+    private String role;
+
 }

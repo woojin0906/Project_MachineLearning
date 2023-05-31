@@ -1,5 +1,7 @@
 package com.project.machinlearning.User;
 
+import com.project.machinlearning.User.DTO.BanRequestDTO;
+import com.project.machinlearning.User.DTO.UserFormDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.User;
@@ -8,6 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 @Transactional
@@ -64,5 +70,14 @@ public class UserService implements UserDetailsService  {
                 .roles(userEntity.getRole().toString()) //역할을 string으로 넣어줘야 한다. -> enum 안됨
                 .build();
     }
+
+    public void updateUser(String nickName) throws IOException {
+
+        // 상품 수정
+        UserEntity user = userRepository.findByNickName(nickName);
+        user.updateItem();
+
+    }
+
 
 }

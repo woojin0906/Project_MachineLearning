@@ -2,6 +2,7 @@ package com.project.machinlearning.User;
 
 import com.project.machinlearning.Diary.DiaryEntity;
 import com.project.machinlearning.Recommend.RecommendEntity;
+import com.project.machinlearning.User.DTO.BanRequestDTO;
 import com.project.machinlearning.User.DTO.UserFormDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -54,4 +55,7 @@ public class UserEntity {
         return user;
     }
 
+    public void updateItem() {
+        this.role = Role.BAN;
+    }
 }

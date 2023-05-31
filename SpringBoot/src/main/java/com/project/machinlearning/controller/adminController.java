@@ -4,16 +4,16 @@ package com.project.machinlearning.controller;
 
 import com.project.machinlearning.Comment.DirtyComment.DirtyCommentEntity;
 import com.project.machinlearning.Comment.DirtyComment.DirtyCommentRepository;
-import com.project.machinlearning.User.Role;
+import com.project.machinlearning.User.DTO.BanRequestDTO;
 import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
+import com.project.machinlearning.User.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -24,11 +24,12 @@ public class adminController {
     private final UserRepository userRepository;
 
     private final DirtyCommentRepository dirtyCommentRepository;
+    private final UserService userService;
 
-    public adminController(UserRepository userRepository, DirtyCommentRepository dirtyCommentRepository) {
+    public adminController(UserRepository userRepository, DirtyCommentRepository dirtyCommentRepository, UserService userService) {
         this.userRepository = userRepository;
         this.dirtyCommentRepository = dirtyCommentRepository;
-
+        this.userService = userService;
     }
 
     @GetMapping("/list")
@@ -55,11 +56,10 @@ public class adminController {
         return "user/dirtyComment";
     }
 
-    @PostMapping("/list/ban/{nickname}")
-    public void banUser(@PathVariable("nickname") String nickname, Principal principal){
-       UserEntity user =  userRepository.findByNickName(nickname);
-       user.setRole(Role.BAN);
+    @PostMapping(value = "/list/ban/{nickname}")
+    public String banUser(@Valid BanRequestDTO banRequestDTO) throws IOException {
+        userService.updateUser(banRequestDTO.getNickname());
+
+        return "redirect:/admin/list";
     }
-
-
 }
