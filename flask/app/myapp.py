@@ -6,7 +6,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from tqdm import tqdm, tqdm_notebook
-from transformers import AdamW
+from transformers import AdamW, AutoTokenizer, AutoModelForSequenceClassification
 from transformers.optimization import get_cosine_schedule_with_warmup
 from kobert_tokenizer import KoBERTTokenizer
 from transformers import BertModel
@@ -282,6 +282,77 @@ def prediction():
     # 예측 결과를 JSON 형식으로 반환
     response = {'response': result}
     return jsonify(response)
+
+MODEL_NAME = "beomi/KcELECTRA-base"
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+
+class CurseDataset(torch.utils.data.Dataset):
+    def __init__(self, encodings, labels):
+        self.encodings = encodings
+        self.labels = labels
+
+    def __getitem__(self, idx):
+        item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
+        item["labels"] = torch.tensor(self.labels[idx])
+        return item
+
+    def __len__(self):
+        return len(self.labels)
+    
+
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
+model.to(device)
+model.load_state_dict(torch.load('app/comment_test_model_state_dict.pt', map_location='cpu'))
+
+# 0: curse, 1: non_curse
+def comment_predict(sent):
+    # 평가모드로 변경
+    model.eval()
+
+    # 입력된 문장 토크나이징
+    tokenized_sent = tokenizer(
+        sent,
+        return_tensors="pt",
+        truncation=True,
+        add_special_tokens=True,
+        max_length=128
+    )
+    
+    # 모델이 위치한 GPU로 이동 
+    tokenized_sent.to(device)
+
+    # 예측
+    with torch.no_grad():
+        outputs = model(
+            input_ids=tokenized_sent["input_ids"],
+            attention_mask=tokenized_sent["attention_mask"],
+            token_type_ids=tokenized_sent["token_type_ids"]
+            )
+
+    # 결과 return
+    logits = outputs[0]
+    logits = logits.detach().cpu()
+    result = logits.argmax(-1)
+    if result == 0:
+        result = " >> 악성"
+    elif result == 1:
+        result = " >> 정상"
+    return result
+
+
+@app.route('/prediction2', methods=['POST'])
+def prediction2():
+    data = request.get_json()  # 클라이언트로부터 데이터를 받아옴
+    text = data['content']  # 예측을 위한 텍스트 데이터 추출
+
+    # predict 메서드를 호출하여 예측 수행
+    result = comment_predict(text)
+
+    # 예측 결과를 JSON 형식으로 반환
+    response = {'response': result}
+    return jsonify(response)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
