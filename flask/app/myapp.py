@@ -283,8 +283,12 @@ def prediction():
     response = {'response': result}
     return jsonify(response)
 
+
+
+
+
 MODEL_NAME = "beomi/KcELECTRA-base"
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+tokenizer2 = AutoTokenizer.from_pretrained(MODEL_NAME)
 
 class CurseDataset(torch.utils.data.Dataset):
     def __init__(self, encodings, labels):
@@ -300,17 +304,17 @@ class CurseDataset(torch.utils.data.Dataset):
         return len(self.labels)
     
 
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
-model.to(device)
-model.load_state_dict(torch.load('app/comment_test_model_state_dict.pt', map_location='cpu'))
+model2 = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
+model2.to(device)
+model2.load_state_dict(torch.load('app/comment_test_model_state_dict.pt', map_location='cpu'))
 
 # 0: curse, 1: non_curse
 def comment_predict(sent):
     # 평가모드로 변경
-    model.eval()
+    model2.eval()
 
     # 입력된 문장 토크나이징
-    tokenized_sent = tokenizer(
+    tokenized_sent = tokenizer2(
         sent,
         return_tensors="pt",
         truncation=True,
@@ -323,7 +327,7 @@ def comment_predict(sent):
 
     # 예측
     with torch.no_grad():
-        outputs = model(
+        outputs = model2(
             input_ids=tokenized_sent["input_ids"],
             attention_mask=tokenized_sent["attention_mask"],
             token_type_ids=tokenized_sent["token_type_ids"]
