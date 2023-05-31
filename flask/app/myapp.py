@@ -338,9 +338,9 @@ def comment_predict(sent):
     logits = logits.detach().cpu()
     result = logits.argmax(-1)
     if result == 0:
-        result = " >> 악성"
+        result = "악성"
     elif result == 1:
-        result = " >> 정상"
+        result = "정상"
     return result
 
 
@@ -351,6 +351,8 @@ def prediction2():
 
     # predict 메서드를 호출하여 예측 수행
     result = comment_predict(text)
+    if(result == "정상"):
+        result = predict(text)
 
     # 예측 결과를 JSON 형식으로 반환
     response = {'response': result}

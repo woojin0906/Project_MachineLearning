@@ -1,9 +1,11 @@
 package com.project.machinlearning.config;
+import com.project.machinlearning.User.Role;
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,6 +32,22 @@ public class SecurityConfig {
                 .usernameParameter("nickName") // user이름을 nickName로 사용할 것이기 때문에 field이름을 적어줘야 함  -> username이라 적은 경우엔 안적어도 됨
                 .passwordParameter("pw")// -> password라 적은 경우엔 안적어도 됨
                 .failureUrl("/user/login/error") // 로그인 실패 시 이동할 페이지
+                .successHandler((request, response, authentication) -> {
+                    // 인증된 사용자 정보 가져오기
+                    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+                    // 사용자의 role 확인
+                    boolean isAdmin = userDetails.getAuthorities().stream()
+                            .anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
+
+                    // role이 ADMIN인 경우에만 특정 URL로 리디렉션
+                    if (isAdmin) {
+                        response.sendRedirect("/admin/list");
+                    } else {
+                        // 그 외의 경우 기본 successUrl로 리디렉션
+                        response.sendRedirect("/api/diary/list/1");
+                    }
+                })
                 .and()
                 .logout()  // 로그아웃과 관련된 정보
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")) // 로그아웃을 누를 때 처리할 내용

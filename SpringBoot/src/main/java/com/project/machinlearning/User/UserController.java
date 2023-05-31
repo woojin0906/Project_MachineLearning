@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+import java.util.List;
+
 /**
  *    다이어리 등록, 수정, 조회 기능을 하는 컨트롤러 계층
  *

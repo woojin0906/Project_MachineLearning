@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Instagram</title>
+    <!-- favicon -->
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="instagram-icon" href="/img/favicon.png">
+    <!-- jquery 적용 -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        function banuser(obj){
+            var nickname = obj.dataset.value;
+            var url = "/admin/list/ban/" + nickname;
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                cache: false,
+                contentType: 'application/json',
+                success: function (result, status) {
+                        location.href = '/admin/list';
+                },
+                error: function (jqXHR, status, error) {
+
+                }
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>유저번호</th>
+        <th>아이디</th>
+        <th>역할</th>
+        <th>혐오 댓글 확인 횟수</th>
+        <th>내역 보러 가기</th>
+        <th>정지시키기</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="list : ${lists}">
+        <td th:text="${list.getUid()}"></td>
+        <td th:text="${list.getNickName()}"></td>
+        <td th:text="${list.getRole()}"></td>
+        <td th:text="${list.getCount()}"></td>
+        <td>
+            <a th:onclick="'location.href=\'' + @{/admin/list/{nickname}(nickname = ${list.getNickName()})} + '\''" class="delete-comment">
+            삭제된 댓글 리스트
+            </a>
+        </td>
+        <td><a onclick="banuser(this)" th:data-value="${list.getNickName()}">유저 정지</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

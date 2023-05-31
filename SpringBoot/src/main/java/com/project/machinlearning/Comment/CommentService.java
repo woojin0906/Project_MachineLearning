@@ -3,6 +3,8 @@ package com.project.machinlearning.Comment;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.machinlearning.Comment.DTO.CommentRequestDTO;
+import com.project.machinlearning.Comment.DirtyComment.DirtyCommentEntity;
+import com.project.machinlearning.Comment.DirtyComment.DirtyCommentRepository;
 import com.project.machinlearning.Diary.DiaryEntity;
 import com.project.machinlearning.Diary.DiaryRepository;
 import com.project.machinlearning.User.UserEntity;
@@ -33,6 +35,8 @@ public class CommentService {
 
     private final UserRepository userRepository;
 
+    private final DirtyCommentRepository dirtyCommentRepository;
+
     /**
      * flask api server 접근하여 감정 분류 후 댓글 저장
      * - 한승완 2023.05.23
@@ -47,7 +51,7 @@ public class CommentService {
             // 감정 분류 api 호출
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
-                String externalApiUrl = "http://127.0.0.1:5000/prediction";  // API URL
+                String externalApiUrl = "http://127.0.0.1:5000/prediction2";  // API URL
 
                 // JSON 변환
                 String content = commentRequestDTO.getContent();
@@ -67,8 +71,15 @@ public class CommentService {
                     String responseBody = response.body();
                     JsonNode responseJson = objectMapper.readTree(responseBody);
                     String emotion = responseJson.get("response").asText();
-                    // 응답 값 받아서 DB 저장
-                    commentRepository.save(new CommentEntity(diary.get(), currentDate, commentRequestDTO.getContent(),emotion, user.get()));
+                    // 응답 에서 악성 체크
+                    if(emotion.equals("악성")){
+                        commentRepository.save(new CommentEntity(diary.get(), currentDate, "클린봇이 삭제한 댓글입니다.", "혐오", user.get()));
+                        user.get().setCount(user.get().getCount() + 1 );
+                        dirtyCommentRepository.save(new DirtyCommentEntity(commentRequestDTO.getContent(), user.get().getNickName()));
+
+                    }else {
+                        commentRepository.save(new CommentEntity(diary.get(), currentDate, commentRequestDTO.getContent(), emotion, user.get()));
+                    }
                     return 1L;
                 }else{
                     return -2L;

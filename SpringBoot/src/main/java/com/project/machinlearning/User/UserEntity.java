@@ -28,6 +28,9 @@ public class UserEntity {
     @Column(name="nickName", unique = true)
     private String nickName;
 
+    @Column(name="count" , columnDefinition = "int default 0")
+    private int count;
+
     @Enumerated(EnumType.STRING) // 추가를 안하면 열거형은 숫자로 들어감
     private Role role;
 
