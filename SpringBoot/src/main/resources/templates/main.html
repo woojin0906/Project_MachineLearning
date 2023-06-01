@@ -194,6 +194,23 @@
 </th:block>
 
 <body>
+<!-- header -->
+<header>
+    <div class="main_category">
+        <button class="btn_emoji" type="button" onclick="setEmotion('공포')"><div class="emotion_div"><a href="/api/diary/list/emotion/공포" class="btn_a"><img class="img-emotion" src="/img/emoji.png" alt="공포">공포</a></div></button>
+        <button class="btn_surprise" type="button" onclick="setEmotion('놀람')"><div class="emotion_div"><a href="/api/diary/list/emotion/놀람" class="btn_a"><img class="img-emotion" src="/img/surprised.png" alt="놀람">놀람</a></div></button>
+        <button class="btn_angry" type="button" onclick="setEmotion('분노')"><div class="emotion_div"><a href="/api/diary/list/emotion/분노" class="btn_a"><img class="img-emotion" src="/img/angry.png" alt="분노">분노</a></div></button>
+        <button class="btn_sad" type="button" onclick="setEmotion('슬픔')"><div class="emotion_div"><a href="/api/diary/list/emotion/슬픔" class="btn_a"><img class="img-emotion" src="/img/sad.png" alt="슬픔">슬픔</a></div></button>
+        <button class="btn_neutral" type="button" onclick="setEmotion('중립')"><div class="emotion_div"><a href="/api/diary/list/emotion/중립" class="btn_a"><img class="img-emotion" src="/img/neutral.png" alt="중립">중립</a></div></button>
+        <button class="btn_happy" type="button" onclick="setEmotion('행복')"><div class="emotion_div"><a href="/api/diary/list/emotion/행복" class="btn_a"><img class="img-emotion" src="/img/happy.png" alt="행복">행복</a></div></button>
+        <button class="btn_confused" type="button" onclick="setEmotion('혐오')"><div class="emotion_div"><a href="/api/diary/list/emotion/혐오" class="btn_a"><img class="img-emotion" src="/img/confused.png" alt="혐오">혐오</a></div></button>
+    </div>
+    <script>
+        function setEmotion(emotion) {
+            localStorage.setItem('emotion', emotion);
+        }
+    </script>
+</header>
 <!-- navigation -->
 <nav>
     <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
@@ -220,21 +237,6 @@
 </nav>
 <!-- main -->
 <main>
-    <div class="main_category">
-        <button class="btn_emoji" type="button" onclick="setEmotion('공포')"><a href="/api/diary/list/emotion/공포" class="btn_a">공포</a></button>
-        <button class="btn_surprise" type="button" onclick="setEmotion('놀람')"><a href="/api/diary/list/emotion/놀람" class="btn_a">놀람</a></button>
-        <button class="btn_angry" type="button" onclick="setEmotion('분노')"><a href="/api/diary/list/emotion/분노" class="btn_a">분노</a></button>
-        <button class="btn_sad" type="button" onclick="setEmotion('슬픔')"><a href="/api/diary/list/emotion/슬픔" class="btn_a">슬픔</a></button>
-        <button class="btn_neutral" type="button" onclick="setEmotion('중립')"><a href="/api/diary/list/emotion/중립" class="btn_a">중립</a></button>
-        <button class="btn_happy" type="button" onclick="setEmotion('행복')"><a href="/api/diary/list/emotion/행복" class="btn_a">행복</a></button>
-        <button class="btn_confused" type="button" onclick="setEmotion('혐오')"><a href="/api/diary/list/emotion/혐오" class="btn_a">혐오</a></button>
-    </div>
-    <script>
-        function setEmotion(emotion) {
-            localStorage.setItem('emotion', emotion);
-        }
-    </script>
-
     <div class="feeds">
         <!-- article -->
         <article>

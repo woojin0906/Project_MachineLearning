@@ -64,7 +64,7 @@ h1 {
 main {
     width: 500px;
     margin: 0 auto;
-    padding-top: 94px;
+    padding-top: 100px;
     padding-bottom: 40px;
 }
 .main-right {
@@ -99,11 +99,13 @@ article {
 }
 /* article */
 header {
-    height: 60px;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    width: 140px;
+    margin-right: 250px;
+    padding-top: 90px;
+    position: fixed;
+    right: 0;
+    border: 1px;
+    border-radius: 5px;
 }
 .profile-of-article {
     display: flex;
@@ -427,13 +429,11 @@ button.dropdown_a {
     border-radius: 5px;
     font-size: 14px;
     font-weight: bold;
-    color: #ffffff;
-    background-color: #000000;
     margin-bottom: 20px;
 }
 a.btn_a {
-    color: white;
     font-weight: bold;
+    font-size: 17px;
 }
 button.btn_open {
     background-color: #f2f2f2;
@@ -472,23 +472,31 @@ img.dropbtn {
     margin-right: 10px;
 }
 .btn_emoji:hover {
-    background-color: #acc2d3;
+    border: 4px solid #acc2d3;
 }
 .btn_surprise:hover {
-    background-color: #dedefc;
+    border: 4px solid #dedefc;
 }
 .btn_angry:hover {
-    background-color: #ff7373;
+    border: 4px solid #ff7373;
 }
 .btn_happy:hover {
-    background-color: #fdbcc6;
+    border: 4px solid #fdbcc6;
 }
 .btn_sad:hover {
-    background-color: #c4c4c4;
+    border: 4px solid #c4c4c4;
 }
 .btn_neutral:hover {
-    background-color: #ffc744;
+    border: 4px solid #ffc744;
 }
 .btn_confused:hover {
-    background-color: #b3dcc2;
+    border: 4px solid #b3dcc2;
+}
+.img-emotion {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+.emotion_div {
+    display: table-caption;
 }
