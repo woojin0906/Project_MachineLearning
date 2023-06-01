@@ -64,7 +64,11 @@
             삭제된 댓글 리스트
             </a>
         </td>
-        <td><form method="post" th:action="@{/admin/list/ban/{nickname}(nickname = ${list.getNickName()})}"><button type="submit">유저 정지</button></form> </td>
+        <td>
+            <form method="post" th:action="@{/admin/list/ban/{nickname}(nickname = ${list.getNickName()})}" onsubmit="return confirm('해당 사용자 역할을 변경하겠습니까?');">
+                <button type="submit">유저 정지</button>
+            </form>
+        </td>
 <!--        <td><a th:onclick="'location.href=\'' + @{/admin/list/ban/{nickname}(nickname = ${list.getNickName()})} + '\''">유저 정지</a></td>-->
     </tr>
     </tbody>

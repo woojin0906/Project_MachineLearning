@@ -56,6 +56,10 @@ public class UserEntity {
     }
 
     public void updateItem() {
-        this.role = Role.BAN;
+        if(this.role == Role.USER){
+            this.role = Role.BAN;
+        }else if(this.role == Role.BAN){
+            this.role = Role.USER;
+        }
     }
 }
