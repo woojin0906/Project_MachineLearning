@@ -197,15 +197,16 @@
 <!-- header -->
 <header>
     <div class="main_category">
-        <button class="btn_emoji" type="button" onclick="setEmotion('공포')"><div class="emotion_div"><a href="/api/diary/list/emotion/공포" class="btn_a"><img class="img-emotion" src="/img/emoji.png" alt="공포">공포</a></div></button>
-        <button class="btn_surprise" type="button" onclick="setEmotion('놀람')"><div class="emotion_div"><a href="/api/diary/list/emotion/놀람" class="btn_a"><img class="img-emotion" src="/img/surprised.png" alt="놀람">놀람</a></div></button>
-        <button class="btn_angry" type="button" onclick="setEmotion('분노')"><div class="emotion_div"><a href="/api/diary/list/emotion/분노" class="btn_a"><img class="img-emotion" src="/img/angry.png" alt="분노">분노</a></div></button>
-        <button class="btn_sad" type="button" onclick="setEmotion('슬픔')"><div class="emotion_div"><a href="/api/diary/list/emotion/슬픔" class="btn_a"><img class="img-emotion" src="/img/sad.png" alt="슬픔">슬픔</a></div></button>
-        <button class="btn_neutral" type="button" onclick="setEmotion('중립')"><div class="emotion_div"><a href="/api/diary/list/emotion/중립" class="btn_a"><img class="img-emotion" src="/img/neutral.png" alt="중립">중립</a></div></button>
-        <button class="btn_happy" type="button" onclick="setEmotion('행복')"><div class="emotion_div"><a href="/api/diary/list/emotion/행복" class="btn_a"><img class="img-emotion" src="/img/happy.png" alt="행복">행복</a></div></button>
-        <button class="btn_confused" type="button" onclick="setEmotion('혐오')"><div class="emotion_div"><a href="/api/diary/list/emotion/혐오" class="btn_a"><img class="img-emotion" src="/img/confused.png" alt="혐오">혐오</a></div></button>
+        <button class="btn_emoji" type="button" onclick="setEmotion('공포')"><div class="emotion_div"><a href="/api/diary/list/emotion/공포" class="btn_a"><img class="img-emotion" src="/img/emoji.png" alt="공포">무서운 이야기!</a></div></button>
+        <button class="btn_surprise" type="button" onclick="setEmotion('놀람')"><div class="emotion_div"><a href="/api/diary/list/emotion/놀람" class="btn_a"><img class="img-emotion" src="/img/surprised.png" alt="놀람">놀라운 이야기!</a></div></button>
+        <button class="btn_angry" type="button" onclick="setEmotion('분노')"><div class="emotion_div"><a href="/api/diary/list/emotion/분노" class="btn_a"><img class="img-emotion" src="/img/angry.png" alt="분노">화나는 이야기!</a></div></button>
+        <button class="btn_sad" type="button" onclick="setEmotion('슬픔')"><div class="emotion_div"><a href="/api/diary/list/emotion/슬픔" class="btn_a"><img class="img-emotion" src="/img/sad.png" alt="슬픔">눈물나는 이야기!</a></div></button>
+        <button class="btn_neutral" type="button" onclick="setEmotion('중립')"><div class="emotion_div"><a href="/api/diary/list/emotion/중립" class="btn_a"><img class="img-emotion" src="/img/neutral.png" alt="중립">무덤덤한 이야기!</a></div></button>
+        <button class="btn_happy" type="button" onclick="setEmotion('행복')"><div class="emotion_div"><a href="/api/diary/list/emotion/행복" class="btn_a"><img class="img-emotion" src="/img/happy.png" alt="행복">행복한 이야기!</a></div></button>
+        <button class="btn_confused" type="button" onclick="setEmotion('혐오')"><div class="emotion_div"><a href="/api/diary/list/emotion/혐오" class="btn_a"><img class="img-emotion" src="/img/confused.png" alt="혐오">혐오스런 이야기!</a></div></button>
     </div>
     <script>
+
         function setEmotion(emotion) {
             localStorage.setItem('emotion', emotion);
         }
@@ -222,12 +223,12 @@
 
         <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/save">
             <img src="/img/plus.png" alt="만들기">
-            <div class="nav_span"><span>만들기</span></div></a>
+            <div class="nav_span"><span>다이어리 작성</span></div></a>
         </div>
 
         <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/user" >
             <img class="pic" src="/img/user.png" alt="마이페이지">
-            <div class="nav_span"><span th:text="${nickName}">프로필</span></div></a>
+            <div class="nav_span"><span>다이어리</span></div></a>
         </div>
 
         <div class="nav_menu"><a onclick="deleteEmotion()" href="/user/logout">
@@ -241,8 +242,8 @@
         <!-- article -->
         <article>
             <form>
-                <table class="cotent_table" th:each="list : ${lists}">
-                    <tr>
+                <table th:class="|content_table-emotion-${list.emotion.substring(5, list.emotion.length - 4).toLowerCase()}|" th:each="list : ${lists}">
+                <tr>
                         <td>
                             <table>
                                 <tr>
