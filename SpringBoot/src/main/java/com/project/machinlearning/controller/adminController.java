@@ -2,6 +2,7 @@ package com.project.machinlearning.controller;
 
 
 
+import com.project.machinlearning.Comment.DirtyComment.DeleteDirtyCommentDTO;
 import com.project.machinlearning.Comment.DirtyComment.DirtyCommentEntity;
 import com.project.machinlearning.Comment.DirtyComment.DirtyCommentRepository;
 import com.project.machinlearning.User.DTO.BanRequestDTO;
@@ -9,6 +10,8 @@ import com.project.machinlearning.User.UserEntity;
 import com.project.machinlearning.User.UserRepository;
 import com.project.machinlearning.User.UserService;
 import jakarta.validation.Valid;
+import javassist.NotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -62,4 +65,27 @@ public class adminController {
 
         return "redirect:/admin/list";
     }
+
+
+    @PostMapping(value = "/list/delete/{nickname}/{did}")
+    public String deleteComment(@PathVariable("nickname") String nickname,
+                              @PathVariable("did") Long did) throws NotFoundException {
+        DirtyCommentEntity dirtyComment = dirtyCommentRepository.findById(did)
+                .orElseThrow(() -> new NotFoundException("삭제할 댓글을 찾을 수 없습니다")); // 댓글을 찾을 수 없는 경우에 대한 예외 처리
+        UserEntity user = userRepository.findByNickName(nickname);
+            if(dirtyComment.getState().equals("반영")) {
+                dirtyComment.setState("제외");
+                user.setCount(user.getCount() - 1);
+            }else{
+                dirtyComment.setState("반영");
+                user.setCount(user.getCount() + 1);
+
+            }
+            dirtyCommentRepository.save(dirtyComment);
+            userRepository.save(user);
+
+        return "redirect:/admin/list/"+nickname;
+    }
+
+
 }

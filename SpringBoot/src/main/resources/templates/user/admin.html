@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -11,17 +10,47 @@
     <link rel="instagram-icon" href="/img/favicon.png">
     <!-- jquery 적용 -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+    <style>
+        /* Center-align the table */
+        table {
+            margin: 0 auto;
+        }
+
+        /* Add some styling to the table */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            font-family: Arial, sans-serif;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
+
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             var errorMessage = [[${errorMessage}]];
-            if(errorMessage != null){
+            if (errorMessage != null) {
                 alert(errorMessage);
             }
         });
 
-        function updateRole(obj){
+        function updateRole(obj) {
             var nickname = obj.dataset.value;
             var url = "/admin/list/ban/" + nickname;
 
@@ -30,10 +59,10 @@
                 type: "POST",
                 dataType: "json",
                 cache: false,
-                success: function (result, status) {
+                success: function(result, status) {
                     location.href = '/admin/list';
                 },
-                error: function (jqXHR, status, error) {
+                error: function(jqXHR, status, error) {
 
                 }
             });
@@ -41,6 +70,7 @@
     </script>
 
 </th:block>
+
 <body>
 <table>
     <thead>
@@ -61,19 +91,22 @@
         <td th:text="${list.getCount()}"></td>
         <td>
             <a th:onclick="'location.href=\'' + @{/admin/list/{nickname}(nickname = ${list.getNickName()})} + '\''" class="delete-comment">
-            삭제된 댓글 리스트
+                삭제된 댓글 리스트
             </a>
         </td>
         <td>
-            <form method="post" th:action="@{/admin/list/ban/{nickname}(nickname = ${list.getNickName()})}" onsubmit="return confirm('해당 사용자 역할을 변경하겠습니까?');">
+            <form method="post"
+                  th:action="@{/admin/list/ban/{nickname}(nickname = ${list.getNickName()})}"
+                  onsubmit="return confirm('해당 사용자 역할을 변경하겠습니까?');">
                 <button type="submit">유저 정지</button>
             </form>
         </td>
-<!--        <td><a th:onclick="'location.href=\'' + @{/admin/list/ban/{nickname}(nickname = ${list.getNickName()})} + '\''">유저 정지</a></td>-->
+        <!--        <td><a th:onclick="'location.href=\'' + @{/admin/list/ban/{nickname}(nickname = ${list.getNickName()})} + '\''">유저 정지</a></td>-->
     </tr>
     </tbody>
 </table>
 <!--  csrf 체크해서 이동 -->
 <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">
 </body>
+
 </html>

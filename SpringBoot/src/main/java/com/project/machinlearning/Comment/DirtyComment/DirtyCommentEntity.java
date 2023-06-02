@@ -25,6 +25,9 @@ public class DirtyCommentEntity {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "state")
+    private String state = "반영";
+
     public DirtyCommentEntity(String content, String nickname) {
         this.content = content;
         this.nickname = nickname;
