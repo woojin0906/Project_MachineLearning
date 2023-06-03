@@ -14,6 +14,10 @@
     <!-- jquery 적용 -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <style>
+        @font-face {
+            font-family: 'Jamsil2';
+            src: url('/font/The Jamsil OTF 2 Light.otf') format('opentype');
+        }
         .content-wrapper {
             max-width: 100%;
             max-height: 100%;
@@ -106,9 +110,51 @@
             width: 250px;
             height: 300px;
         }
+        .img-emotion-emoji {
+            box-shadow: 5px 3px #acc2d3;
+            border: 2px solid #acc2d3;
+            width: 150px;
+            height: 150px;
+        }
 
-        .mainPic {
-            box-shadow: 3px 3px 3px;
+        .img-emotion-surprised {
+            box-shadow: 5px 3px #dedefc;
+            border: 2px solid #dedefc;
+            width: 150px;
+            height: 150px;
+        }
+
+        .img-emotion-angry {
+            box-shadow: 5px 3px  #ff7373;
+            border: 2px solid  #ff7373;
+            width: 150px;
+            height: 150px;
+        }
+
+        .img-emotion-sad {
+            box-shadow: 5px 3px #c4c4c4;
+            border: 2px solid #c4c4c4;
+            width: 150px;
+            height: 150px;
+        }
+
+        .img-emotion-neutral {
+            box-shadow: 5px 3px #ffc744;
+            border: 2px solid  #ffc744;
+            width: 150px;
+            height: 150px;
+        }
+
+        .img-emotion-happy {
+            box-shadow: 5px 3px #ffda9d;
+            border: 2px solid #ffda9d;
+            width: 150px;
+            height: 150px;
+        }
+
+        .img-emotion-confused {
+            box-shadow: 5px 3px #b3dcc2;
+            border: 2px solid #b3dcc2;
             width: 150px;
             height: 150px;
         }
@@ -294,30 +340,27 @@
 <body>
 <!-- navigation -->
 <nav>
-    <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
+    <a href="/api/diary/list/1"><h1>𝑨𝑮𝑬𝑵𝑫𝑨</h1></a>
     <div class="menu">
         <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/1">
             <img src="/img/home.png" alt="홈">
             <div class="nav_span"><span>홈</span></div></a>
         </div>
-        <script>
-            function deleteEmotion() {
-                localStorage.removeItem('emotion');
-            }
-        </script>
 
-        <div class="nav_menu"><a href="/api/diary/save">
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/save">
             <img src="/img/plus.png" alt="만들기">
-            <div class="nav_span"><span>만들기</span></div></a>
+            <div class="nav_span"><span>다이어리 작성</span></div></a>
         </div>
 
-        <div class="nav_menu"><a href="/api/diary/list/user" >
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/user" >
             <img class="pic" src="/img/user.png" alt="마이페이지">
-            <div class="nav_span"><span th:text="${nickName}">프로필</span></div></a>
+            <div class="nav_span"><span>다이어리</span></div></a>
         </div>
-
-        <div class="nav_menu"><a href="/user/logout">
-            <div class="nav_span"><span>로그아웃</span></div></a>
+        <div class="nav_menu">
+            <hr style="width: 150px; margin-left: 0;">
+            <a onclick="deleteEmotion()" href="/user/logout">
+                <div class="nav_span"><span>로그아웃</span></div>
+            </a>
         </div>
     </div>
 </nav>
@@ -343,12 +386,11 @@
             <a th:href="@{/api/diary/posts/{id}(id = ${list.numId})}">
                 <div class="content-wrapper">
                     <div style="display: flex; margin-bottom: 30px; align-items: center;">
-                        <p th:text="${list.writeDate}" style="line-height: 30px; height: 30px; text-align: left; font-weight: bold; font-size: 22px; margin-left: 0px; margin-right: 40px;order: 1;"></p>
+                        <p th:text="${list.writeDate}" style="font-family: 'Jamsil2'; line-height: 30px; height: 30px; text-align: left; font-weight: bold; font-size: 21px; margin-left: 0px; margin-right: 40px;order: 1;"></p>
                         <img class="img-profile pic" th:src="${list.emotion}" alt="사용자의 감정 정보" style="width: 40px; height: 40px; margin-top: 0; order: 2;">
                     </div>
-                    <td class="table_img">
-                        <img th:src="${list.photo}" alt="피드 사진" class="mainPic" width="150" height="150">
-                    </td>
+                    <td th:if="${not #strings.isEmpty(list.photo)}" class="table_img"><img th:class="|img-emotion-${list.emotion.substring(5, list.emotion.length - 4).toLowerCase()}|" th:src="${list.photo}" alt="피드 사진" width="150" height="150"\></td>
+                    <td th:if="${#strings.isEmpty(list.photo)}" class="table_img"><img th:class="|img-emotion-${list.emotion.substring(5, list.emotion.length - 4).toLowerCase()}|" src="/img/logo.png" alt="피드 사진" width="150" height="150"\></td>
                 </div>
             </a>
         </div>
@@ -358,9 +400,7 @@
 </main>
 <footer>
     <p class="insta-sccript">
-        소개 ∙ 도움말 ∙ 홍보 센터 ∙ API ∙ 채용 정보 ∙ 개인정보처리방침 ∙ <br>약관 ∙ 위치 ∙ 인기계정 ∙ 해시태그 ∙ 언어
-        <br><br>
-        © 2020 INSTAGRAM FROM FACEBOOK
+        Copyright © 2023 - All right reserved by Agenda
     </p>
 </footer>
 </body>

@@ -169,32 +169,29 @@
 <body>
 <!-- navigation -->
 <nav>
-  <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
-  <div class="menu">
-    <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/1">
-      <img src="/img/home.png" alt="홈">
-      <div class="nav_span"><span>홈</span></div></a>
-    </div>
-    <script>
-      function deleteEmotion() {
-        localStorage.removeItem('emotion');
-      }
-    </script>
+    <a href="/api/diary/list/1"><h1>𝑨𝑮𝑬𝑵𝑫𝑨</h1></a>
+    <div class="menu">
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/1">
+            <img src="/img/home.png" alt="홈">
+            <div class="nav_span"><span>홈</span></div></a>
+        </div>
 
-    <div class="nav_menu"><a href="/api/diary/save">
-      <img src="/img/plus.png" alt="만들기">
-      <div class="nav_span"><span>만들기</span></div></a>
-    </div>
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/save">
+            <img src="/img/plus.png" alt="만들기">
+            <div class="nav_span"><span>다이어리 작성</span></div></a>
+        </div>
 
-    <div class="nav_menu"><a href="/api/diary/list/user" >
-      <img class="pic" src="/img/user.png" alt="마이페이지">
-      <div class="nav_span"><span th:text="${nickName}">프로필</span></div></a>
+        <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/user" >
+            <img class="pic" src="/img/user.png" alt="마이페이지">
+            <div class="nav_span"><span>다이어리</span></div></a>
+        </div>
+        <div class="nav_menu">
+            <hr style="width: 150px; margin-left: 0;">
+            <a onclick="deleteEmotion()" href="/user/logout">
+                <div class="nav_span"><span>로그아웃</span></div>
+            </a>
+        </div>
     </div>
-
-    <div class="nav_menu"><a href="/user/logout">
-      <div class="nav_span"><span>로그아웃</span></div></a>
-    </div>
-  </div>
 </nav>
 <!-- main -->
 <main>
@@ -278,9 +275,7 @@
 </main>
 <footer>
   <p class="insta-sccript">
-    소개 ∙ 도움말 ∙ 홍보 센터 ∙ API ∙ 채용 정보 ∙ 개인정보처리방침 ∙ <br>약관 ∙ 위치 ∙ 인기계정 ∙ 해시태그 ∙ 언어
-    <br><br>
-    © 2020 INSTAGRAM FROM FACEBOOK
+      Copyright © 2023 - All right reserved by Agenda
   </p>
 </footer>
 </body>

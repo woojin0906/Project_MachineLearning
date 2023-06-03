@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'Jamsil2';
+    src: url('/font/The Jamsil OTF 2 Light.otf') format('opentype');
+}
 /* general */
 ul,li {
     margin: 0;
@@ -65,6 +69,7 @@ main {
     margin: 0 auto;
     padding-top: 120px;
     padding-bottom: 40px;
+    min-height: 800px;
 }
 
 .main-right {
@@ -137,6 +142,7 @@ header {
     height: 24px;
     margin-left: 20px;
     margin-right: 5px;
+    margin-top: 10px;
 }
 .icons-left {
     display: flex;
@@ -225,6 +231,7 @@ div.time-log span {
 }
 /* comment input */
 .input-comment {
+    font-family: 'Jamsil2';
     font-size: 14px;
     width: 880px;
     height: 15px;
@@ -243,6 +250,7 @@ div.time-log span {
     color: #8e8e8e;
 }
 button.submit-comment {
+    font-family: 'Jamsil2';
     color: #ffffff;
     background-color: #000000;
     border-style: none;
@@ -423,12 +431,11 @@ ul.story-list .profile-text {
 }
 
 .comment_table {
-    margin: 5px;
-    background-color: #f1f1f1;
+    background-color: #fdfdfda8;
     border-radius: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
     border: 1px solid #acacac;
+    margin: 5px auto;
+    width: 95%;
 }
 .comment_emotion {
     color: orange;
@@ -438,7 +445,7 @@ ul.story-list .profile-text {
 }
 .comment_content {
     margin-right: 10px;
-    width: 280px;
+    width: 730px;
 }
 .comment_date {
     color: #c7c7c7;
@@ -461,6 +468,7 @@ td.table_content {
     vertical-align: top;
     font-size: 18px;
     font-weight: bold;
+    font-family: 'Jamsil2';
 }
 .table_recommend {
     margin-right: 10px;
@@ -581,11 +589,13 @@ a.btn_a {
     width: 150px; /* 텍스트 영역의 너비를 150px로 설정 */
     font-weight: bold;
     font-size: 17px;
+    font-family: 'Jamsil2';
 }
 button.btn_open {
     background-color: #f2f2f2;
     border: 1px solid #bababa;
     border-radius: 5px;
+    margin-right: 5px;
 }
 .dropdown{
     position : relative;
@@ -655,6 +665,7 @@ img.dropbtn {
 }
 .main_h1 {
     text-align: center;
+    font-family: 'Jamsil2';
 }
 .main_date {
     text-align: right;

@@ -44,33 +44,36 @@
   </script>
 
 </th:block>
+<style>
+  @font-face {
+    font-family: 'Jamsil2';
+    src: url('/font/The Jamsil OTF 2 Light.otf') format('opentype');
+  }
+</style>
 <body>
 <!-- navigation -->
 <nav>
-  <a href="/api/diary/list/1"><h1>𝑨𝒈𝒆𝒏𝒅𝒂</h1></a>
+  <a href="/api/diary/list/1"><h1>𝑨𝑮𝑬𝑵𝑫𝑨</h1></a>
   <div class="menu">
     <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/1">
       <img src="/img/home.png" alt="홈">
       <div class="nav_span"><span>홈</span></div></a>
     </div>
-    <script>
-      function deleteEmotion() {
-        localStorage.removeItem('emotion');
-      }
-    </script>
 
-    <div class="nav_menu"><a href="/api/diary/save">
+    <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/save">
       <img src="/img/plus.png" alt="만들기">
-      <div class="nav_span"><span>만들기</span></div></a>
+      <div class="nav_span"><span>다이어리 작성</span></div></a>
     </div>
 
-    <div class="nav_menu"><a href="/api/diary/list/user" >
+    <div class="nav_menu"><a onclick="deleteEmotion()" href="/api/diary/list/user" >
       <img class="pic" src="/img/user.png" alt="마이페이지">
-      <div class="nav_span"><span th:text="${nickName}">프로필</span></div></a>
+      <div class="nav_span"><span>다이어리</span></div></a>
     </div>
-
-    <div class="nav_menu"><a href="/user/logout">
-      <div class="nav_span"><span>로그아웃</span></div></a>
+    <div class="nav_menu">
+      <hr style="width: 150px; margin-left: 0;">
+      <a onclick="deleteEmotion()" href="/user/logout">
+        <div class="nav_span"><span>로그아웃</span></div>
+      </a>
     </div>
   </div>
 </nav>
@@ -82,21 +85,21 @@
     <h2 class="main_h1" style="margin: 0; font-size: 40px;">하루의 감정 경험을 기록하여 사람들과 나눠봅시다! </h2>
     <form role="form" id="diaryForm" enctype="multipart/form-data" action="/api/diary/save_proc" method="post">
       <div class="main_nickDate">
-        <label for="content" style="margin-bottom: 10px; font-weight: bold; font-size: 18px;">[[${nickName}]]</label>
+        <label for="content" style="font-family: 'Jamsil2'; margin-right: 5px;margin-bottom: 10px; font-weight: bold; font-size: 18px;">[[${nickName}]]</label>
         <div class="main_date">
-          <label for="content" style="margin-bottom: 10px;">[[${strNowDate}]]</label>
+          <label for="content" style="font-family: 'Jamsil2'; margin-bottom: 10px;">[[${strNowDate}]]</label>
         </div>
       </div>
       <div>
         <label class="main_label" for="content">내용:</label>
-        <textarea id="content" name="content" required style="margin-top: 10px; width: 100%; height: 300px; border: 1px solid #ddd; padding: 10px;"></textarea>
+        <textarea id="content" name="content" required style="font-size: 17px; font-family: 'Jamsil2'; margin-top: 10px; width: 100%; height: 300px; border: 1px solid #ddd; padding: 10px;"></textarea>
       </div>
       <div>
         <label class="main_label" for="photo" >사진:</label>
-        <input type="file" id="photo"  name="itemImgFile" style="height: 100px; padding: 10px;">
+        <input type="file" id="photo"  name="itemImgFile" style="font-family: 'Jamsil2'; height: 100px; padding: 10px;">
       </div>
       <div class="main_btn">
-        <button type="submit" style="margin-top: 10px; padding: 10px 20px; background-color: #000000; color: #fff; border: none; border-radius: 5px;font-weight: bold; cursor: pointer; font-size: 16px;">등록</button>
+        <button type="submit" style="font-family: 'Jamsil2'; margin-top: 10px; padding: 10px 20px; background-color: #000000; color: #fff; border: none; border-radius: 5px;font-weight: bold; cursor: pointer; font-size: 16px;">등록</button>
       </div>
     </form>
   </div>
@@ -105,9 +108,7 @@
 
 <footer>
   <p class="insta-sccript">
-    소개 ∙ 도움말 ∙ 홍보 센터 ∙ API ∙ 채용 정보 ∙ 개인정보처리방침 ∙ <br>약관 ∙ 위치 ∙ 인기계정 ∙ 해시태그 ∙ 언어
-    <br><br>
-    © 2020 INSTAGRAM FROM FACEBOOK
+    Copyright © 2023 - All right reserved by Agenda
   </p>
 </footer>
 
