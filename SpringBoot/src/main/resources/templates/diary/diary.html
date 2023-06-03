@@ -202,14 +202,19 @@
       <!-- article -->
       <article>
         <form>
-          <table class="cotent_table" th:object="${diarySpecificationResponseDTO}">
+          <table th:class="|content_table-emotion-${diarySpecificationResponseDTO.emotion.substring(5, diarySpecificationResponseDTO.emotion.length - 4).toLowerCase()}|" th:object="${diarySpecificationResponseDTO}">
             <tr>
               <td>
                 <table>
                   <tr>
-                    <td class="table_header">
-                      <img class="img-profile pic" th:src="${diarySpecificationResponseDTO.emotion}" alt="사용자의 감정 정보">
-                    </td>
+<!--                    <td class="table_header">-->
+<!--                      <img class="img-profile pic" th:src="${diarySpecificationResponseDTO.emotion}" alt="사용자의 감정 정보">-->
+<!--                    </td>-->
+                      <td class="table_recommend">
+                          <img onclick="saveRecommend(this)" th:data-value="${diarySpecificationResponseDTO.numId}" class="icon-react" alt="하트"
+                               th:src="${diarySpecificationResponseDTO.isrecommend ? '/img/liked.png' : 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png'}">
+                          <span class="point-span" th:text="${diarySpecificationResponseDTO.recommend}"></span>
+                      </td>
                     <td class="table_header_dropdown">
                       <div class="dropdown">
                           <img class="dropbtn" src="/img/diary_menu.png"></img>
@@ -224,18 +229,14 @@
               </td>
             </tr>
             <tr>
-              <td th:if="${not #strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_img"><img th:src="${diarySpecificationResponseDTO.photo}" alt="피드 사진" class="mainPic"></td>
-              <td th:if="${#strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_img"><img src="/img/logo.png" alt="피드 사진" class="mainPic"></td>
+              <td th:if="${not #strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_img"><img th:class="|img-emotion-${diarySpecificationResponseDTO.emotion.substring(5, diarySpecificationResponseDTO.emotion.length - 4).toLowerCase()}|"  th:src="${diarySpecificationResponseDTO.photo}" alt="피드 사진" class="mainPic"></td>
+              <td th:if="${#strings.isEmpty(diarySpecificationResponseDTO.photo)}" class="table_img"><img th:class="|img-emotion-${diarySpecificationResponseDTO.emotion.substring(5, diarySpecificationResponseDTO.emotion.length - 4).toLowerCase()}|"  src="/img/logo.png" alt="피드 사진" class="mainPic"></td>
             </tr>
             <tr>
               <td>
                 <table>
                   <tr>
-                    <td class="table_recommend">
-                      <img onclick="saveRecommend(this)" th:data-value="${numId}" class="icon-react" alt="하트"
-                           th:src="${diarySpecificationResponseDTO.isrecommend ? '/img/liked.png' : 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png'}">
-                      <span class="point-span" th:text="${diarySpecificationResponseDTO.recommend}"></span></td>
-                    <td class="table_writeDate"><span class="userID main-id point-span" th:text="${diarySpecificationResponseDTO.writeDate}">2022-05-05</span></td>
+<!--                    <td class="table_writeDate"><span class="userID main-id point-span" th:text="${diarySpecificationResponseDTO.writeDate}">2022-05-05</span></td>-->
                   </tr>
                 </table>
               </td>
@@ -257,9 +258,12 @@
                 </table>
               </td>
             </tr>
-            <tr>
-              <td class="table_view">조회수 : <span class="point-span" th:text="${diarySpecificationResponseDTO.view}"></span></td>
-            </tr>
+              <tr>
+                  <td class="table_view">
+                      <span class="userID main-id point-span" th:text="${diarySpecificationResponseDTO.writeDate}">2022-05-05</span>
+                      조회수 : <span class="point-span" th:text="${diarySpecificationResponseDTO.view}"></span>
+                  </td>
+              </tr>
             <tr>
               <td class="table_writeCom_td">
                 <input id="input-comment" name="input-comment" class="input-comment" type="text" placeholder="댓글 달기...">

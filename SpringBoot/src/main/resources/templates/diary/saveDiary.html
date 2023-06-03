@@ -7,7 +7,7 @@
   <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
   <title>Instagram</title>
   <link href="/css/common.css" rel="stylesheet" type="text/css" />
-  <link href="/css/diary.css" rel="stylesheet" type="text/css" />
+  <link href="/css/main.css" rel="stylesheet" type="text/css" />
   <!-- favicon -->
   <link rel="icon" href="/img/favicon.png">
   <link rel="instagram-icon" href="/img/favicon.png">
@@ -79,7 +79,7 @@
 <main>
 
   <div class="main_div">
-    <h1 class="main_h1">일기 등록</h1>
+    <h2 class="main_h1" style="margin: 0; font-size: 40px;">하루의 감정 경험을 기록하여 사람들과 나눠봅시다! </h2>
     <form role="form" id="diaryForm" enctype="multipart/form-data" action="/api/diary/save_proc" method="post">
       <div class="main_nickDate">
         <label for="content" style="margin-bottom: 10px; font-weight: bold; font-size: 18px;">[[${nickName}]]</label>

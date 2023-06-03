@@ -251,7 +251,7 @@ public class DiaryService {
         List<DiarySpecificationResponseDTO> result = new ArrayList<>();
 
         for (DiaryEntity diaryEntity : diaryEntities) {
-            List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream()
+            List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream().limit(3)
                     .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion(), comment.getUser().getUid()))
                     .collect(Collectors.toList());
 
@@ -304,7 +304,7 @@ public class DiaryService {
         List<DiarySpecificationResponseDTO> result = new ArrayList<>();
 
         for (DiaryEntity diaryEntity : diaryEntities) {
-            List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream()
+            List<CommentResponseDTO> commentDtoList = diaryEntity.getComments().stream().limit(3)
                     .map(comment -> new CommentResponseDTO(comment.getCid(), comment.getWriteDate(), comment.getContent(), comment.getEmotion(), comment.getUser().getUid()))
                     .collect(Collectors.toList());
 
@@ -346,7 +346,7 @@ public class DiaryService {
     }
 
     /**
-     * 다이어리를 사용자 이름 검색하여 동일한 감정만 리턴
+     * 다이어리를 사용자 이름 검색하여 리턴
      * - 한승완 2023.05.25
      */
     public List<DiarySpecificationResponseDTO> listDiaryByNickName(String nickName) {

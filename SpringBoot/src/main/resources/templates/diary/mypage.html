@@ -21,7 +21,7 @@
         }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 그리드 컨테이너의 열 수 설정 */
+            grid-template-columns: repeat(4, 1fr); /* 그리드 컨테이너의 열 수 설정 */
             grid-gap: 30px; /* 그리드 아이템 사이의 간격 설정 */
             justify-content: center; /* 가로 방향 가운데 정렬 */
             padding: 20px;
@@ -31,11 +31,82 @@
             /*background-color: #f1f1f1;*/
             padding: 20px;
             text-align: center;
-            width: 250px; /* 원하는 가로 크기로 설정 */
-            height: 300px; /* 원하는 세로 크기로 설정 */
-            border: 2px solid #000; /* Change the color to black (#000) */
+            width: 250px;
+            height: 300px;
+            border: 2px solid #000;
             box-shadow: 10px 5px;
         }
+
+        .grid-item-emotion-emoji {
+            padding: 20px;
+            text-align: center;
+            background-color: #fef4f4;
+            box-shadow: 10px 5px #acc2d3;
+            border: 2px solid #acc2d3;
+            width: 250px;
+            height: 300px;
+        }
+
+        .grid-item-emotion-surprised {
+            padding: 20px;
+            text-align: center;
+            background-color: #f2faff;
+            box-shadow: 10px 5px #dedefc;
+            border: 2px solid #dedefc;
+            width: 250px;
+            height: 300px;
+        }
+
+        .grid-item-emotion-angry {
+            padding: 20px;
+            text-align: center;
+            background-color: #ffe7e7;
+            box-shadow: 10px 5px #ff7373;
+            border: 2px solid #ff7373;
+            width: 250px;
+            height: 300px;
+        }
+
+        .grid-item-emotion-sad {
+            padding: 20px;
+            text-align: center;
+            background-color: #f2f2f2;
+            box-shadow: 10px 5px #c4c4c4;
+            border: 2px solid #c4c4c4;
+            width: 250px;
+            height: 300px;
+        }
+
+        .grid-item-emotion-neutral {
+            padding: 20px;
+            text-align: center;
+            background-color: #fff3c0;
+            box-shadow: 10px 5px #ffc744;
+            border: 2px solid #ffc744;
+            width: 250px;
+            height: 300px;
+        }
+
+        .grid-item-emotion-happy {
+            padding: 20px;
+            text-align: center;
+            background-color: #fff7e0;
+            box-shadow: 10px 5px #ffda9d;
+            border: 2px solid #ffda9d;
+            width: 250px;
+            height: 300px;
+        }
+
+        .grid-item-emotion-confused {
+            padding: 20px;
+            text-align: center;
+            background-color: #c9e7d9;
+            box-shadow: 10px 5px #b3dcc2;
+            border: 2px solid #b3dcc2;
+            width: 250px;
+            height: 300px;
+        }
+
         .mainPic {
             box-shadow: 3px 3px 3px;
             width: 150px;
@@ -268,7 +339,7 @@
 <!--        }-->
 <!--    </script>-->
     <div class="grid-container">
-        <div class="grid-item" th:each="list : ${lists}" >
+        <div th:class="|grid-item-emotion-${list.emotion.substring(5, list.emotion.length - 4).toLowerCase()}|"  th:each="list : ${lists}" >
             <a th:href="@{/api/diary/posts/{id}(id = ${list.numId})}">
                 <div class="content-wrapper">
                     <div style="display: flex; margin-bottom: 30px; align-items: center;">
