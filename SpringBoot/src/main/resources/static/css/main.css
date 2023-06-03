@@ -1,6 +1,9 @@
 @font-face {
     font-family: 'Jamsil2';
-    src: url('/font/The Jamsil OTF 2 Light.otf') format('opentype');
+    /*src: url('/font/The Jamsil OTF 2 Light.otf') format('opentype');*/
+
+    /* mac 주소*/
+    src: url('/Users/hseungwan/Documents/GitHub/Project_MachineLearning/SpringBoot/src/main/resources/static/font/The Jamsil OTF 2 Light.otf') format('opentype');
 }
 /* general */
 ul,li {
