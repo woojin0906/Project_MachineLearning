@@ -74,6 +74,7 @@
         cache: false,
         success: function (result, status) {
             location.href = '/api/diary/posts/' + numId;
+            alert("댓글이 삭제되었습니다.");
         },
         error: function (jqXHR, status, error) {
 
@@ -99,6 +100,7 @@
         cache: false,
         success: function (result, status) {
           location.href = '/api/diary/list/user';
+            alert("다이어리가 삭제되었습니다.");
         },
         error: function (jqXHR, status, error) {
 
@@ -153,6 +155,7 @@
         contentType: 'application/json',
         success: function (result, status) {
             location.href = '/api/diary/posts/' + numId;
+            alert("댓글이 등록되었습니다.");
         },
         error: function (jqXHR, status, error) {
           if (jqXHR.status == '401') {

@@ -4,6 +4,7 @@ import com.project.machinlearning.Comment.DTO.CommentRequestDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -13,7 +14,7 @@ import java.text.ParseException;
  *    댓글 작성, 삭제
  *
  *   @version          1.00 / 2023.05.23
- *   @author           한승완
+ *   @author           한승완, 전우진
  */
 @RestController
 @RequestMapping("/api/comment")
@@ -31,7 +32,10 @@ public class CommentController {
     }
 
     @DeleteMapping("/delete/{cid}") //댓글 삭제
-    public @ResponseBody ResponseEntity deleteComment(@PathVariable("cid") Long cid, Principal principal){
+    public @ResponseBody ResponseEntity deleteComment(@PathVariable("cid") Long cid, Principal principal, Model model){
+        if(commentService.validateComment(cid, principal.getName())) {
+            model.addAttribute("errorMessage", "댓글이 삭제되었습니다.");
+        }
         if(!commentService.validateComment(cid, principal.getName())) {
             return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }

@@ -41,6 +41,10 @@
       });
     }
 
+    function save() {
+      alert("다이어리가 등록 되었습니다.");
+    }
+
   </script>
 
 </th:block>
@@ -83,7 +87,7 @@
 
   <div class="main_div">
     <h2 class="main_h1" style="margin: 0; font-size: 40px;">하루의 감정 경험을 기록하여 사람들과 나눠봅시다! </h2>
-    <form role="form" id="diaryForm" enctype="multipart/form-data" action="/api/diary/save_proc" method="post">
+    <form role="form" id="diaryForm" enctype="multipart/form-data" action="/api/diary/save_proc" method="post" onsubmit="save()">
       <div class="main_nickDate">
         <label for="content" style="font-family: 'Jamsil2'; margin-right: 5px;margin-bottom: 10px; font-weight: bold; font-size: 18px;">[[${nickName}]]</label>
         <div class="main_date">

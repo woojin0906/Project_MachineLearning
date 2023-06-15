@@ -84,8 +84,10 @@
                     success: function (result, status) {
                         if (emotion2) {
                             location.href = '/api/diary/list/emotion/' + emotion2;
+                            alert('댓글이 삭제되었습니다.')
                         } else {
                             location.href = '/api/diary/list/1';
+                            alert('댓글이 삭제되었습니다.')
                         }
                     },
                     error: function (jqXHR, status, error) {
@@ -111,10 +113,8 @@
                 dataType: "json",
                 cache: false,
                 success: function (result, status) {
-
                         location.href = '/api/diary/list/1';
-
-
+                        alert('다이어리가 삭제되었습니다.')
                 },
                 error: function (jqXHR, status, error) {
 
@@ -179,8 +179,10 @@
                 success: function (result, status) {
                     if (emotion2) {
                         location.href = '/api/diary/list/emotion/' + emotion2;
+                        alert('댓글이 등록되었습니다.')
                     } else {
                         location.href = '/api/diary/list/1';
+                        alert('댓글이 등록되었습니다.')
                     }
                 },
                 error: function (jqXHR, status, error) {
