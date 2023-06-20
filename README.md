@@ -1,19 +1,23 @@
-# Project_MachineLearning
-3학년 1학기 머신러닝 프로젝트
+# AGENDA
+3학년 1학기 머신러닝입문 프로젝트
 
+참여 인원
+
+- **201945004 한승완** : SpringBoot 서버 구축, Flask - KcELECTRA 혐오 댓글 분류 모델 서빙
+- **202145022 전우진** : Ajax, 프론트엔드 구축, Flask - KoBERT 감정 분류 모델 서빙
 
 **********************************************
 
-#### _커밋_ 메시지 규칙 <p>
-- 어떻게 보다는 무엇과 왜를 설명한다 <p>
-#### _커밋_ 메시지 구조 -> 유형(범위): 내용의 제목 <p>
-- 예시 <p>
-![image](https://user-images.githubusercontent.com/89853084/214541945-660afdce-8aa5-4bf6-b92f-aa40734a7f12.png)
-#### _커밋_ 유형 지정 <p>
-- FEAT : 새로운 기능의 추가 <p>
-- FIX : 버그 수정 <p>
-- DOCS : 문서 수정 <p>
-- STYLE : 스타일 관련(코드 포맷팅, 코드 누락, 코드 자체의 변경이 없는 경우 <p>
-- REFACTOR : 코드 리팩토링 <p>
-- TEST : 테스트 코드, 리팩토링 테스트 코드 <p>
-- CHORE : 빌드 업무 수정, 패키지 매니저 수정 <p>
+## 서비스 요약 포스터
+
+![AGENDA_포스터.png](File%2FAGENDA_%ED%8F%AC%EC%8A%A4%ED%84%B0.png)
+
+**********************************************
+
+## 프로젝트 보고서
+
+[- 최종 보고서](https://github.com/woojin0906/Project_MachineLearning/blob/main/File/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%ED%94%84%EC%A0%9D-%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.docx)
+
+[- 발표 PPT](https://github.com/woojin0906/Project_MachineLearning/blob/main/File/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-PPT.pptx) 
+
+**********************************************
